@@ -1,0 +1,84 @@
+---
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import { fetchGitHubActivity, formatFeedDate } from "@/utils/fetchGitHub";
+
+const USERNAME = "varunvaidhiya";
+const events = await fetchGitHubActivity(USERNAME);
+const hasEvents = events.length > 0;
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconGitHub width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">GitHub</h2>
+    <a
+      href={`https://github.com/${USERNAME}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="feed-view-all"
+    >
+      View all →
+    </a>
+  </div>
+
+  {
+    hasEvents ? (
+      <ul class="feed-list gh-feed-list">
+        {events.map((event) => (
+          <li class="gh-event">
+            <span class="gh-event-icon" aria-hidden="true">
+              {event.icon}
+            </span>
+            <div class="gh-event-body">
+              <a
+                href={event.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="gh-event-desc"
+              >
+                {event.description}
+              </a>
+              <div class="gh-event-meta">
+                <a
+                  href={event.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="gh-event-repo"
+                >
+                  {event.repo}
+                </a>
+                <time class="feed-item-date" datetime={event.date}>
+                  {formatFeedDate(event.date)}
+                </time>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="feed-empty">
+        <p>
+          See my work on{" "}
+          <a
+            href={`https://github.com/${USERNAME}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent underline decoration-dashed"
+          >
+            GitHub
+          </a>
+          .
+        </p>
+      </div>
+    )
+  }
+
+  <a
+    href={`https://github.com/${USERNAME}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="feed-bottom-link"
+  >
+    View GitHub profile →
+  </a>
+</div>

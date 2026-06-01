@@ -520,3 +520,74 @@ html[data-theme="dark"] {
   height: 100%;
   border: none;
 }
+
+/* ── GitHub activity feed ──────────────────────────────────────────── */
+
+.gh-feed-list {
+  gap: 0 !important;
+}
+
+.gh-event {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.gh-event:last-child {
+  border-bottom: none;
+}
+
+.gh-event-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  text-align: center;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  padding-top: 0.1rem;
+}
+
+.gh-event-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.gh-event-desc {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--foreground);
+  text-decoration: none;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gh-event-desc:hover {
+  color: var(--accent);
+}
+
+.gh-event-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.gh-event-repo {
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-decoration: none;
+  opacity: 0.75;
+  font-family: monospace;
+}
+
+.gh-event-repo:hover {
+  opacity: 1;
+  text-decoration: underline;
+}

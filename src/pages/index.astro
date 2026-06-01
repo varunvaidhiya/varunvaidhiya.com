@@ -9,8 +9,8 @@ import Hr from "@/components/Hr.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Socials from "@/components/Socials.astro";
 import StructuredData from "@/components/StructuredData.astro";
+import GitHubFeed from "@/components/GitHubFeed.astro";
 import SubstackFeed from "@/components/SubstackFeed.astro";
-import TwitterFeed from "@/components/TwitterFeed.astro";
 import YouTubeFeed from "@/components/YouTubeFeed.astro";
 import { SITE, SOCIALS } from "@/config";
 import Layout from "@/layouts/Layout.astro";
@@ -83,7 +83,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
     <section id="social-feeds" class="feeds-section pt-8 pb-4">
       <h2 class="feeds-heading">Latest Updates</h2>
       <div class="feeds-grid">
-        <TwitterFeed />
+        <GitHubFeed />
         <SubstackFeed />
         <YouTubeFeed />
       </div>
