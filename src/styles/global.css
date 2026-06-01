@@ -145,6 +145,12 @@ html[data-theme="dark"] {
   }
 }
 
+@media (min-width: 1400px) {
+  .feeds-grid {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
 .feed-column {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -590,4 +596,93 @@ html[data-theme="dark"] {
 .gh-event-repo:hover {
   opacity: 1;
   text-decoration: underline;
+}
+
+/* ── Hugging Face feed ─────────────────────────────────────────────── */
+
+.hf-profile-strip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.hf-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.hf-stats {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  opacity: 0.75;
+}
+
+.hf-stat-sep {
+  opacity: 0.4;
+}
+
+.hf-list {
+  gap: 0 !important;
+}
+
+.hf-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.hf-item:last-child {
+  border-bottom: none;
+}
+
+.hf-item-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.hf-item-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--foreground);
+  text-decoration: none;
+  font-family: monospace;
+  word-break: break-all;
+  flex: 1;
+}
+
+.hf-item-name:hover {
+  color: var(--accent);
+}
+
+.hf-task-badge {
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hf-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.hf-meta-stat {
+  font-size: 0.72rem;
+  opacity: 0.6;
 }

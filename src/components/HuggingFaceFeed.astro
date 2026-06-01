@@ -1,0 +1,125 @@
+---
+import IconHuggingFace from "@/assets/icons/IconHuggingFace.svg";
+import {
+  fetchHFModels,
+  fetchHFProfile,
+  formatCount,
+  formatFeedDate,
+  formatTaskLabel,
+} from "@/utils/fetchHuggingFace";
+
+const USERNAME = "varunvaidhiya";
+const HF_URL = `https://huggingface.co/${USERNAME}`;
+
+const [models, profile] = await Promise.all([fetchHFModels(USERNAME), fetchHFProfile(USERNAME)]);
+
+const hasModels = models.length > 0;
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconHuggingFace width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">Hugging Face</h2>
+    <a
+      href={HF_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="feed-view-all"
+    >
+      View all →
+    </a>
+  </div>
+
+  {/* Profile stats strip */}
+  {
+    profile && (
+      <div class="hf-profile-strip">
+        {profile.avatarUrl && (
+          <img
+            src={profile.avatarUrl}
+            alt={profile.fullname}
+            width={32}
+            height={32}
+            class="hf-avatar"
+            loading="lazy"
+          />
+        )}
+        <div class="hf-stats">
+          <span class="hf-stat">
+            <strong>{profile.numModels}</strong> models
+          </span>
+          <span class="hf-stat-sep">·</span>
+          <span class="hf-stat">
+            <strong>{profile.numLikes}</strong> likes
+          </span>
+        </div>
+      </div>
+    )
+  }
+
+  {
+    hasModels ? (
+      <ul class="feed-list hf-list">
+        {models.map((model) => (
+          <li class="hf-item">
+            <div class="hf-item-top">
+              <a
+                href={model.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hf-item-name"
+              >
+                {model.isSpace ? "🚀 " : ""}
+                {model.name}
+              </a>
+              {model.task && (
+                <span class="hf-task-badge">{formatTaskLabel(model.task)}</span>
+              )}
+            </div>
+            <div class="hf-item-meta">
+              {model.likes > 0 && (
+                <span class="hf-meta-stat" title="Likes">
+                  ♥ {formatCount(model.likes)}
+                </span>
+              )}
+              {model.downloads > 0 && (
+                <span class="hf-meta-stat" title="Downloads">
+                  ↓ {formatCount(model.downloads)}
+                </span>
+              )}
+              {model.lastModified && (
+                <time class="feed-item-date" datetime={model.lastModified}>
+                  {formatFeedDate(model.lastModified)}
+                </time>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="feed-empty">
+        <p>
+          See my models on{" "}
+          <a
+            href={HF_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent underline decoration-dashed"
+          >
+            Hugging Face
+          </a>
+          .
+        </p>
+      </div>
+    )
+  }
+
+  <a
+    href={HF_URL}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="feed-bottom-link"
+  >
+    View Hugging Face profile →
+  </a>
+</div>

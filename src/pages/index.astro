@@ -10,6 +10,7 @@ import LinkButton from "@/components/LinkButton.astro";
 import Socials from "@/components/Socials.astro";
 import StructuredData from "@/components/StructuredData.astro";
 import GitHubFeed from "@/components/GitHubFeed.astro";
+import HuggingFaceFeed from "@/components/HuggingFaceFeed.astro";
 import SubstackFeed from "@/components/SubstackFeed.astro";
 import YouTubeFeed from "@/components/YouTubeFeed.astro";
 import { SITE, SOCIALS } from "@/config";
@@ -86,6 +87,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
         <GitHubFeed />
         <SubstackFeed />
         <YouTubeFeed />
+        <HuggingFaceFeed />
       </div>
     </section>
 
