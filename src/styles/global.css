@@ -317,3 +317,75 @@ html[data-theme="dark"] {
 .twitter-embed-fallback .twitter-timeline {
   width: 100% !important;
 }
+
+/* ── Tweet photo grid ──────────────────────────────────────────────── */
+
+.feed-item--tweet {
+  gap: 0.5rem;
+}
+
+.feed-tweet-text {
+  font-weight: 400 !important;
+  font-size: 0.875rem !important;
+  line-height: 1.5 !important;
+  -webkit-line-clamp: 4 !important;
+}
+
+.feed-tweet-images {
+  display: grid;
+  gap: 2px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.feed-tweet-images--1 {
+  grid-template-columns: 1fr;
+}
+
+.feed-tweet-images--2 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.feed-tweet-images--3 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+}
+
+.feed-tweet-images--3 .feed-tweet-img-wrap:first-child {
+  grid-column: span 2;
+}
+
+.feed-tweet-images--4 {
+  grid-template-columns: 1fr 1fr;
+}
+
+.feed-tweet-img-wrap {
+  display: block;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--muted);
+}
+
+.feed-tweet-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.2s ease;
+}
+
+.feed-tweet-img-wrap:hover .feed-tweet-img {
+  transform: scale(1.04);
+}
+
+/* ── Article (Substack) cover image ────────────────────────────────── */
+
+.feed-item--article {
+  gap: 0.5rem;
+}
+
+.feed-item--article .feed-thumb-link {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--muted);
+}

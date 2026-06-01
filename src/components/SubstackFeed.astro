@@ -24,23 +24,42 @@ const hasItems = items.length > 0;
     hasItems ? (
       <ul class="feed-list">
         {items.map((item) => (
-          <li class="feed-item">
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="feed-item-title"
-            >
-              {item.title}
-            </a>
-            {item.pubDate && (
-              <time class="feed-item-date" datetime={item.pubDate}>
-                {formatFeedDate(item.pubDate)}
-              </time>
+          <li class="feed-item feed-item--article">
+            {item.coverImage && (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="feed-thumb-link"
+              >
+                <img
+                  src={item.coverImage}
+                  alt={item.title}
+                  width={400}
+                  height={210}
+                  loading="lazy"
+                  class="feed-thumb"
+                />
+              </a>
             )}
-            {item.description && (
-              <p class="feed-item-desc">{item.description}…</p>
-            )}
+            <div class="feed-item-body">
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="feed-item-title"
+              >
+                {item.title}
+              </a>
+              {item.pubDate && (
+                <time class="feed-item-date" datetime={item.pubDate}>
+                  {formatFeedDate(item.pubDate)}
+                </time>
+              )}
+              {item.description && (
+                <p class="feed-item-desc">{item.description}…</p>
+              )}
+            </div>
           </li>
         ))}
       </ul>

@@ -25,22 +25,59 @@ const twitterHandle = "varunvaidhiya";
     hasItems ? (
       <ul class="feed-list">
         {items.map((item) => (
-          <li class="feed-item">
-            <a
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="feed-item-title"
-            >
-              {item.title}
-            </a>
-            {item.pubDate && (
-              <time class="feed-item-date" datetime={item.pubDate}>
-                {formatFeedDate(item.pubDate)}
-              </time>
+          <li class="feed-item feed-item--tweet">
+            <div class="feed-item-body">
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="feed-item-title feed-tweet-text"
+              >
+                {item.title}
+              </a>
+              {item.pubDate && (
+                <time class="feed-item-date" datetime={item.pubDate}>
+                  {formatFeedDate(item.pubDate)}
+                </time>
+              )}
+            </div>
+            {/* Tweet photo grid — up to 4 images */}
+            {item.images && item.images.length > 0 && (
+              <div
+                class={`feed-tweet-images feed-tweet-images--${Math.min(item.images.length, 4)}`}
+              >
+                {item.images.slice(0, 4).map((src, i) => (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="feed-tweet-img-wrap"
+                  >
+                    <img
+                      src={src}
+                      alt={`Photo ${i + 1} from tweet`}
+                      loading="lazy"
+                      class="feed-tweet-img"
+                    />
+                  </a>
+                ))}
+              </div>
             )}
-            {item.description && item.description !== item.title && (
-              <p class="feed-item-desc">{item.description}</p>
+            {/* Single image (no grid) */}
+            {!item.images && item.coverImage && (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="feed-thumb-link"
+              >
+                <img
+                  src={item.coverImage}
+                  alt="Tweet photo"
+                  loading="lazy"
+                  class="feed-thumb"
+                />
+              </a>
             )}
           </li>
         ))}

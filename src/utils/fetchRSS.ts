@@ -4,6 +4,8 @@ export interface FeedItem {
   pubDate: string;
   description: string;
   thumbnail?: string;
+  coverImage?: string;
+  images?: string[];
   videoId?: string;
 }
 
@@ -26,6 +28,19 @@ function extractAttr(xml: string, tag: string, attr: string): string {
   return xml.match(re)?.[1] ?? "";
 }
 
+function extractAllImages(html: string): string[] {
+  const imgs: string[] = [];
+  const re = /<img[^>]+src="([^"]+)"/gi;
+  for (let m = re.exec(html); m !== null; m = re.exec(html)) {
+    const src = m[1];
+    // skip tracking pixels and tiny icons (width/height hints in the tag itself)
+    if (src && !src.includes("emoji") && !src.includes("1x1")) {
+      imgs.push(src);
+    }
+  }
+  return imgs;
+}
+
 function parseEntries(xml: string): FeedItem[] {
   const items: FeedItem[] = [];
   const entryRe = /<(?:item|entry)([\s\S]*?)>?([\s\S]*?)<\/(?:item|entry)>/g;
@@ -39,7 +54,6 @@ function parseEntries(xml: string): FeedItem[] {
     if (!link || link.startsWith("<")) {
       link = extractAttr(chunk, "link", "href");
     }
-    // RSS link may be just a URL text node without closing tag after whitespace
     if (!link) {
       const linkMatch = chunk.match(/<link>([^<]+)/i);
       if (linkMatch) link = linkMatch[1].trim();
@@ -50,6 +64,7 @@ function parseEntries(xml: string): FeedItem[] {
       extractTag(chunk, "published") ||
       extractTag(chunk, "updated");
 
+    // Preserve raw HTML for image extraction before stripping tags
     const rawDesc =
       extractTag(chunk, "description") ||
       extractTag(chunk, "content") ||
@@ -57,13 +72,30 @@ function parseEntries(xml: string): FeedItem[] {
       extractTag(chunk, "media:description");
     const description = stripHtml(rawDesc).slice(0, 220);
 
-    const thumbnail =
+    // Images: media tags first, then enclosure, then inline <img> in description
+    const mediaThumbnail =
       extractAttr(chunk, "media:thumbnail", "url") || extractAttr(chunk, "media:content", "url");
+    const enclosureUrl = extractAttr(chunk, "enclosure", "url");
+    const inlineImages = extractAllImages(rawDesc);
+
+    const coverImage = mediaThumbnail || enclosureUrl || inlineImages[0];
+    // Remaining images after the cover (for tweet photo grids etc.)
+    const extraImages =
+      inlineImages.length > 1 && !mediaThumbnail && !enclosureUrl ? inlineImages.slice(1, 4) : [];
 
     const videoId = extractTag(chunk, "yt:videoId");
 
     if (title && link) {
-      items.push({ title, link, pubDate, description, thumbnail, videoId });
+      items.push({
+        title,
+        link,
+        pubDate,
+        description,
+        thumbnail: mediaThumbnail || undefined,
+        coverImage: coverImage || undefined,
+        images: extraImages.length ? [coverImage!, ...extraImages] : undefined,
+        videoId: videoId || undefined,
+      });
     }
   }
 
