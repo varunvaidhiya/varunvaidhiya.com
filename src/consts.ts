@@ -31,9 +31,9 @@ interface Site {
 
 // Site configuration
 export const SITE: Site = {
-  website: "https://varunvaidhiya.me/",
+  website: "https://varunvaidhiya.com/",
   author: "Varun Vaidhiya",
-  profile: "https://varunvaidhiya.me/about",
+  profile: "https://varunvaidhiya.com/about",
   desc: "Software Engineer specialising in AI, Robotics, and Performance Optimisation. Based in the UK.",
   title: "Varun Vaidhiya",
   ogImage: "varun-avatar.jpg",
@@ -46,7 +46,7 @@ export const SITE: Site = {
   editPost: {
     enabled: true,
     text: "Edit on GitHub",
-    url: "https://github.com/varunvaidhiya/varunvaidhiya.me/edit/main/",
+    url: "https://github.com/varunvaidhiya/varunvaidhiya.com/edit/main/",
   },
   dynamicOgImage: true,
   lang: "en",

@@ -19,7 +19,7 @@ Personal website and blog.
 
 ---
 
-*This is the markdown-only version of varunvaidhiya.me. Visit [varunvaidhiya.me](https://varunvaidhiya.me) for the full experience.*`;
+*This is the markdown-only version of varunvaidhiya.com. Visit [varunvaidhiya.com](https://varunvaidhiya.com) for the full experience.*`;
 
   return new Response(markdownContent, {
     status: 200,

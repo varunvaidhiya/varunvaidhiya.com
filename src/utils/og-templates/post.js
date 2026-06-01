@@ -7,7 +7,7 @@ import loadGoogleFonts from "../loadGoogleFont";
  *
  * This template generates social media preview cards for blog posts.
  *
- * CUSTOMIZATION: We override the default behavior to show "varunvaidhiya.me"
+ * CUSTOMIZATION: We override the default behavior to show "varunvaidhiya.com"
  * on the right side instead of the author name (Varun Vaidhiya).
  * This avoids redundancy since the author name already appears on the left
  * with "by Varun Vaidhiya".
@@ -213,7 +213,7 @@ export default async (post) => {
                             type: "span",
                             props: {
                               style: { overflow: "hidden", fontWeight: "bold" },
-                              children: "varunvaidhiya.me",
+                              children: "varunvaidhiya.com",
                             },
                           },
                         ],
@@ -232,7 +232,7 @@ export default async (post) => {
       height: 630,
       embedFont: true,
       fonts: await loadGoogleFonts(
-        post.data.title + (post.data.author ?? "") + "varunvaidhiya.me" + "by"
+        post.data.title + (post.data.author ?? "") + "varunvaidhiya.com" + "by"
       ),
     }
   );
