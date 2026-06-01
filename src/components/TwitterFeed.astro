@@ -1,0 +1,72 @@
+---
+import { fetchTwitterFeed, formatFeedDate } from "@/utils/fetchRSS";
+import IconX from "@/assets/icons/IconX.svg";
+
+const items = await fetchTwitterFeed("varunvaidhiya");
+const hasItems = items.length > 0;
+const twitterHandle = "varunvaidhiya";
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconX width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">X / Twitter</h2>
+    <a
+      href={`https://twitter.com/${twitterHandle}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="feed-view-all"
+    >
+      View all →
+    </a>
+  </div>
+
+  {
+    hasItems ? (
+      <ul class="feed-list">
+        {items.map((item) => (
+          <li class="feed-item">
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="feed-item-title"
+            >
+              {item.title}
+            </a>
+            {item.pubDate && (
+              <time class="feed-item-date" datetime={item.pubDate}>
+                {formatFeedDate(item.pubDate)}
+              </time>
+            )}
+            {item.description && item.description !== item.title && (
+              <p class="feed-item-desc">{item.description}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="feed-empty twitter-embed-fallback">
+        <a
+          class="twitter-timeline"
+          data-height="520"
+          data-theme="light"
+          data-chrome="noheader nofooter noborders"
+          href={`https://twitter.com/${twitterHandle}`}
+        >
+          Tweets by @{twitterHandle}
+        </a>
+      </div>
+    )
+  }
+</div>
+
+{
+  !hasItems && (
+    <script
+      async
+      src="https://platform.twitter.com/widgets.js"
+      charset="utf-8"
+    />
+  )
+}

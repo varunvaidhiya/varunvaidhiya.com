@@ -1,0 +1,94 @@
+---
+import { fetchYouTubeFeed, formatFeedDate } from "@/utils/fetchRSS";
+import IconYoutube from "@/assets/icons/IconYouTube.svg";
+
+const items = await fetchYouTubeFeed("@varun.vaidhiya");
+const hasItems = items.length > 0;
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconYoutube width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">YouTube</h2>
+    <a
+      href="https://www.youtube.com/@varun.vaidhiya"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="feed-view-all"
+    >
+      View all →
+    </a>
+  </div>
+
+  {
+    hasItems ? (
+      <ul class="feed-list">
+        {items.map((item) => {
+          const videoId = item.videoId || item.link.match(/v=([^&]+)/)?.[1];
+          const thumb =
+            item.thumbnail ||
+            (videoId
+              ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`
+              : undefined);
+          return (
+            <li class="feed-item feed-item--video">
+              {thumb && (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="feed-thumb-link"
+                >
+                  <img
+                    src={thumb}
+                    alt={item.title}
+                    width={240}
+                    height={135}
+                    loading="lazy"
+                    class="feed-thumb"
+                  />
+                  <span class="feed-thumb-play" aria-hidden="true">
+                    ▶
+                  </span>
+                </a>
+              )}
+              <div class="feed-item-body">
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="feed-item-title"
+                >
+                  {item.title}
+                </a>
+                {item.pubDate && (
+                  <time class="feed-item-date" datetime={item.pubDate}>
+                    {formatFeedDate(item.pubDate)}
+                  </time>
+                )}
+                {item.description && (
+                  <p class="feed-item-desc">{item.description}…</p>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    ) : (
+      <div class="feed-empty">
+        <p>
+          Watch my videos on{" "}
+          <a
+            href="https://www.youtube.com/@varun.vaidhiya"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent underline decoration-dashed"
+          >
+            YouTube
+          </a>
+          .
+        </p>
+      </div>
+    )
+  }
+</div>

@@ -9,6 +9,9 @@ import Hr from "@/components/Hr.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Socials from "@/components/Socials.astro";
 import StructuredData from "@/components/StructuredData.astro";
+import SubstackFeed from "@/components/SubstackFeed.astro";
+import TwitterFeed from "@/components/TwitterFeed.astro";
+import YouTubeFeed from "@/components/YouTubeFeed.astro";
 import { SITE, SOCIALS } from "@/config";
 import Layout from "@/layouts/Layout.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
@@ -64,7 +67,6 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
             I work on low-level hardware, AI model benchmarking, and building open-source tools.
           </p>
           {
-            // only display if at least one social link is enabled
             SOCIALS.filter((social) => social.active).length > 0 && (
               <div class="mt-4 flex flex-row items-center justify-center sm:justify-start">
                 <Socials />
@@ -72,6 +74,18 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
             )
           }
         </div>
+      </div>
+    </section>
+
+    <Hr />
+
+    <!-- Three-column social feed timeline -->
+    <section id="social-feeds" class="feeds-section pt-8 pb-4">
+      <h2 class="feeds-heading">Latest Updates</h2>
+      <div class="feeds-grid">
+        <TwitterFeed />
+        <SubstackFeed />
+        <YouTubeFeed />
       </div>
     </section>
 

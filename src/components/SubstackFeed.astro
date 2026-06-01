@@ -1,0 +1,64 @@
+---
+import { fetchRSSFeed, formatFeedDate } from "@/utils/fetchRSS";
+import IconSubstack from "@/assets/icons/IconSubstack.svg";
+
+const items = await fetchRSSFeed("https://varunvaidhiya.substack.com/feed");
+const hasItems = items.length > 0;
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconSubstack width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">Substack</h2>
+    <a
+      href="https://substack.com/@varunvaidhiya"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="feed-view-all"
+    >
+      View all →
+    </a>
+  </div>
+
+  {
+    hasItems ? (
+      <ul class="feed-list">
+        {items.map((item) => (
+          <li class="feed-item">
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="feed-item-title"
+            >
+              {item.title}
+            </a>
+            {item.pubDate && (
+              <time class="feed-item-date" datetime={item.pubDate}>
+                {formatFeedDate(item.pubDate)}
+              </time>
+            )}
+            {item.description && (
+              <p class="feed-item-desc">{item.description}…</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div class="feed-empty">
+        <p>
+          Visit{" "}
+          <a
+            href="https://substack.com/@varunvaidhiya"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-accent underline decoration-dashed"
+          >
+            my Substack
+          </a>{" "}
+          to read my posts.
+        </p>
+      </div>
+    )
+  }
+</div>
