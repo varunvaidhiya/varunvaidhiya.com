@@ -15,7 +15,7 @@ Personal website and blog.
 ## Links
 
 - GitHub: [@varunvaidhiya](https://github.com/varunvaidhiya)
-- LinkedIn: [@varunvaidhiya](https://linkedin.com/in/varunvaidhiya)
+- LinkedIn: [@varunvaidhiya](https://www.linkedin.com/in/varunvaidhiya)
 
 ---
 

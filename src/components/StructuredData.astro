@@ -29,15 +29,9 @@ if (type === "BlogPosting") {
         url: "https://varunvaidhiya.me/varun-avatar.jpg",
       },
     },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": data.url,
-    },
     image: data.ogImage || "https://varunvaidhiya.me/varun-avatar.jpg",
     articleSection: data.tags?.[0] || "Technology",
     keywords: data.tags?.join(", ") || "",
-    wordCount: data.wordCount,
-    timeRequired: data.readingTime,
   };
 } else if (type === "Person") {
   structuredData = {
@@ -46,7 +40,7 @@ if (type === "BlogPosting") {
     name: "Varun Vaidhiya",
     url: "https://varunvaidhiya.me",
     image: "https://varunvaidhiya.me/varun-avatar.jpg",
-    sameAs: ["https://github.com/varunvaidhiya", "https://linkedin.com/in/varunvaidhiya"],
+    sameAs: ["https://github.com/varunvaidhiya", "https://www.linkedin.com/in/varunvaidhiya"],
     jobTitle: "Software Engineer",
     description: "Personal website and blog of Varun Vaidhiya.",
   };

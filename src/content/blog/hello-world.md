@@ -22,4 +22,4 @@ I'll be sharing thoughts on:
 
 Everything I build lands on [GitHub](https://github.com/varunvaidhiya) — feel free to fork, remix, or contribute.
 
-Stay tuned for more posts. If you'd like to connect, find me on [X/Twitter](https://x.com/VarunVaidhiya) or [LinkedIn](https://linkedin.com/in/varunvaidhiya).
+Stay tuned for more posts. If you'd like to connect, find me on [X/Twitter](https://x.com/VarunVaidhiya) or [LinkedIn](https://www.linkedin.com/in/varunvaidhiya).
