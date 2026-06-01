@@ -25,7 +25,7 @@ Since you are using Astro, **Vercel** is the recommended hosting provider. It of
     -   Wait for the build to finish (usually 1-2 minutes).
 5.  **Success!**
     -   Once deployed, Vercel will give you a domain (e.g., `varunvaidhiya.vercel.app`).
-    -   You can add your custom domain (`varunvaidhiya.me`) in the Vercel project settings later if you own the domain.
+    -   You can add your custom domain (`varunvaidhiya.com`) in the Vercel project settings later if you own the domain.
 
 ## Updating the Site
 Whenever you push new code or a new blog post to your GitHub repository, Vercel will **automatically** rebuild and redeploy your site.
