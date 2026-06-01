@@ -1,6 +1,6 @@
 ---
-import { fetchRSSFeed, formatFeedDate } from "@/utils/fetchRSS";
 import IconSubstack from "@/assets/icons/IconSubstack.svg";
+import { fetchRSSFeed, formatFeedDate } from "@/utils/fetchRSS";
 
 const items = await fetchRSSFeed("https://varunvaidhiya.substack.com/feed");
 const hasItems = items.length > 0;

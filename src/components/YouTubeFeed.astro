@@ -1,6 +1,6 @@
 ---
-import { fetchYouTubeFeed, formatFeedDate } from "@/utils/fetchRSS";
 import IconYoutube from "@/assets/icons/IconYouTube.svg";
+import { fetchYouTubeFeed, formatFeedDate } from "@/utils/fetchRSS";
 
 const items = await fetchYouTubeFeed("@varun.vaidhiya");
 const hasItems = items.length > 0;

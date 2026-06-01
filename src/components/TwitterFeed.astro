@@ -1,6 +1,6 @@
 ---
-import { fetchTwitterFeed, formatFeedDate } from "@/utils/fetchRSS";
 import IconX from "@/assets/icons/IconX.svg";
+import { fetchTwitterFeed, formatFeedDate } from "@/utils/fetchRSS";
 
 const items = await fetchTwitterFeed("varunvaidhiya");
 const hasItems = items.length > 0;
