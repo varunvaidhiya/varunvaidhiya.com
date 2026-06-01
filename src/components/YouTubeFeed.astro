@@ -1,0 +1,158 @@
+---
+import IconYoutube from "@/assets/icons/IconYouTube.svg";
+import { fetchYouTubeFeed, formatFeedDate } from "@/utils/fetchRSS";
+
+const CHANNEL_HANDLE = "@varun.vaidhiya";
+const CHANNEL_URL = "https://www.youtube.com/@varun.vaidhiya";
+
+const items = await fetchYouTubeFeed(CHANNEL_HANDLE);
+const hasItems = items.length > 0;
+const latest = items[0];
+const rest = items.slice(1, 5);
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconYoutube width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">YouTube</h2>
+    <a
+      href={CHANNEL_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="feed-view-all"
+    >
+      View all →
+    </a>
+  </div>
+
+  {
+    hasItems ? (
+      <div class="feed-list">
+        {/* Latest video — hero thumbnail */}
+        {(() => {
+          const videoId =
+            latest.videoId || latest.link.match(/v=([^&]+)/)?.[1];
+          const thumb =
+            latest.thumbnail ||
+            (videoId
+              ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+              : undefined);
+          return (
+            <div class="feed-item feed-item--hero">
+              {thumb && (
+                <a
+                  href={latest.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="feed-thumb-link feed-hero-thumb"
+                >
+                  <img
+                    src={thumb}
+                    alt={latest.title}
+                    width={480}
+                    height={270}
+                    loading="eager"
+                    class="feed-thumb"
+                  />
+                  <span class="feed-thumb-play" aria-hidden="true">
+                    ▶
+                  </span>
+                </a>
+              )}
+              <div class="feed-item-body">
+                <a
+                  href={latest.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="feed-item-title"
+                >
+                  {latest.title}
+                </a>
+                {latest.pubDate && (
+                  <time class="feed-item-date" datetime={latest.pubDate}>
+                    {formatFeedDate(latest.pubDate)}
+                  </time>
+                )}
+                {latest.description && (
+                  <p class="feed-item-desc">{latest.description}…</p>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Older videos — compact list */}
+        {rest.length > 0 && (
+          <ul class="feed-sublist">
+            {rest.map((item) => {
+              const videoId =
+                item.videoId || item.link.match(/v=([^&]+)/)?.[1];
+              const thumb =
+                item.thumbnail ||
+                (videoId
+                  ? `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`
+                  : undefined);
+              return (
+                <li class="feed-subitem">
+                  {thumb && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="feed-subitem-thumb-link"
+                    >
+                      <img
+                        src={thumb}
+                        alt={item.title}
+                        width={120}
+                        height={68}
+                        loading="lazy"
+                        class="feed-subitem-thumb"
+                      />
+                    </a>
+                  )}
+                  <div class="feed-subitem-body">
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="feed-subitem-title"
+                    >
+                      {item.title}
+                    </a>
+                    {item.pubDate && (
+                      <time class="feed-item-date" datetime={item.pubDate}>
+                        {formatFeedDate(item.pubDate)}
+                      </time>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" class="feed-bottom-link">
+          View YouTube channel →
+        </a>
+      </div>
+    ) : (
+      /* RSS unavailable — embed the channel page directly */
+      <div class="feed-list">
+        <div class="yt-channel-embed-wrap">
+          <iframe
+            src={`https://www.youtube.com/embed?listType=user_uploads&list=${CHANNEL_HANDLE.replace("@", "")}&rel=0`}
+            title="Latest YouTube videos"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+            class="yt-channel-embed"
+          />
+        </div>
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" class="feed-bottom-link">
+          View YouTube channel →
+        </a>
+      </div>
+    )
+  }
+</div>

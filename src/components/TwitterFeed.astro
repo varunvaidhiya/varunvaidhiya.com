@@ -1,0 +1,36 @@
+---
+import IconX from "@/assets/icons/IconX.svg";
+
+const twitterHandle = "VarunVaidhiya";
+---
+
+<div class="feed-column">
+  <div class="feed-header">
+    <IconX width={20} height={20} class="feed-icon" />
+    <h2 class="feed-title">X / Twitter</h2>
+  </div>
+
+  <div class="twitter-embed-wrap">
+    <a
+      class="twitter-timeline"
+      data-height="560"
+      data-chrome="noheader nofooter noborders transparent"
+      href={`https://twitter.com/${twitterHandle}`}
+    </a>
+  </div>
+
+  <a
+    href={`https://x.com/${twitterHandle}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="feed-bottom-link"
+  >
+    View @{twitterHandle} on X →
+  </a>
+</div>
+
+<script
+  async
+  src="https://platform.twitter.com/widgets.js"
+  charset="utf-8"
+></script>

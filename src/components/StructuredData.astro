@@ -36,8 +36,6 @@ if (type === "BlogPosting") {
     image: data.ogImage || "https://varunvaidhiya.com/varun-avatar.jpg",
     articleSection: data.tags?.[0] || "Technology",
     keywords: data.tags?.join(", ") || "",
-    wordCount: data.wordCount,
-    timeRequired: data.readingTime,
   };
 } else if (type === "Person") {
   structuredData = {
@@ -48,7 +46,7 @@ if (type === "BlogPosting") {
     image: "https://varunvaidhiya.com/varun-avatar.jpg",
     sameAs: [
       "https://github.com/varunvaidhiya",
-      "https://linkedin.com/in/varunvaidhiya",
+      "https://www.linkedin.com/in/varunvaidhiya",
       "https://x.com/VarunVaidhiya",
       "https://www.youtube.com/@varun.vaidhiya",
       "https://substack.com/@varunvaidhiya",
