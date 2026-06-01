@@ -1,163 +1,38 @@
 ---
 import IconX from "@/assets/icons/IconX.svg";
-import { fetchTwitterFeed, formatFeedDate } from "@/utils/fetchRSS";
 
-const items = await fetchTwitterFeed("varunvaidhiya");
-const hasItems = items.length > 0;
 const twitterHandle = "varunvaidhiya";
-const latest = items[0];
-const rest = items.slice(1);
 ---
 
 <div class="feed-column">
   <div class="feed-header">
     <IconX width={20} height={20} class="feed-icon" />
     <h2 class="feed-title">X / Twitter</h2>
+  </div>
+
+  <div class="twitter-embed-wrap">
     <a
+      class="twitter-timeline"
+      data-height="560"
+      data-chrome="noheader nofooter noborders transparent"
       href={`https://twitter.com/${twitterHandle}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="feed-view-all"
     >
-      View all →
+      Tweets by @{twitterHandle}
     </a>
   </div>
 
-  {
-    hasItems ? (
-      <div class="feed-list">
-        {/* Latest tweet — hero with photo */}
-        <div class="feed-item feed-item--hero feed-item--tweet">
-          <div class="feed-item-body">
-            <a
-              href={latest.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="feed-item-title feed-tweet-text"
-            >
-              {latest.title}
-            </a>
-            {latest.pubDate && (
-              <time class="feed-item-date" datetime={latest.pubDate}>
-                {formatFeedDate(latest.pubDate)}
-              </time>
-            )}
-          </div>
-
-          {/* Photo grid (up to 4 images) */}
-          {latest.images && latest.images.length > 0 && (
-            <div
-              class={`feed-tweet-images feed-tweet-images--${Math.min(latest.images.length, 4)}`}
-            >
-              {latest.images.slice(0, 4).map((src, i) => (
-                <a
-                  href={latest.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="feed-tweet-img-wrap"
-                >
-                  <img
-                    src={src}
-                    alt={`Photo ${i + 1}`}
-                    loading="eager"
-                    class="feed-tweet-img"
-                  />
-                </a>
-              ))}
-            </div>
-          )}
-
-          {/* Single image fallback */}
-          {!latest.images && latest.coverImage && (
-            <a
-              href={latest.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="feed-thumb-link feed-hero-thumb"
-            >
-              <img
-                src={latest.coverImage}
-                alt="Tweet photo"
-                loading="eager"
-                class="feed-thumb"
-              />
-            </a>
-          )}
-        </div>
-
-        {/* Remaining tweets — compact */}
-        {rest.length > 0 && (
-          <ul class="feed-sublist">
-            {rest.map((item) => (
-              <li class="feed-subitem feed-subitem--tweet">
-                <div class="feed-subitem-body">
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="feed-subitem-title"
-                  >
-                    {item.title}
-                  </a>
-                  {item.pubDate && (
-                    <time class="feed-item-date" datetime={item.pubDate}>
-                      {formatFeedDate(item.pubDate)}
-                    </time>
-                  )}
-                </div>
-                {(item.coverImage || (item.images && item.images[0])) && (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="feed-subitem-thumb-link"
-                  >
-                    <img
-                      src={item.images?.[0] ?? item.coverImage}
-                      alt="Tweet photo"
-                      width={80}
-                      height={80}
-                      loading="lazy"
-                      class="feed-subitem-thumb feed-subitem-thumb--square"
-                    />
-                  </a>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <a
-          href={`https://twitter.com/${twitterHandle}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="feed-bottom-link"
-        >
-          View @{twitterHandle} on X →
-        </a>
-      </div>
-    ) : (
-      <div class="feed-empty twitter-embed-fallback">
-        <a
-          class="twitter-timeline"
-          data-height="520"
-          data-theme="light"
-          data-chrome="noheader nofooter noborders"
-          href={`https://twitter.com/${twitterHandle}`}
-        >
-          Tweets by @{twitterHandle}
-        </a>
-      </div>
-    )
-  }
+  <a
+    href={`https://twitter.com/${twitterHandle}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="feed-bottom-link"
+  >
+    View @{twitterHandle} on X →
+  </a>
 </div>
 
-{
-  !hasItems && (
-    <script
-      async
-      src="https://platform.twitter.com/widgets.js"
-      charset="utf-8"
-    />
-  )
-}
+<script
+  async
+  src="https://platform.twitter.com/widgets.js"
+  charset="utf-8"
+></script>

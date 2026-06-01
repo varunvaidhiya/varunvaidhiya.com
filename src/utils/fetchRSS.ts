@@ -122,13 +122,22 @@ export async function fetchYouTubeFeed(handle: string): Promise<FeedItem[]> {
   try {
     const res = await fetch(`https://www.youtube.com/${handle}`, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; VarunVaidhiya.me feed reader/1.0)",
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
       },
       signal: AbortSignal.timeout(10000),
     });
     if (!res.ok) return [];
     const html = await res.text();
-    const channelId = html.match(/"channelId":"([^"]+)"/)?.[1];
+
+    // Try several patterns YouTube uses across different page versions
+    const channelId =
+      html.match(/"channelId":"(UC[\w-]{22})"/)?.[1] ||
+      html.match(/"externalId":"(UC[\w-]{22})"/)?.[1] ||
+      html.match(/channel\/(UC[\w-]{22})/)?.[1] ||
+      html.match(/"browseId":"(UC[\w-]{22})"/)?.[1];
+
     if (!channelId) return [];
     return fetchRSSFeed(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
   } catch {

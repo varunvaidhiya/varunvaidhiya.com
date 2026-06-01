@@ -2,10 +2,13 @@
 import IconYoutube from "@/assets/icons/IconYouTube.svg";
 import { fetchYouTubeFeed, formatFeedDate } from "@/utils/fetchRSS";
 
-const items = await fetchYouTubeFeed("@varun.vaidhiya");
+const CHANNEL_HANDLE = "@varun.vaidhiya";
+const CHANNEL_URL = "https://www.youtube.com/@varun.vaidhiya";
+
+const items = await fetchYouTubeFeed(CHANNEL_HANDLE);
 const hasItems = items.length > 0;
 const latest = items[0];
-const rest = items.slice(1);
+const rest = items.slice(1, 5);
 ---
 
 <div class="feed-column">
@@ -13,7 +16,7 @@ const rest = items.slice(1);
     <IconYoutube width={20} height={20} class="feed-icon" />
     <h2 class="feed-title">YouTube</h2>
     <a
-      href="https://www.youtube.com/@varun.vaidhiya"
+      href={CHANNEL_URL}
       target="_blank"
       rel="noopener noreferrer"
       class="feed-view-all"
@@ -78,7 +81,7 @@ const rest = items.slice(1);
           );
         })()}
 
-        {/* Remaining videos — compact list */}
+        {/* Older videos — compact list */}
         {rest.length > 0 && (
           <ul class="feed-sublist">
             {rest.map((item) => {
@@ -129,29 +132,26 @@ const rest = items.slice(1);
           </ul>
         )}
 
-        <a
-          href="https://www.youtube.com/@varun.vaidhiya"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="feed-bottom-link"
-        >
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" class="feed-bottom-link">
           View YouTube channel →
         </a>
       </div>
     ) : (
-      <div class="feed-empty">
-        <p>
-          Watch my videos on{" "}
-          <a
-            href="https://www.youtube.com/@varun.vaidhiya"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-accent underline decoration-dashed"
-          >
-            YouTube
-          </a>
-          .
-        </p>
+      /* RSS unavailable — embed the channel page directly */
+      <div class="feed-list">
+        <div class="yt-channel-embed-wrap">
+          <iframe
+            src={`https://www.youtube.com/embed?listType=user_uploads&list=${CHANNEL_HANDLE.replace("@", "")}&rel=0`}
+            title="Latest YouTube videos"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            loading="lazy"
+            class="yt-channel-embed"
+          />
+        </div>
+        <a href={CHANNEL_URL} target="_blank" rel="noopener noreferrer" class="feed-bottom-link">
+          View YouTube channel →
+        </a>
       </div>
     )
   }
