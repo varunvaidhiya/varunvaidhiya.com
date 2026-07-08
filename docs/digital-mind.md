@@ -89,10 +89,13 @@ responds with `text/event-stream`. Each frame is `data: <json>` where `<json>` i
 | `api/digital-mind/_lib/hybrid.mjs` | Reciprocal Rank Fusion of lexical + vector results. |
 | `api/digital-mind/_lib/prompt.mjs` | System prompt, source, and follow‑up builders. |
 | `api/digital-mind/_lib/config.mjs` | Env‑driven provider/model/retrieval config. |
+| `api/digital-mind/_lib/local-docs.mjs` | Connector: `content/knowledge/` Markdown/txt/PDF/DOCX. |
+| `api/digital-mind/_lib/github.mjs` | Connector: public GitHub repos (READMEs + metadata). |
 | `api/digital-mind/_lib/knowledge-index.json` | Generated index (committed; rebuilt on every deploy). |
 | `api/digital-mind/_lib/*.test.mjs` | `node --test` unit tests for the pure logic. |
-| `scripts/build-knowledge-index.mjs` | Ingestion: blog + About → chunks → index. |
+| `scripts/build-knowledge-index.mjs` | Ingestion pipeline: runs all source connectors → index. |
 | `scripts/embed-knowledge.mjs` | Opt‑in: embed the index into Supabase pgvector. |
+| `content/knowledge/` | Drop‑in folder for documents to index (see its README). |
 | `supabase/migrations/*.sql` | pgvector table + `match_dm_chunks` search function. |
 
 ## Configuration
@@ -121,6 +124,14 @@ are never shipped to the browser.
 | `SUPABASE_URL` | _(required for hybrid)_ | Supabase project URL. |
 | `SUPABASE_SERVICE_ROLE_KEY` | _(required for hybrid)_ | Server‑side key for pgvector access. |
 
+**Milestone 3 — GitHub connector (optional, off by default):**
+
+| Variable | Default | Purpose |
+| -------- | ------- | ------- |
+| `DIGITAL_MIND_GITHUB_REPOS` | _(unset)_ | Comma list of `owner/repo` to index. |
+| `DIGITAL_MIND_GITHUB_USER` | _(unset)_ | Or index all public repos of this user. |
+| `GITHUB_TOKEN` | _(optional)_ | Raises API rate limits; enables private repos. |
+
 Set `ANTHROPIC_API_KEY` in **Vercel → Project → Settings → Environment Variables**.
 
 ## Security & permissions
@@ -145,9 +156,18 @@ To regenerate it locally after adding or editing content:
 npm run digital-mind:index
 ```
 
-Milestone 1 ingests the site's Markdown/MDX (`src/content/blog/**` and `src/pages/about.mdx`).
-Additional source types (PDF, DOCX, image OCR, audio/video transcripts, GitHub, …) land in
-the ingestion milestone and emit the same `Chunk` contract, so nothing downstream changes.
+The pipeline runs a set of **source connectors**, each emitting the same `Chunk` contract:
+
+- **Blog + About** — the site's Markdown/MDX (`src/content/blog/**`, `src/pages/about.mdx`). Always on.
+- **Local documents** — anything in `content/knowledge/` (Markdown, txt, PDF, DOCX). Always on.
+  See that folder's README for supported types and frontmatter. Only `public` docs are written
+  to the committed index.
+- **GitHub** — public repos' READMEs + metadata. Opt‑in via `DIGITAL_MIND_GITHUB_REPOS` (a
+  `owner/repo` list) or `DIGITAL_MIND_GITHUB_USER`; public repos need no token, `GITHUB_TOKEN`
+  raises rate limits. Network failures degrade gracefully — they never fail the build.
+
+Adding a new source type (image OCR, audio/video transcripts, Notion, Drive, …) means writing
+one more connector that emits `Chunk`s; nothing downstream changes.
 
 ## Hybrid retrieval (Milestone 2)
 
@@ -191,16 +211,18 @@ The chat endpoint is a Vercel Function, so it runs on Vercel (or `vercel dev`), 
 
 ## Roadmap
 
-Milestone 1 (this change) is intentionally the thin, UX‑first slice. It is structured so
-the heavier platform fills in behind the same UI and contracts:
+Milestone 1 was intentionally the thin, UX‑first slice; each later milestone fills in behind
+the same UI and contracts:
 
 1. **UX‑first working chat** ✅ — floating button, themed streaming chat, lexical retrieval
    over existing content, citations, follow‑ups, session memory.
 2. **Vector/hybrid retrieval** ✅ (foundation) — Supabase Postgres + `pgvector`, provider‑
    agnostic embeddings (Voyage/OpenAI), and vector + keyword fusion (RRF), dropped in behind
    `retrieve()` and off by default. Next increment: hosted re‑ranking over the fused set.
-3. **Ingestion connectors** — PDF, DOCX, image OCR, audio/video transcripts, and pluggable
-   source connectors (GitHub, YouTube, Drive, Notion, Obsidian) feeding the same index.
+3. **Ingestion connectors** ✅ (first set) — a connector pipeline with local documents
+   (Markdown/txt/PDF/DOCX via `content/knowledge/`) and GitHub public repos, all emitting the
+   same `Chunk` contract. Next: image OCR, audio/video transcripts, and hosted connectors
+   (YouTube, Drive, Notion, Obsidian).
 4. **Conversation memory + attribution** — server‑side chat persistence and richer,
    inline citations.
 5. **Admin area** — authenticated upload, re‑index, delete, ingestion logs, usage

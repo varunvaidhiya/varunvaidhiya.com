@@ -341,6 +341,17 @@
   border-color: var(--accent);
 }
 
+/* Uploaded docs (PDF/DOCX) have no URL — render as a non-clickable chip. */
+.dm-source--doc {
+  cursor: default;
+  color: var(--foreground);
+  opacity: 0.7;
+}
+
+.dm-source--doc:hover {
+  border-color: var(--border);
+}
+
 .dm-source__label {
   overflow: hidden;
   text-overflow: ellipsis;

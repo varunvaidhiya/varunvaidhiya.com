@@ -43,8 +43,11 @@ export function buildSources(contextChunks) {
   /** @type {{ title: string, url: string, snippet: string }[]} */
   const sources = [];
   for (const c of contextChunks) {
-    if (seen.has(c.url)) continue;
-    seen.add(c.url);
+    // Dedup per source document. Uploaded docs (PDF/DOCX) have no URL, so fall
+    // back to the title as the identity — otherwise they'd all collapse.
+    const key = c.url || c.title;
+    if (seen.has(key)) continue;
+    seen.add(key);
     sources.push({
       title: c.title,
       url: c.url,
