@@ -20,6 +20,13 @@
  * @property {string} [supabaseKey]
  * @property {boolean} hasEmbeddingsKey
  * @property {boolean} hybridEnabled
+ * @property {string} rerankProvider
+ * @property {string} [rerankModel]
+ * @property {number} rerankCandidates
+ * @property {boolean} rerankEnabled
+ * @property {boolean} memoryEnabled
+ * @property {string} [adminToken]
+ * @property {boolean} hasAdminToken
  */
 
 /** @returns {DigitalMindConfig} */
@@ -28,6 +35,8 @@ export function getConfig(env = process.env) {
     const n = Number.parseInt(value ?? "", 10);
     return Number.isFinite(n) && n > 0 ? n : fallback;
   };
+
+  const topK = toInt(env.DIGITAL_MIND_TOP_K, 5);
 
   const embeddingsProvider = env.DIGITAL_MIND_EMBEDDINGS_PROVIDER ?? "openai";
   const supabaseUrl = env.SUPABASE_URL;
@@ -41,11 +50,22 @@ export function getConfig(env = process.env) {
   const retrieval = env.DIGITAL_MIND_RETRIEVAL === "hybrid" ? "hybrid" : "lexical";
   const hybridEnabled = retrieval === "hybrid" && Boolean(supabaseUrl && supabaseKey && hasEmbeddingsKey);
 
+  // Re-ranking (Milestone 4) — dormant unless requested + credentialed.
+  const rerankProvider = env.DIGITAL_MIND_RERANK_PROVIDER ?? "voyage";
+  const rerankKeyEnv = rerankProvider === "cohere" ? "COHERE_API_KEY" : "VOYAGE_API_KEY";
+  const rerankEnabled = env.DIGITAL_MIND_RERANK === "on" && Boolean(env[rerankKeyEnv]);
+
+  // Conversation memory (Milestone 5) — best-effort, on when Supabase is set.
+  const memoryEnabled = Boolean(supabaseUrl && supabaseKey);
+
+  // Admin area (Milestone 6) — gated by a shared bearer token.
+  const adminToken = env.DIGITAL_MIND_ADMIN_TOKEN;
+
   return {
     provider: env.DIGITAL_MIND_PROVIDER ?? "anthropic",
     model: env.DIGITAL_MIND_MODEL ?? "claude-opus-4-8",
     maxTokens: toInt(env.DIGITAL_MIND_MAX_TOKENS, 1024),
-    topK: toInt(env.DIGITAL_MIND_TOP_K, 5),
+    topK,
     maxHistory: toInt(env.DIGITAL_MIND_MAX_HISTORY, 10),
     hasApiKey: Boolean(env.ANTHROPIC_API_KEY),
 
@@ -58,5 +78,18 @@ export function getConfig(env = process.env) {
     supabaseKey,
     hasEmbeddingsKey,
     hybridEnabled,
+
+    // Re-ranking (Milestone 4)
+    rerankProvider,
+    rerankModel: env.DIGITAL_MIND_RERANK_MODEL,
+    rerankCandidates: toInt(env.DIGITAL_MIND_RERANK_CANDIDATES, topK * 4),
+    rerankEnabled,
+
+    // Conversation memory (Milestone 5)
+    memoryEnabled,
+
+    // Admin (Milestone 6)
+    adminToken,
+    hasAdminToken: Boolean(adminToken),
   };
 }

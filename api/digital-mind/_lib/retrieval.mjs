@@ -1,17 +1,19 @@
 // Retrieval dispatcher for Digital Mind.
 //
 // One entry point — `createRetriever(config, { chunks }).retrieve(query)` — that
-// returns lexical (BM25) results by default, or fused lexical+vector (hybrid)
-// results when hybrid retrieval is configured. The public shape is identical to
-// Milestone 1's lexical retriever, so callers (the chat endpoint) don't change.
+// returns lexical (BM25) results by default, fused lexical+vector (hybrid) when
+// configured, and optionally a re-ranked ordering on top. The public shape is
+// identical to Milestone 1's lexical retriever, so callers don't change.
 //
-// Hybrid is resilient: if embedding or the vector store fails for any reason, it
-// degrades gracefully to lexical results rather than breaking the conversation.
+// Every optional stage is resilient: if embedding, the vector store, or the
+// re-ranker fails for any reason, it degrades to the previous stage's ordering
+// rather than breaking the conversation.
 
 import { buildRetriever } from "./retrieve.mjs";
 import { getEmbeddingsProvider } from "./embeddings.mjs";
 import { createVectorStore } from "./vector-store.mjs";
 import { reciprocalRankFusion } from "./hybrid.mjs";
+import { getReranker } from "./reranker.mjs";
 
 /** @typedef {import("./chunk.mjs").Chunk} Chunk */
 
@@ -30,8 +32,12 @@ export function createRetriever(config, deps) {
       }
     : null;
 
+  const reranker = config.rerankEnabled ? getReranker(config, { fetchImpl: deps.fetchImpl }) : null;
+
+  const mode = `${hybrid ? "hybrid" : "lexical"}${reranker ? "+rerank" : ""}`;
+
   return {
-    mode: hybrid ? "hybrid" : "lexical",
+    mode,
 
     /**
      * @param {string} query
@@ -40,24 +46,35 @@ export function createRetriever(config, deps) {
      */
     async retrieve(query, opts = {}) {
       const topK = opts.topK ?? config.topK;
-      const lexicalResults = lexical.retrieve(query, { topK });
+      // Re-ranking works best over a larger first-pass candidate pool.
+      const poolK = reranker ? Math.max(config.rerankCandidates, topK) : topK;
 
-      if (!hybrid || !hybrid.vectorStore.configured) return lexicalResults;
+      let candidates = lexical.retrieve(query, { topK: poolK });
 
-      try {
-        const [embedding] = await hybrid.embeddings.embed([query]);
-        if (!embedding) return lexicalResults;
-        const vectorResults = await hybrid.vectorStore.search(embedding, { topK });
-        // TODO(milestone 2b): optional cross-encoder / hosted re-ranking pass
-        // over the fused set before returning (needs a reranker provider choice).
-        return reciprocalRankFusion([lexicalResults, vectorResults], {
-          topK,
-          keyOf: (c) => c.url + "#" + (c.id ?? ""),
-        });
-      } catch (err) {
-        log("hybrid retrieval failed; falling back to lexical", err);
-        return lexicalResults;
+      if (hybrid && hybrid.vectorStore.configured) {
+        try {
+          const [embedding] = await hybrid.embeddings.embed([query]);
+          if (embedding) {
+            const vectorResults = await hybrid.vectorStore.search(embedding, { topK: poolK });
+            candidates = reciprocalRankFusion([candidates, vectorResults], {
+              topK: poolK,
+              keyOf: (c) => `${c.url}#${c.id ?? ""}`,
+            });
+          }
+        } catch (err) {
+          log("hybrid retrieval failed; using lexical candidates", err);
+        }
       }
+
+      if (reranker && candidates.length > 0) {
+        try {
+          return await reranker.rerank(query, candidates, { topK });
+        } catch (err) {
+          log("rerank failed; using first-pass order", err);
+        }
+      }
+
+      return candidates.slice(0, topK);
     },
   };
 }
