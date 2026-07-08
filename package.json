@@ -10,6 +10,7 @@
     "astro": "astro",
     "test": "node --test api/digital-mind/_lib/*.test.mjs",
     "digital-mind:index": "node scripts/build-knowledge-index.mjs",
+    "digital-mind:embed": "node scripts/embed-knowledge.mjs",
     "deploy": "scripts/deploy.sh",
     "add-source-metadata": "node scripts/add-source-metadata.mjs",
     "remove-tags": "node scripts/remove-tags-from-posts.mjs",

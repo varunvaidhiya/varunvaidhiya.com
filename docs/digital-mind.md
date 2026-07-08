@@ -83,11 +83,17 @@ responds with `text/event-stream`. Each frame is `data: <json>` where `<json>` i
 | `api/digital-mind/chat.ts` | Same‑origin serverless chat endpoint (SSE, streaming). |
 | `api/digital-mind/_lib/chunk.mjs` | Markdown → plain‑text, heading‑aware chunking. |
 | `api/digital-mind/_lib/retrieve.mjs` | Lexical BM25 retrieval with a `visibility` access filter. |
+| `api/digital-mind/_lib/retrieval.mjs` | Retrieval dispatcher: lexical, or fused lexical+vector (hybrid). |
+| `api/digital-mind/_lib/embeddings.mjs` | Provider‑agnostic embeddings (Voyage / OpenAI). |
+| `api/digital-mind/_lib/vector-store.mjs` | Supabase pgvector search + upsert client. |
+| `api/digital-mind/_lib/hybrid.mjs` | Reciprocal Rank Fusion of lexical + vector results. |
 | `api/digital-mind/_lib/prompt.mjs` | System prompt, source, and follow‑up builders. |
-| `api/digital-mind/_lib/config.mjs` | Env‑driven provider/model/limits config. |
+| `api/digital-mind/_lib/config.mjs` | Env‑driven provider/model/retrieval config. |
 | `api/digital-mind/_lib/knowledge-index.json` | Generated index (committed; rebuilt on every deploy). |
 | `api/digital-mind/_lib/*.test.mjs` | `node --test` unit tests for the pure logic. |
 | `scripts/build-knowledge-index.mjs` | Ingestion: blog + About → chunks → index. |
+| `scripts/embed-knowledge.mjs` | Opt‑in: embed the index into Supabase pgvector. |
+| `supabase/migrations/*.sql` | pgvector table + `match_dm_chunks` search function. |
 
 ## Configuration
 
@@ -102,6 +108,18 @@ are never shipped to the browser.
 | `DIGITAL_MIND_MAX_TOKENS` | `1024` | Max answer length. |
 | `DIGITAL_MIND_TOP_K` | `5` | Number of chunks retrieved per query. |
 | `DIGITAL_MIND_MAX_HISTORY` | `10` | Conversation turns sent to the model. |
+
+**Milestone 2 — hybrid retrieval (optional, off by default):**
+
+| Variable | Default | Purpose |
+| -------- | ------- | ------- |
+| `DIGITAL_MIND_RETRIEVAL` | `lexical` | Set to `hybrid` to enable vector + keyword fusion. |
+| `DIGITAL_MIND_EMBEDDINGS_PROVIDER` | `openai` | `openai` or `voyage`. |
+| `DIGITAL_MIND_EMBEDDINGS_MODEL` | provider default | e.g. `text-embedding-3-small`, `voyage-3`. |
+| `DIGITAL_MIND_EMBEDDINGS_DIM` | `1536` | Must match the model and the pgvector column. |
+| `OPENAI_API_KEY` / `VOYAGE_API_KEY` | _(one required for hybrid)_ | Embeddings key for the chosen provider. |
+| `SUPABASE_URL` | _(required for hybrid)_ | Supabase project URL. |
+| `SUPABASE_SERVICE_ROLE_KEY` | _(required for hybrid)_ | Server‑side key for pgvector access. |
 
 Set `ANTHROPIC_API_KEY` in **Vercel → Project → Settings → Environment Variables**.
 
@@ -131,12 +149,41 @@ Milestone 1 ingests the site's Markdown/MDX (`src/content/blog/**` and `src/page
 Additional source types (PDF, DOCX, image OCR, audio/video transcripts, GitHub, …) land in
 the ingestion milestone and emit the same `Chunk` contract, so nothing downstream changes.
 
+## Hybrid retrieval (Milestone 2)
+
+Lexical BM25 is the zero‑config default and always works. Hybrid retrieval adds dense
+(vector) search and fuses it with the keyword results using **Reciprocal Rank Fusion**, for
+better recall on paraphrased or conceptual questions. It is **dormant until fully
+configured** — a partial setup silently stays on lexical, so it can never break the live
+chat. The dispatcher also degrades to lexical if embeddings or the vector store error at
+request time.
+
+To enable it:
+
+1. **Apply the schema** to your Supabase project (pgvector table + `match_dm_chunks`):
+   ```bash
+   supabase db push            # or paste supabase/migrations/*.sql into the SQL editor
+   ```
+2. **Set the env vars** from the Milestone 2 table above (`DIGITAL_MIND_RETRIEVAL=hybrid`,
+   `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and an embeddings key). Keep
+   `DIGITAL_MIND_EMBEDDINGS_DIM` in sync with the model and the SQL `vector(N)` column.
+3. **Embed the index** into pgvector (re‑run after content changes):
+   ```bash
+   npm run digital-mind:embed
+   ```
+
+The retrieval dispatcher lives in `_lib/retrieval.mjs` and exposes the same
+`retrieve(query)` shape as Milestone 1, so the chat endpoint is unchanged. Re‑ranking (a
+hosted cross‑encoder pass over the fused set) is the next increment — it's marked as a TODO
+in the dispatcher and needs a reranker‑provider choice.
+
 ## Local development
 
 ```bash
 npm run digital-mind:index   # (re)build the knowledge index
+npm run digital-mind:embed   # embed the index into Supabase (no-op unless hybrid is configured)
 npm run build                # production build (per project policy; do not use dev in agents)
-npm test                     # unit tests for chunking + retrieval
+npm test                     # unit tests for chunking + retrieval + fusion
 ```
 
 The chat endpoint is a Vercel Function, so it runs on Vercel (or `vercel dev`), not under
@@ -149,9 +196,9 @@ the heavier platform fills in behind the same UI and contracts:
 
 1. **UX‑first working chat** ✅ — floating button, themed streaming chat, lexical retrieval
    over existing content, citations, follow‑ups, session memory.
-2. **Vector/hybrid retrieval** — Supabase Postgres + `pgvector` (or managed Qdrant):
-   embeddings, hybrid (vector + keyword) search, metadata filtering, re‑ranking. Drops in
-   behind `retrieve()`.
+2. **Vector/hybrid retrieval** ✅ (foundation) — Supabase Postgres + `pgvector`, provider‑
+   agnostic embeddings (Voyage/OpenAI), and vector + keyword fusion (RRF), dropped in behind
+   `retrieve()` and off by default. Next increment: hosted re‑ranking over the fused set.
 3. **Ingestion connectors** — PDF, DOCX, image OCR, audio/video transcripts, and pluggable
    source connectors (GitHub, YouTube, Drive, Notion, Obsidian) feeding the same index.
 4. **Conversation memory + attribution** — server‑side chat persistence and richer,

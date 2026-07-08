@@ -16,15 +16,18 @@ import Anthropic from "@anthropic-ai/sdk";
 import { getConfig } from "./_lib/config.mjs";
 import knowledge from "./_lib/knowledge-index.json";
 import { buildFollowups, buildSources, buildSystemPrompt } from "./_lib/prompt.mjs";
-import { buildRetriever } from "./_lib/retrieve.mjs";
+import { createRetriever } from "./_lib/retrieval.mjs";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const MAX_CONTENT_CHARS = 6000;
 
-// Built once per cold start; the index is static at deploy time.
-const retriever = buildRetriever((knowledge as { chunks: any[] }).chunks);
+// Read env and build the retriever once per cold start. The retriever returns
+// lexical (BM25) results by default, or fused lexical+vector results when hybrid
+// retrieval is fully configured (see _lib/config.mjs → hybridEnabled).
+const config = getConfig();
+const retriever = createRetriever(config, { chunks: (knowledge as { chunks: any[] }).chunks });
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -50,8 +53,6 @@ function sanitizeHistory(input: unknown, maxHistory: number): ChatMessage[] {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  const config = getConfig();
-
   let body: any = {};
   try {
     body = await req.json();
@@ -85,7 +86,7 @@ export async function POST(req: Request): Promise<Response> {
           return;
         }
 
-        const contextChunks = retriever.retrieve(query, { topK: config.topK });
+        const contextChunks = await retriever.retrieve(query);
         send({ type: "sources", sources: buildSources(contextChunks) });
 
         const anthropic = new Anthropic();
