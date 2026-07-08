@@ -31,12 +31,22 @@ I'm Varun Vaidhiya. This website hosts my personal blog and information about my
 
 ## Commands
 
-| Command                | Action                                      |
-| :--------------------- | :------------------------------------------ |
-| `npm install`          | Installs dependencies                       |
-| `npm run dev`          | Starts local dev server at `localhost:4321` |
-| `npm run build`        | Build the production site to `./dist/`      |
-| `npm run preview`      | Preview the build locally, before deploying |
+| Command                    | Action                                      |
+| :------------------------- | :------------------------------------------ |
+| `npm install`              | Installs dependencies                       |
+| `npm run dev`              | Starts local dev server at `localhost:4321` |
+| `npm run build`            | Build the production site to `./dist/`      |
+| `npm run preview`          | Preview the build locally, before deploying |
+| `npm test`                 | Run the Digital Mind unit tests             |
+| `npm run digital-mind:index` | Rebuild the Digital Mind knowledge index  |
+
+## Digital Mind
+
+The site includes **Digital Mind** — an AI assistant, trained on Varun's work, that
+visitors can chat with via the floating **"Ask Varun"** button. It answers questions about
+projects, robotics, AI, and engineering decisions, grounded in the site's own content with
+source citations. See [`docs/digital-mind.md`](docs/digital-mind.md) for the architecture,
+configuration (`ANTHROPIC_API_KEY`), and roadmap.
 
 ## Deployment
 

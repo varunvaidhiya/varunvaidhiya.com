@@ -1,0 +1,96 @@
+{
+  "generatedAt": "2026-07-08T09:57:34.092Z",
+  "docCount": 3,
+  "chunkCount": 9,
+  "chunks": [
+    {
+      "id": "blog/hello-world#0",
+      "text": "Welcome to my personal website! I'm Varun Vaidhiya, a Software Engineer based in the UK working on AI, Robotics, and Performance Optimisation.\n\nI'll be sharing thoughts on:\nAI model benchmarking and performance optimisation on edge hardware\nRobotics — ROS, sensor fusion, autonomous systems\nLow-level programming — ARM architecture, embedded systems\nOpen source projects I'm building and shipping\n\nEverything I build lands on GitHub — feel free to fork, remix, or contribute.\n\nStay tuned for more posts. If you'd like to connect, find me on X/Twitter or LinkedIn.",
+      "title": "Hello World",
+      "url": "/posts/hello-world",
+      "source": "blog",
+      "heading": "Hello World",
+      "tags": ["intro"],
+      "visibility": "public"
+    },
+    {
+      "id": "blog/my-projects#0",
+      "text": "Here's a collection of projects I've been building. All code is open source on GitHub.\n\nProduction-ready toolkit to run AI locally\n\nA Kotlin SDK designed to make running AI models locally straightforward and production-grade. Built with a focus on ease of use and reliability for on-device AI inference.\n\nView on GitHub →\n\nAI inference on ARM hardware\n\nExploring and optimising AI model inference on ARM-based hardware. This project is about understanding how to get the best performance from AI models running on ARM chips — from setup through benchmarking.\n\nView on GitHub →\n\nROS-based mecanum wheel robot",
+      "title": "My Open Source Projects",
+      "url": "/posts/my-projects",
+      "source": "blog",
+      "heading": "My Open Source Projects",
+      "tags": ["projects", "open-source", "ai", "robotics"],
+      "visibility": "public"
+    },
+    {
+      "id": "blog/my-projects#1",
+      "text": "A robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.\n\nView on GitHub →\n\nSAM2 model applied to autonomous vehicles\n\nApplying Meta's Segment Anything Model 2 (SAM2) to autonomous vehicle perception tasks. Explores zero-shot segmentation for AV sensor data.\n\nView on GitHub →\n\nAutomatic Emergency Braking — Model-Based Design\n\nA model-based design implementation of an Automatic Emergency Braking (AEB) system, a safety-critical feature in modern vehicles.\n\nView on GitHub →\n\nPerformance analysis with Perfetto",
+      "title": "My Open Source Projects",
+      "url": "/posts/my-projects",
+      "source": "blog",
+      "heading": "Mecanum-Wheel-Robot",
+      "tags": ["projects", "open-source", "ai", "robotics"],
+      "visibility": "public"
+    },
+    {
+      "id": "blog/my-projects#2",
+      "text": "Python scripts for capturing and analysing system traces using Google's Perfetto tracing tool. Useful for deep-diving into CPU scheduling, memory, and I/O behaviour.\n\nView on GitHub →\n\nOpen-source drivers for Kinect for Windows v2\n\nForked and contributed to the open-source driver for Microsoft Kinect v2, enabling depth camera access on Linux and macOS.\n\nView on GitHub →\n\nDecentralised voting with fingerprint authentication\n\nA blockchain-based voting system that uses MFS100 fingerprint scanner authentication to ensure secure, verifiable, and tamper-proof elections.\n\nView on GitHub →",
+      "title": "My Open Source Projects",
+      "url": "/posts/my-projects",
+      "source": "blog",
+      "heading": "perfetto_analysis_repo",
+      "tags": ["projects", "open-source", "ai", "robotics"],
+      "visibility": "public"
+    },
+    {
+      "id": "blog/my-projects#3",
+      "text": "More coming soon. Follow me on GitHub to stay updated, and check out my YouTube channel for videos on AI, robotics, and performance engineering.",
+      "title": "My Open Source Projects",
+      "url": "/posts/my-projects",
+      "source": "blog",
+      "heading": "decentralized-voting-using-blockchain",
+      "tags": ["projects", "open-source", "ai", "robotics"],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#0",
+      "text": "Hi, I'm Varun Vaidhiya — a Software Engineer based in the UK , working at the intersection of AI, Robotics, and systems-level performance. \n My focus is on optimising AI models through benchmarking , understanding low-level hardware behaviour , and delivering best-in-class solutions for performance-critical systems. I'm particularly interested in running AI efficiently on edge hardware and ARM architectures. \n I build what excites me and release it all as open source — from ROS-based robots and AI inference toolkits to blockchain applications and data science case studies.",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "tags": ["about", "bio"],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#1",
+      "text": "AI & Performance Optimisation — Benchmarking AI models, profiling with Perfetto, and squeezing performance out of constrained hardware\nRobotics — ROS-based systems, autonomous vehicles, sensor fusion (Kinect v2, LiDAR)\nLow-level Programming — ARM architecture, embedded systems, hardware-software co-design\nAI on Edge / Arm — Making AI inference efficient on ARM and mobile devices\nML & Data Science — EDA, predictive modelling, classification, SQL analytics",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "What I Work On",
+      "tags": ["about", "bio"],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#2",
+      "text": "Project Description Stack \n --------- ------------- ------- \n runanywhere-sdks Production-ready toolkit to run AI locally Kotlin \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++ \n decentralized-voting-using-blockchain Decentralised voting with fingerprint authentication JavaScript",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "Open Source Projects",
+      "tags": ["about", "bio"],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#3",
+      "text": "Follow me on GitHub · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "Stay Connected",
+      "tags": ["about", "bio"],
+      "visibility": "public"
+    }
+  ]
+}

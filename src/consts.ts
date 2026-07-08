@@ -96,3 +96,25 @@ export const ICON_MAP: Record<string, string> = {
   RSS: "rss",
   Email: "mail",
 };
+
+// Digital Mind — the AI assistant trained on Varun's professional knowledge.
+// Toggle `enabled` to hide the feature site-wide without removing any code.
+export const DIGITAL_MIND = {
+  enabled: true,
+  // Same-origin endpoint (served by the Vercel Function in /api). Keeping it
+  // same-origin means the site's strict CSP `connect-src 'self'` already allows it.
+  endpoint: "/api/digital-mind/chat",
+  buttonLabel: "Ask Varun",
+  title: "Varun's Digital Mind",
+  subtitle: "AI trained on my work",
+  intro:
+    "Ask me anything about my projects, robotics and ROS2 work, AI and embedded systems, or the engineering decisions behind them.",
+  placeholder: "Ask about my projects, robotics, AI…",
+  disclaimer: "AI answers grounded in Varun's notes and posts. May be imperfect.",
+  examples: [
+    "What robotics projects have you worked on?",
+    "Tell me about your AI-on-Arm work.",
+    "What are you most proud of building?",
+    "How do you approach performance optimisation?",
+  ],
+};
