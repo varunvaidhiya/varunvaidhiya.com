@@ -1,10 +1,10 @@
 // Build-time ingestion for the Digital Mind knowledge base.
 //
-// Milestone 1: index the site's own Markdown/MDX (blog posts + About page) into
-// a single committed JSON index the chat function reads. This is the seed of the
-// pipeline described in docs/digital-mind.md — later milestones add source
-// connectors (PDF, DOCX, OCR, transcripts, GitHub, …) that emit the same Chunk
-// contract into the same index, so nothing downstream changes.
+// Runs a set of source connectors, each emitting the same Chunk contract into
+// one committed JSON index the chat function reads:
+//   • blog posts + About page (always, local)
+//   • content/knowledge/ documents — Markdown/txt/PDF/DOCX (always, local)
+//   • GitHub public repos (opt-in via env: DIGITAL_MIND_GITHUB_REPOS / _USER)
 //
 // Usage: npm run digital-mind:index
 
@@ -14,10 +14,13 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import matter from "gray-matter";
 import { chunkDocument } from "../api/digital-mind/_lib/chunk.mjs";
+import { collectLocalDocs } from "../api/digital-mind/_lib/local-docs.mjs";
+import { collectGitHubDocs, parseRepoList } from "../api/digital-mind/_lib/github.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const BLOG_DIR = path.join(ROOT, "src/content/blog");
 const ABOUT_FILE = path.join(ROOT, "src/pages/about.mdx");
+const KNOWLEDGE_DIR = path.join(ROOT, "content/knowledge");
 const OUT_FILE = path.join(ROOT, "api/digital-mind/_lib/knowledge-index.json");
 
 /** Recursively collect .md/.mdx files, skipping `_`-prefixed drafts. */
@@ -94,16 +97,44 @@ async function main() {
     }
   }
 
+  // --- Local knowledge docs (content/knowledge) ----------------------------
+  chunks.push(...(await collectLocalDocs(KNOWLEDGE_DIR)));
+
+  // --- GitHub public repos (opt-in via env) --------------------------------
+  const ghRepos = parseRepoList(process.env.DIGITAL_MIND_GITHUB_REPOS);
+  const ghUser = process.env.DIGITAL_MIND_GITHUB_USER;
+  if (ghRepos.length > 0 || ghUser) {
+    console.log(
+      `[digital-mind] ingesting GitHub (${ghRepos.length > 0 ? ghRepos.join(", ") : `@${ghUser}`})…`,
+    );
+    chunks.push(
+      ...(await collectGitHubDocs({
+        repos: ghRepos,
+        user: ghUser,
+        token: process.env.GITHUB_TOKEN,
+      })),
+    );
+  }
+
+  // Only public chunks are ever written to the committed index.
+  const publicChunks = chunks.filter((c) => c.visibility === "public");
+  const bySource = {};
+  for (const c of publicChunks) bySource[c.source] = (bySource[c.source] ?? 0) + 1;
+
   const index = {
     generatedAt: new Date().toISOString(),
     docCount,
-    chunkCount: chunks.length,
-    chunks,
+    chunkCount: publicChunks.length,
+    bySource,
+    chunks: publicChunks,
   };
 
   await writeFile(OUT_FILE, `${JSON.stringify(index, null, 2)}\n`, "utf8");
+  const sourceSummary = Object.entries(bySource)
+    .map(([s, n]) => `${s}:${n}`)
+    .join(", ");
   console.log(
-    `[digital-mind] indexed ${docCount} document(s) into ${chunks.length} chunk(s)` +
+    `[digital-mind] indexed ${publicChunks.length} public chunk(s) [${sourceSummary}]` +
       (skipped ? `, skipped ${skipped}` : "") +
       ` → ${path.relative(ROOT, OUT_FILE)}`,
   );

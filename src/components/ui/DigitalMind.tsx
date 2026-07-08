@@ -362,12 +362,19 @@ function MessageBubble({
 
       {!isUser && message.sources && message.sources.length > 0 && (
         <div className="dm-sources">
-          {message.sources.map((s) => (
-            <a key={s.url} className="dm-source" href={s.url} title={s.snippet}>
-              <LinkIcon />
-              <span className="dm-source__label">{s.title}</span>
-            </a>
-          ))}
+          {message.sources.map((s) =>
+            s.url ? (
+              <a key={s.url} className="dm-source" href={s.url} title={s.snippet}>
+                <LinkIcon />
+                <span className="dm-source__label">{s.title}</span>
+              </a>
+            ) : (
+              <span key={s.title} className="dm-source dm-source--doc" title={s.snippet}>
+                <DocIcon />
+                <span className="dm-source__label">{s.title}</span>
+              </span>
+            )
+          )}
         </div>
       )}
 
@@ -473,6 +480,25 @@ function LinkIcon() {
     >
       <path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1" />
       <path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1" />
+    </svg>
+  );
+}
+
+function DocIcon() {
+  return (
+    <svg
+      width="11"
+      height="11"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <path d="M14 2v6h6" />
     </svg>
   );
 }

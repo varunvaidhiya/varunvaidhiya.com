@@ -1,7 +1,11 @@
 {
-  "generatedAt": "2026-07-08T09:57:34.092Z",
+  "generatedAt": "2026-07-08T15:29:12.955Z",
   "docCount": 3,
   "chunkCount": 9,
+  "bySource": {
+    "blog": 5,
+    "page": 4
+  },
   "chunks": [
     {
       "id": "blog/hello-world#0",
