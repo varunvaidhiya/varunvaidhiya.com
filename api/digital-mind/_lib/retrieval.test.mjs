@@ -2,9 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createRetriever } from "./retrieval.mjs";
 
-// The dispatcher's embeddings provider reads its key from the env; set a dummy
-// so the hybrid path exercises fusion (all network is stubbed via fetchImpl).
+// The dispatcher's embeddings/rerank providers read their keys from the env; set
+// dummies so the hybrid + rerank paths run (all network is stubbed via fetchImpl).
 process.env.OPENAI_API_KEY = "sk-test";
+process.env.VOYAGE_API_KEY = "pa-test";
 
 const CHUNKS = [
   {
@@ -100,4 +101,44 @@ test("hybrid falls back to lexical when the vector path fails", async () => {
   const out = await retriever.retrieve("robotics ros2");
   assert.ok(out.length >= 1);
   assert.equal(out[0].url, "/posts/robots");
+});
+
+const rerankConfig = {
+  topK: 2,
+  hybridEnabled: false,
+  rerankEnabled: true,
+  rerankProvider: "voyage",
+  rerankCandidates: 8,
+};
+
+test("rerank mode reorders the candidate pool", async () => {
+  const fetchImpl = async (url, init) => {
+    if (/voyageai\.com\/v1\/rerank/.test(url)) {
+      const body = JSON.parse(init.body);
+      // Rank the second candidate first regardless of first-pass order.
+      return {
+        ok: true,
+        json: async () => ({
+          data: body.documents.map((_, i) => ({ index: i, relevance_score: i === 1 ? 0.9 : 0.2 })),
+        }),
+      };
+    }
+    throw new Error(`unexpected url ${url}`);
+  };
+  const retriever = createRetriever(rerankConfig, { chunks: CHUNKS, fetchImpl });
+  assert.equal(retriever.mode, "lexical+rerank");
+  const out = await retriever.retrieve("robotics arm");
+  assert.equal(out.length, 2);
+  // Whichever candidate landed at index 1 is now ranked first.
+  assert.ok(out[0].score === 0.9);
+});
+
+test("rerank falls back to first-pass order on failure", async () => {
+  const retriever = createRetriever(rerankConfig, {
+    chunks: CHUNKS,
+    fetchImpl: async () => ({ ok: false, status: 500, text: async () => "boom" }),
+    logger: () => {},
+  });
+  const out = await retriever.retrieve("robotics arm");
+  assert.ok(out.length >= 1, "still returns first-pass candidates");
 });

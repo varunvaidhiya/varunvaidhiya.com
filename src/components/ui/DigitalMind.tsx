@@ -25,9 +25,25 @@ type StreamEvent =
   | { type: "done" };
 
 const STORAGE_KEY = "digital-mind:messages";
+const CONVERSATION_KEY = "digital-mind:conversation";
 
 function uid() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
+
+// A stable per-session conversation id so the server can thread turns
+// (used only when server-side memory is enabled). Reset on "new conversation".
+function getConversationId(): string {
+  try {
+    let id = sessionStorage.getItem(CONVERSATION_KEY);
+    if (!id) {
+      id = uid();
+      sessionStorage.setItem(CONVERSATION_KEY, id);
+    }
+    return id;
+  } catch {
+    return "anon";
+  }
 }
 
 export default function DigitalMind() {
@@ -143,7 +159,7 @@ export default function DigitalMind() {
       const res = await fetch(DIGITAL_MIND.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
+        body: JSON.stringify({ messages: history, conversationId: getConversationId() }),
         signal: ac.signal,
       });
       if (!res.ok || !res.body) throw new Error(`Request failed (${res.status})`);
@@ -203,6 +219,7 @@ export default function DigitalMind() {
     setBusy(false);
     try {
       sessionStorage.removeItem(STORAGE_KEY);
+      sessionStorage.removeItem(CONVERSATION_KEY);
     } catch {
       /* ignore */
     }

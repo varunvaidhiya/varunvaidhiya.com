@@ -1,0 +1,12 @@
+---
+import AdminPanel from "@/components/ui/AdminPanel.tsx";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+  title={`Admin | Digital Mind`}
+  description="Digital Mind administration."
+  noindex={true}
+>
+  <AdminPanel client:only="react" />
+</Layout>

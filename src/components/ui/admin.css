@@ -1,0 +1,206 @@
+/* Digital Mind admin — styled with the site's theme tokens. */
+
+.dm-admin {
+  max-width: 60rem;
+  margin: 2rem auto;
+  padding: 0 1rem 4rem;
+  font-family: var(--font-mono, monospace);
+  color: var(--foreground);
+}
+
+.dm-admin h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+
+.dm-admin__lead {
+  opacity: 0.65;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.dm-admin__gate {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 24rem;
+}
+
+.dm-admin__error {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.dm-admin__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.dm-admin__tab {
+  padding: 0.5rem 0.85rem;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.85rem;
+  opacity: 0.65;
+}
+
+.dm-admin__tab--active {
+  opacity: 1;
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+
+.dm-admin__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.dm-admin__stat {
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  padding: 0.75rem 0.9rem;
+}
+
+.dm-admin__stat b {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 0.1rem;
+}
+
+.dm-admin__stat span {
+  font-size: 0.72rem;
+  opacity: 0.6;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dm-admin__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.dm-admin__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.82rem;
+}
+
+.dm-admin__row-main {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dm-admin__muted {
+  opacity: 0.55;
+  font-size: 0.72rem;
+}
+
+.dm-admin__msg {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.82rem;
+  white-space: pre-wrap;
+}
+
+.dm-admin__msg--user {
+  border-left: 3px solid var(--accent);
+}
+
+.dm-admin__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.dm-admin__field label {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.dm-admin input,
+.dm-admin textarea {
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.dm-admin input:focus-visible,
+.dm-admin textarea:focus-visible {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.dm-admin textarea {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.dm-admin__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--background);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.dm-admin__btn--ghost {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--border);
+}
+
+.dm-admin__btn--danger {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--border);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+}
+
+.dm-admin__btn:disabled {
+  opacity: 0.5;
+}
+
+.dm-admin__note {
+  font-size: 0.78rem;
+  opacity: 0.65;
+  border: 1px dashed var(--border);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  margin-bottom: 1rem;
+}

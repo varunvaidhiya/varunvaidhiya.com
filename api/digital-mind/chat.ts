@@ -15,6 +15,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { getConfig } from "./_lib/config.mjs";
 import knowledge from "./_lib/knowledge-index.json";
+import { createMemory } from "./_lib/memory.mjs";
 import { buildFollowups, buildSources, buildSystemPrompt } from "./_lib/prompt.mjs";
 import { createRetriever } from "./_lib/retrieval.mjs";
 
@@ -28,6 +29,20 @@ const MAX_CONTENT_CHARS = 6000;
 // retrieval is fully configured (see _lib/config.mjs → hybridEnabled).
 const config = getConfig();
 const retriever = createRetriever(config, { chunks: (knowledge as { chunks: any[] }).chunks });
+// Best-effort server-side conversation memory (no-op unless Supabase is set).
+const memory = createMemory(config);
+
+// Persona override, set in the admin area (dm_config). Cached per instance and
+// refreshed lazily so admin edits propagate within minutes without a redeploy.
+let personaCache: { value: string | undefined; at: number } | null = null;
+async function getPersonaOverride(): Promise<string | undefined> {
+  if (!config.memoryEnabled) return undefined;
+  const now = Date.now();
+  if (personaCache && now - personaCache.at < 300_000) return personaCache.value;
+  const value = (await memory.getSetting("persona")) as string | undefined;
+  personaCache = { value: value?.trim() ? value : undefined, at: now };
+  return personaCache.value;
+}
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -63,6 +78,8 @@ export async function POST(req: Request): Promise<Response> {
   const history = sanitizeHistory(body?.messages, config.maxHistory);
   const lastUser = [...history].reverse().find((m) => m.role === "user");
   const query = lastUser?.content ?? "";
+  const conversationId =
+    typeof body?.conversationId === "string" ? body.conversationId.slice(0, 100) : undefined;
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -87,18 +104,22 @@ export async function POST(req: Request): Promise<Response> {
         }
 
         const contextChunks = await retriever.retrieve(query);
-        send({ type: "sources", sources: buildSources(contextChunks) });
+        const sources = buildSources(contextChunks);
+        send({ type: "sources", sources });
 
+        const persona = await getPersonaOverride();
         const anthropic = new Anthropic();
         const modelStream = anthropic.messages.stream({
           model: config.model,
           max_tokens: config.maxTokens,
-          system: buildSystemPrompt({ contextChunks }),
+          system: buildSystemPrompt({ persona, contextChunks }),
           messages: history,
         });
 
+        let answer = "";
         for await (const event of modelStream) {
           if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+            answer += event.delta.text;
             send({ type: "token", text: event.delta.text });
           }
         }
@@ -114,6 +135,16 @@ export async function POST(req: Request): Promise<Response> {
 
         send({ type: "followups", followups: buildFollowups(contextChunks) });
         send({ type: "done" });
+
+        // Best-effort persistence (no-op unless memory is configured). Runs after
+        // the answer has fully streamed, so it never delays the user's response.
+        await memory.saveTurn({ conversationId, userText: query, assistantText: answer, sources });
+        await memory.logUsage({
+          conversationId,
+          model: config.model,
+          usage: final.usage,
+          mode: retriever.mode,
+        });
       } catch (err) {
         console.error("[digital-mind] chat error:", err);
         send({
