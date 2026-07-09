@@ -32,6 +32,18 @@ const retriever = createRetriever(config, { chunks: (knowledge as { chunks: any[
 // Best-effort server-side conversation memory (no-op unless Supabase is set).
 const memory = createMemory(config);
 
+// Persona override, set in the admin area (dm_config). Cached per instance and
+// refreshed lazily so admin edits propagate within minutes without a redeploy.
+let personaCache: { value: string | undefined; at: number } | null = null;
+async function getPersonaOverride(): Promise<string | undefined> {
+  if (!config.memoryEnabled) return undefined;
+  const now = Date.now();
+  if (personaCache && now - personaCache.at < 300_000) return personaCache.value;
+  const value = (await memory.getSetting("persona")) as string | undefined;
+  personaCache = { value: value?.trim() ? value : undefined, at: now };
+  return personaCache.value;
+}
+
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
 function sanitizeHistory(input: unknown, maxHistory: number): ChatMessage[] {
@@ -95,11 +107,12 @@ export async function POST(req: Request): Promise<Response> {
         const sources = buildSources(contextChunks);
         send({ type: "sources", sources });
 
+        const persona = await getPersonaOverride();
         const anthropic = new Anthropic();
         const modelStream = anthropic.messages.stream({
           model: config.model,
           max_tokens: config.maxTokens,
-          system: buildSystemPrompt({ contextChunks }),
+          system: buildSystemPrompt({ persona, contextChunks }),
           messages: history,
         });
 

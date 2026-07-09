@@ -109,5 +109,31 @@ export function createMemory(config, deps = {}) {
         `dm_usage?select=model,input_tokens,output_tokens,retrieval_mode,created_at&order=created_at.desc&limit=${limit}`,
       );
     },
+
+    // --- Settings (dm_config key/value) — used by the admin prompt editor -----
+
+    /** Read a stored setting value (string), or undefined. Best-effort. */
+    async getSetting(settingKey) {
+      if (!enabled) return undefined;
+      try {
+        const rows = await select(
+          `dm_config?key=eq.${encodeURIComponent(settingKey)}&select=value&limit=1`,
+        );
+        return Array.isArray(rows) && rows[0] ? rows[0].value : undefined;
+      } catch (err) {
+        log("memory: getSetting failed", err);
+        return undefined;
+      }
+    },
+
+    /** Upsert a setting value. Throws (admin surfaces the error). */
+    async putSetting(settingKey, value) {
+      if (!enabled) throw new Error("memory not configured");
+      await insert(
+        "dm_config",
+        [{ key: settingKey, value, updated_at: new Date().toISOString() }],
+        "resolution=merge-duplicates,return=minimal",
+      );
+    },
   };
 }
