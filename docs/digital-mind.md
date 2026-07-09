@@ -87,16 +87,23 @@ responds with `text/event-stream`. Each frame is `data: <json>` where `<json>` i
 | `api/digital-mind/_lib/embeddings.mjs` | Provider‑agnostic embeddings (Voyage / OpenAI). |
 | `api/digital-mind/_lib/vector-store.mjs` | Supabase pgvector search + upsert client. |
 | `api/digital-mind/_lib/hybrid.mjs` | Reciprocal Rank Fusion of lexical + vector results. |
+| `api/digital-mind/_lib/reranker.mjs` | Hosted cross‑encoder re‑ranking (Voyage / Cohere) over the retrieved set. |
 | `api/digital-mind/_lib/prompt.mjs` | System prompt, source, and follow‑up builders. |
 | `api/digital-mind/_lib/config.mjs` | Env‑driven provider/model/retrieval config. |
 | `api/digital-mind/_lib/local-docs.mjs` | Connector: `content/knowledge/` Markdown/txt/PDF/DOCX. |
 | `api/digital-mind/_lib/github.mjs` | Connector: public GitHub repos (READMEs + metadata). |
+| `api/digital-mind/_lib/memory.mjs` | Server‑side conversation persistence, usage logging, and admin settings. |
+| `api/digital-mind/_lib/admin.mjs` | Admin auth + dispatch, usage aggregation, document upload/list/delete. |
+| `api/digital-mind/admin.ts` | Token‑gated admin endpoint (GET/POST, same‑origin). |
+| `src/pages/admin.astro` | The `noindex` admin page that mounts the dashboard. |
+| `src/components/ui/AdminPanel.tsx` | Admin dashboard island: overview, conversations, documents, prompt. |
+| `src/components/ui/admin.css` | Theme‑aware admin dashboard styles. |
 | `api/digital-mind/_lib/knowledge-index.json` | Generated index (committed; rebuilt on every deploy). |
 | `api/digital-mind/_lib/*.test.mjs` | `node --test` unit tests for the pure logic. |
 | `scripts/build-knowledge-index.mjs` | Ingestion pipeline: runs all source connectors → index. |
 | `scripts/embed-knowledge.mjs` | Opt‑in: embed the index into Supabase pgvector. |
 | `content/knowledge/` | Drop‑in folder for documents to index (see its README). |
-| `supabase/migrations/*.sql` | pgvector table + `match_dm_chunks` search function. |
+| `supabase/migrations/*.sql` | pgvector table + `match_dm_chunks`, memory tables, admin tables. |
 
 ## Configuration
 
@@ -132,6 +139,27 @@ are never shipped to the browser.
 | `DIGITAL_MIND_GITHUB_USER` | _(unset)_ | Or index all public repos of this user. |
 | `GITHUB_TOKEN` | _(optional)_ | Raises API rate limits; enables private repos. |
 
+**Milestone 4 — re‑ranking (optional, off by default):**
+
+| Variable | Default | Purpose |
+| -------- | ------- | ------- |
+| `DIGITAL_MIND_RERANK` | `off` | Set to `on` to re‑rank the retrieved set with a hosted cross‑encoder. |
+| `DIGITAL_MIND_RERANK_PROVIDER` | `voyage` | `voyage` or `cohere`. |
+| `DIGITAL_MIND_RERANK_MODEL` | provider default | e.g. `rerank-2` (Voyage), `rerank-english-v3.0` (Cohere). |
+| `DIGITAL_MIND_RERANK_CANDIDATES` | `TOP_K × 4` | How many candidates to pool before re‑ranking down to `TOP_K`. |
+| `VOYAGE_API_KEY` / `COHERE_API_KEY` | _(one required for rerank)_ | Key for the chosen re‑ranker. |
+
+**Milestone 5 — conversation memory (optional, off by default):** memory activates
+automatically once `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` are set (the same pair used
+for hybrid retrieval) and the memory migration is applied — no extra variable. It is
+best‑effort: a logging failure never affects a reply.
+
+**Milestone 6 — admin area (optional, off by default):**
+
+| Variable | Default | Purpose |
+| -------- | ------- | ------- |
+| `DIGITAL_MIND_ADMIN_TOKEN` | _(unset)_ | Shared bearer token for `/admin`. Unset ⇒ the endpoint returns 503 and the page shows only its gate. |
+
 Set `ANTHROPIC_API_KEY` in **Vercel → Project → Settings → Environment Variables**.
 
 ## Security & permissions
@@ -139,13 +167,16 @@ Set `ANTHROPIC_API_KEY` in **Vercel → Project → Settings → Environment Var
 - **Only `visibility: "public"` chunks are ever retrievable** by the public endpoint. The
   ingestion script marks posts with `draft: true` as skipped and `unlisted: true` as
   non‑public, and the retriever filters on `visibility` — so unapproved knowledge never
-  reaches visitors. This is the seed of the document‑permission model that the admin area
-  will manage in a later milestone.
+  reaches visitors. This is the seed of the document‑permission model the admin area builds on.
 - **API keys stay server‑side.** The browser only ever talks to the same‑origin endpoint;
   the model provider and key never leave the function.
 - **No CSP relaxation.** Same‑origin calls satisfy the existing `connect-src 'self'`.
 - **Model output is rendered safely** — Markdown is rendered without raw HTML, and links
   open with `rel="noopener noreferrer nofollow"`.
+- **The admin area is locked down.** `/admin` requires the shared `DIGITAL_MIND_ADMIN_TOKEN`
+  (timing‑safe check; 503 when unset, 401 on mismatch), is served `noindex`, and reads/writes
+  only through RLS‑locked, service‑role‑only tables. Conversation memory and usage logs live
+  in those same locked tables — never exposed to the browser.
 
 ## Updating the knowledge base
 
@@ -193,9 +224,51 @@ To enable it:
    ```
 
 The retrieval dispatcher lives in `_lib/retrieval.mjs` and exposes the same
-`retrieve(query)` shape as Milestone 1, so the chat endpoint is unchanged. Re‑ranking (a
-hosted cross‑encoder pass over the fused set) is the next increment — it's marked as a TODO
-in the dispatcher and needs a reranker‑provider choice.
+`retrieve(query)` shape as Milestone 1, so the chat endpoint is unchanged. It composes the
+stages — lexical → (optional) hybrid fusion → (optional) re‑ranking — reporting the active
+combination in its `mode` (e.g. `hybrid+rerank`).
+
+## Re‑ranking (Milestone 4)
+
+Re‑ranking adds a hosted cross‑encoder pass **on top of** whatever retrieval is active. When
+enabled, the dispatcher pools a larger candidate set (`RERANK_CANDIDATES`, default `TOP_K × 4`),
+scores each candidate against the query with the re‑ranker, and keeps the best `TOP_K`. This
+sharpens precision — the model sees the most relevant chunks first — and works with either
+lexical or hybrid retrieval.
+
+Like hybrid, it is **dormant until requested and credentialed** (`DIGITAL_MIND_RERANK=on` plus
+a provider key) and **degrades gracefully**: if the re‑ranker errors or returns nothing, the
+dispatcher falls back to the pre‑rank ordering. Providers are pluggable via `_lib/reranker.mjs`
+(Voyage `rerank-2`, Cohere `rerank-english-v3.0`); adding another is one function.
+
+## Conversation memory & usage (Milestone 5)
+
+When Supabase is configured, each turn is persisted server‑side and every reply logs token
+usage — powering the admin dashboard and long‑term attribution. The browser sends a stable
+`conversationId` (generated client‑side, kept in `sessionStorage`) so a session's turns group
+together. Persistence is **best‑effort**: `saveTurn`/`logUsage` swallow their own errors, so a
+database hiccup can never break or slow a reply. Only public‑facing content is ever stored, and
+the tables are **RLS‑locked** — reachable only by the service role from the server, never the
+browser. Clearing the chat in the UI starts a fresh `conversationId`.
+
+## Admin area (Milestone 6)
+
+`/admin` is a token‑gated dashboard for running the assistant without a redeploy:
+
+- **Overview** — usage totals (turns, input/output tokens, by model) and the live retrieval /
+  embeddings / memory configuration.
+- **Conversations** — review persisted sessions and drill into individual message threads.
+- **Documents** — upload a document (Markdown/text) that is chunked, embedded, and upserted
+  straight into the live hybrid index, or delete a previously uploaded one. (Uploads require
+  hybrid retrieval; without it, add documents via `content/knowledge/` at build time instead.)
+- **Prompt** — edit the assistant's persona / system‑prompt override, stored in `dm_config`
+  and picked up by the chat endpoint within minutes via a short per‑instance cache.
+
+Every request is authenticated with the shared `DIGITAL_MIND_ADMIN_TOKEN` using a
+timing‑safe comparison. With no token configured the endpoint returns **503** and the page
+renders only its gate — nothing is reachable unauthenticated, and the page is served
+`noindex` so crawlers skip it. Admin logic lives in `_lib/admin.mjs` (pure, unit‑tested) with
+`admin.ts` as a thin transport wrapper.
 
 ## Local development
 
@@ -216,16 +289,17 @@ the same UI and contracts:
 
 1. **UX‑first working chat** ✅ — floating button, themed streaming chat, lexical retrieval
    over existing content, citations, follow‑ups, session memory.
-2. **Vector/hybrid retrieval** ✅ (foundation) — Supabase Postgres + `pgvector`, provider‑
-   agnostic embeddings (Voyage/OpenAI), and vector + keyword fusion (RRF), dropped in behind
-   `retrieve()` and off by default. Next increment: hosted re‑ranking over the fused set.
+2. **Vector/hybrid retrieval** ✅ — Supabase Postgres + `pgvector`, provider‑agnostic
+   embeddings (Voyage/OpenAI), and vector + keyword fusion (RRF), dropped in behind
+   `retrieve()` and off by default. Hosted **re‑ranking** ✅ now layers a cross‑encoder pass
+   (Voyage/Cohere) over the retrieved set.
 3. **Ingestion connectors** ✅ (first set) — a connector pipeline with local documents
    (Markdown/txt/PDF/DOCX via `content/knowledge/`) and GitHub public repos, all emitting the
    same `Chunk` contract. Next: image OCR, audio/video transcripts, and hosted connectors
    (YouTube, Drive, Notion, Obsidian).
-4. **Conversation memory + attribution** — server‑side chat persistence and richer,
-   inline citations.
-5. **Admin area** — authenticated upload, re‑index, delete, ingestion logs, usage
-   monitoring, provider config, conversation review, and prompt management, with
-   per‑document permissions.
+4. **Conversation memory + attribution** ✅ — best‑effort server‑side chat persistence and
+   usage logging (Supabase, RLS‑locked), grouped by a client‑side `conversationId`.
+5. **Admin area** ✅ — a token‑gated `/admin` dashboard for usage monitoring, conversation
+   review, document upload/delete into the live index, and persona/prompt management. Next:
+   ingestion logs and per‑document permissions.
 6. **Future integrations** — voice interface, vision models, and knowledge graphs.
