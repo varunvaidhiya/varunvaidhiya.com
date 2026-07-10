@@ -1,7 +1,8 @@
 // Embeddings provider abstraction for Digital Mind (Milestone 2).
 //
-// Anthropic has no embeddings endpoint, so dense retrieval needs a separate
-// provider. This module exposes a single interface — `embed(texts) -> number[][]`
+// The chat LLM providers (Kimi K2 / Gemini) aren't used for embeddings, so dense
+// retrieval has its own provider. This module exposes a single interface —
+// `embed(texts) -> number[][]`
 // — with interchangeable implementations (Voyage, OpenAI). Pick via env; the
 // rest of the system is provider-agnostic. `fetchImpl` is injectable so request
 // shaping is unit-testable without network access.

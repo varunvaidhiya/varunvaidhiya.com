@@ -7,14 +7,15 @@
 // site's strict CSP (`connect-src 'self'`) already permits the browser to call
 // it — no CSP change is required.
 //
-// Milestone 1 = UX-first: retrieve public chunks from the pre-built knowledge
-// index (lexical BM25), then stream a grounded answer from Claude with source
-// citations and suggested follow-ups. The provider is swappable via config; the
-// retrieval interface is the same one a vector/hybrid backend will expose later.
+// It retrieves public chunks from the pre-built knowledge index (lexical BM25,
+// or hybrid + re-ranking when configured), then streams a grounded answer with
+// source citations and suggested follow-ups. The chat model runs on a
+// user-selectable provider (Kimi K2 / Gemini) chosen per request — both go
+// through one OpenAI-compatible client (see _lib/llm.mjs).
 
-import Anthropic from "@anthropic-ai/sdk";
 import { getConfig } from "./_lib/config.mjs";
 import knowledge from "./_lib/knowledge-index.json";
+import { resolveProviderId, streamChat } from "./_lib/llm.mjs";
 import { createMemory } from "./_lib/memory.mjs";
 import { buildFollowups, buildSources, buildSystemPrompt } from "./_lib/prompt.mjs";
 import { createRetriever } from "./_lib/retrieval.mjs";
@@ -80,6 +81,8 @@ export async function POST(req: Request): Promise<Response> {
   const query = lastUser?.content ?? "";
   const conversationId =
     typeof body?.conversationId === "string" ? body.conversationId.slice(0, 100) : undefined;
+  const requestedProvider = typeof body?.provider === "string" ? body.provider : undefined;
+  const providerId = resolveProviderId(config, requestedProvider);
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -93,11 +96,11 @@ export async function POST(req: Request): Promise<Response> {
           send({ type: "done" });
           return;
         }
-        if (!config.hasApiKey) {
+        if (!providerId) {
           send({
             type: "error",
             message:
-              "The Digital Mind isn't connected to a model yet. (Set ANTHROPIC_API_KEY to enable it.)",
+              "The Digital Mind isn't connected to a model yet. (Set MOONSHOT_API_KEY or GEMINI_API_KEY to enable it.)",
           });
           send({ type: "done" });
           return;
@@ -108,24 +111,29 @@ export async function POST(req: Request): Promise<Response> {
         send({ type: "sources", sources });
 
         const persona = await getPersonaOverride();
-        const anthropic = new Anthropic();
-        const modelStream = anthropic.messages.stream({
-          model: config.model,
-          max_tokens: config.maxTokens,
-          system: buildSystemPrompt({ persona, contextChunks }),
-          messages: history,
-        });
+        const system = buildSystemPrompt({ persona, contextChunks });
 
         let answer = "";
-        for await (const event of modelStream) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            answer += event.delta.text;
-            send({ type: "token", text: event.delta.text });
+        let usage: { input_tokens: number; output_tokens: number } | undefined;
+        let filtered = false;
+        for await (const evt of streamChat({
+          config,
+          providerId,
+          system,
+          messages: history,
+          maxTokens: config.maxTokens,
+        })) {
+          if (evt.text) {
+            answer += evt.text;
+            send({ type: "token", text: evt.text });
+          } else if (evt.usage) {
+            usage = evt.usage;
+          } else if (evt.filtered) {
+            filtered = true;
           }
         }
 
-        const final = await modelStream.finalMessage();
-        if (final.stop_reason === "refusal") {
+        if (filtered && !answer) {
           send({
             type: "error",
             message:
@@ -141,8 +149,8 @@ export async function POST(req: Request): Promise<Response> {
         await memory.saveTurn({ conversationId, userText: query, assistantText: answer, sources });
         await memory.logUsage({
           conversationId,
-          model: config.model,
-          usage: final.usage,
+          model: config.providerConfigs[providerId].model,
+          usage,
           mode: retriever.mode,
         });
       } catch (err) {

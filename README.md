@@ -45,8 +45,9 @@ I'm Varun Vaidhiya. This website hosts my personal blog and information about my
 The site includes **Digital Mind** — an AI assistant, trained on Varun's work, that
 visitors can chat with via the floating **"Ask Varun"** button. It answers questions about
 projects, robotics, AI, and engineering decisions, grounded in the site's own content with
-source citations. See [`docs/digital-mind.md`](docs/digital-mind.md) for the architecture,
-configuration (`ANTHROPIC_API_KEY`), and roadmap.
+source citations, and lets visitors switch between LLM providers (Kimi K2 / Gemini). See
+[`docs/digital-mind.md`](docs/digital-mind.md) for the architecture, configuration
+(`MOONSHOT_API_KEY` / `GEMINI_API_KEY`), and roadmap.
 
 ## Deployment
 

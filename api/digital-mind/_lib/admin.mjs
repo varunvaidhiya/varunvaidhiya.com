@@ -133,7 +133,8 @@ export async function handleAdminRequest(req, ctx) {
             status: 200,
             data: {
               memoryEnabled: memory.enabled,
-              model: config.model,
+              providers: config.providers,
+              defaultProvider: config.defaultProvider ?? null,
               retrievalMode: `${config.hybridEnabled ? "hybrid" : "lexical"}${config.rerankEnabled ? "+rerank" : ""}`,
               embeddings: config.hybridEnabled
                 ? `${config.embeddingsProvider}/${config.embeddingsModel ?? "default"}`
