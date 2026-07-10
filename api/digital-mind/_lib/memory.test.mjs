@@ -45,7 +45,7 @@ test("logUsage records tokens", async () => {
   const mem = createMemory(enabledConfig, { fetchImpl });
   await mem.logUsage({
     conversationId: "c1",
-    model: "claude-opus-4-8",
+    model: "kimi-k2-0711-preview",
     usage: { input_tokens: 120, output_tokens: 45 },
     mode: "hybrid+rerank",
   });

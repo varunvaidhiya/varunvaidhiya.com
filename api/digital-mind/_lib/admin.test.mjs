@@ -7,7 +7,8 @@ process.env.OPENAI_API_KEY = "sk-test";
 const baseConfig = {
   hasAdminToken: true,
   adminToken: "secret",
-  model: "claude-opus-4-8",
+  providers: [{ id: "kimi", label: "Kimi K2", model: "kimi-k2-0711-preview" }],
+  defaultProvider: "kimi",
   hybridEnabled: false,
   rerankEnabled: false,
   embeddingsProvider: "openai",
@@ -63,7 +64,8 @@ test("overview returns config summary + usage aggregate", async () => {
   const { ctx } = mockCtx();
   const res = await handleAdminRequest({ method: "GET", action: "overview", authHeader: "Bearer secret" }, ctx);
   assert.equal(res.status, 200);
-  assert.equal(res.data.model, "claude-opus-4-8");
+  assert.equal(res.data.defaultProvider, "kimi");
+  assert.equal(res.data.providers[0].label, "Kimi K2");
   assert.equal(res.data.usage.turns, 1);
   assert.equal(res.data.usage.inputTokens, 10);
 });

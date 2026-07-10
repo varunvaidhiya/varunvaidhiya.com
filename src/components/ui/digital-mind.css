@@ -151,6 +151,51 @@
   outline-offset: 1px;
 }
 
+/* ── Model switcher (Kimi K2 / Gemini) ───────────────────────────── */
+
+.dm-switcher {
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.dm-switcher__opt {
+  flex: 1;
+  padding: 0.35rem 0.6rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.72rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  color: var(--foreground);
+  opacity: 0.65;
+  transition:
+    color 0.15s,
+    border-color 0.15s,
+    opacity 0.15s;
+}
+
+.dm-switcher__opt:hover:not(:disabled) {
+  opacity: 1;
+  border-color: var(--accent);
+}
+
+.dm-switcher__opt--active {
+  opacity: 1;
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.dm-switcher__opt:focus-visible {
+  outline: 2px dashed var(--accent);
+  outline-offset: 1px;
+}
+
+.dm-switcher__opt:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
 /* ── Message list ────────────────────────────────────────────────── */
 
 .dm-body {

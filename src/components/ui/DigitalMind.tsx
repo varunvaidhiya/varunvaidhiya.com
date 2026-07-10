@@ -7,6 +7,8 @@ import "./digital-mind.css";
 
 type Source = { title: string; url: string; snippet: string };
 
+type Provider = { id: string; label: string; model: string };
+
 type Message = {
   id: string;
   role: "user" | "assistant";
@@ -26,6 +28,7 @@ type StreamEvent =
 
 const STORAGE_KEY = "digital-mind:messages";
 const CONVERSATION_KEY = "digital-mind:conversation";
+const PROVIDER_KEY = "digital-mind:provider";
 
 function uid() {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -51,10 +54,13 @@ export default function DigitalMind() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [providers, setProviders] = useState<Provider[]>([]);
+  const [provider, setProvider] = useState("");
 
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const providersLoaded = useRef(false);
 
   // Restore this session's conversation.
   useEffect(() => {
@@ -104,6 +110,46 @@ export default function DigitalMind() {
 
   // Abort any in-flight request if the island unmounts (e.g. page navigation).
   useEffect(() => () => abortRef.current?.abort(), []);
+
+  // Discover which LLM providers are configured (server-side), the first time
+  // the chat opens. The switcher only appears when 2+ providers are available;
+  // if the endpoint is unreachable the chat still works on the server default.
+  useEffect(() => {
+    if (!open || providersLoaded.current) return;
+    providersLoaded.current = true;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(DIGITAL_MIND.providersEndpoint);
+        if (!res.ok) return;
+        const data = (await res.json()) as { providers: Provider[]; default: string | null };
+        if (cancelled || !Array.isArray(data.providers) || data.providers.length === 0) return;
+        setProviders(data.providers);
+        let saved: string | null = null;
+        try {
+          saved = sessionStorage.getItem(PROVIDER_KEY);
+        } catch {
+          /* storage may be unavailable */
+        }
+        const valid = saved && data.providers.some((p) => p.id === saved) ? saved : null;
+        setProvider(valid ?? data.default ?? data.providers[0].id);
+      } catch {
+        /* providers endpoint unavailable — switcher stays hidden */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
+  function selectProvider(id: string) {
+    setProvider(id);
+    try {
+      sessionStorage.setItem(PROVIDER_KEY, id);
+    } catch {
+      /* ignore */
+    }
+  }
 
   function updateLastAssistant(updater: (m: Message) => Message) {
     setMessages((prev) => {
@@ -159,7 +205,11 @@ export default function DigitalMind() {
       const res = await fetch(DIGITAL_MIND.endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history, conversationId: getConversationId() }),
+        body: JSON.stringify({
+          messages: history,
+          conversationId: getConversationId(),
+          provider: provider || undefined,
+        }),
         signal: ac.signal,
       });
       if (!res.ok || !res.body) throw new Error(`Request failed (${res.status})`);
@@ -284,6 +334,24 @@ export default function DigitalMind() {
                 <CloseIcon />
               </button>
             </header>
+
+            {providers.length >= 2 && (
+              <div className="dm-switcher" aria-label="Choose model">
+                {providers.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    aria-pressed={provider === p.id}
+                    title={`Answer using ${p.label} (${p.model})`}
+                    className={`dm-switcher__opt${provider === p.id ? " dm-switcher__opt--active" : ""}`}
+                    onClick={() => selectProvider(p.id)}
+                    disabled={busy}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            )}
 
             <div className="dm-body" ref={bodyRef}>
               {messages.length === 0 ? (

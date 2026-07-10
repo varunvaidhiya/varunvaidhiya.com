@@ -45,7 +45,7 @@ Browser (static Astro page)                         Vercel Serverless Function
 │  • floating "Ask Varun"     │  /api/digital-mind/  │  1. retrieve() public chunks   │
 │  • full‑screen chat modal    │ ───────chat────────▶ │     (BM25 over the index)      │
 │  • SSE reader → streamed      │                      │  2. buildSystemPrompt(context) │
-│    Markdown + code            │ ◀──text/event-stream─│  3. stream Claude → SSE        │
+│    Markdown + code            │ ◀──text/event-stream─│  3. stream provider → SSE     │
 │  • citation + follow‑up chips │   sources · tokens · │  4. sources + follow‑ups       │
 │  • session history            │   followups · done   │                               │
 └────────────────────────────┘                      └──────────────┬────────────────┘
@@ -76,11 +76,13 @@ responds with `text/event-stream`. Each frame is `data: <json>` where `<json>` i
 
 | Path | Purpose |
 | ---- | ------- |
-| `src/components/ui/DigitalMind.tsx` | The chat island (button, modal, streaming, citations, follow‑ups, session history). |
+| `src/components/ui/DigitalMind.tsx` | The chat island (button, modal, streaming, citations, follow‑ups, session history, model switcher). |
 | `src/components/ui/digital-mind.css` | Theme‑aware, self‑contained widget styles. |
-| `src/consts.ts` → `DIGITAL_MIND` | Feature toggle, labels, example prompts, endpoint. |
+| `src/consts.ts` → `DIGITAL_MIND` | Feature toggle, labels, example prompts, endpoints. |
 | `src/layouts/Layout.astro` | Renders the island once, site‑wide. |
-| `api/digital-mind/chat.ts` | Same‑origin serverless chat endpoint (SSE, streaming). |
+| `api/digital-mind/chat.ts` | Same‑origin serverless chat endpoint (SSE, streaming); routes to the chosen provider. |
+| `api/digital-mind/providers.ts` | Lists the configured LLM providers (Kimi K2 / Gemini) for the switcher. |
+| `api/digital-mind/_lib/llm.mjs` | OpenAI‑compatible streaming client serving both Kimi K2 and Gemini. |
 | `api/digital-mind/_lib/chunk.mjs` | Markdown → plain‑text, heading‑aware chunking. |
 | `api/digital-mind/_lib/retrieve.mjs` | Lexical BM25 retrieval with a `visibility` access filter. |
 | `api/digital-mind/_lib/retrieval.mjs` | Retrieval dispatcher: lexical, or fused lexical+vector (hybrid). |
@@ -108,16 +110,26 @@ responds with `text/event-stream`. Each frame is `data: <json>` where `<json>` i
 ## Configuration
 
 All secrets and provider settings live **server‑side** (Vercel environment variables) and
-are never shipped to the browser.
+are never shipped to the browser. The chat runs on a user‑selectable LLM provider — **Kimi
+K2** (Moonshot) and **Gemini** — each enabled by its own key. Set at least one; set both to
+give visitors the in‑chat model switcher. The browser only ever sends a provider *id*.
 
 | Variable | Default | Purpose |
 | -------- | ------- | ------- |
-| `ANTHROPIC_API_KEY` | _(required)_ | Enables the assistant. Without it the UI shows a friendly "not connected" message. |
-| `DIGITAL_MIND_MODEL` | `claude-opus-4-8` | LLM model id. |
-| `DIGITAL_MIND_PROVIDER` | `anthropic` | Provider selector (modular; more providers land in a later milestone). |
+| `MOONSHOT_API_KEY` | _(one key required)_ | Enables **Kimi K2**. Without any provider key the UI shows a friendly "not connected" message. |
+| `GEMINI_API_KEY` | _(one key required)_ | Enables **Gemini**. |
+| `DIGITAL_MIND_PROVIDER` | first configured | Default provider id (`kimi` or `gemini`) when the visitor hasn't picked one. Preference order is Kimi → Gemini. |
+| `DIGITAL_MIND_KIMI_MODEL` | `kimi-k2-0711-preview` | Kimi model id (override without a code change). |
+| `DIGITAL_MIND_GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model id. |
+| `DIGITAL_MIND_KIMI_BASE_URL` | `https://api.moonshot.ai/v1` | Moonshot API base (e.g. use `…moonshot.cn/v1` for the China endpoint). |
+| `DIGITAL_MIND_GEMINI_BASE_URL` | `…/v1beta/openai` | Gemini OpenAI‑compatible API base. |
 | `DIGITAL_MIND_MAX_TOKENS` | `1024` | Max answer length. |
 | `DIGITAL_MIND_TOP_K` | `5` | Number of chunks retrieved per query. |
 | `DIGITAL_MIND_MAX_HISTORY` | `10` | Conversation turns sent to the model. |
+
+Both providers are reached through a single **OpenAI‑compatible** streaming client
+(`_lib/llm.mjs`), so adding another OpenAI‑compatible provider is just one more entry in the
+registry (`_lib/config.mjs` → `PROVIDER_DEFS`).
 
 **Milestone 2 — hybrid retrieval (optional, off by default):**
 
@@ -160,7 +172,18 @@ best‑effort: a logging failure never affects a reply.
 | -------- | ------- | ------- |
 | `DIGITAL_MIND_ADMIN_TOKEN` | _(unset)_ | Shared bearer token for `/admin`. Unset ⇒ the endpoint returns 503 and the page shows only its gate. |
 
-Set `ANTHROPIC_API_KEY` in **Vercel → Project → Settings → Environment Variables**.
+Set `MOONSHOT_API_KEY` and/or `GEMINI_API_KEY` in **Vercel → Project → Settings →
+Environment Variables**.
+
+### Choosing a model (Kimi K2 / Gemini)
+
+When two or more providers are configured, a compact switcher appears at the top of the chat
+panel. The visitor's choice is remembered for the session (`sessionStorage`) and sent with
+each message as a provider **id** — never a key. The server validates the id against the
+configured providers and falls back to `DIGITAL_MIND_PROVIDER` (or the first configured
+provider) if it's missing or unknown. With a single provider configured the switcher is
+hidden and that provider is used. Model ids and API base URLs are env‑overridable, so
+pointing at a new model — or Moonshot's regional endpoint — never needs a code change.
 
 ## Security & permissions
 
@@ -169,7 +192,8 @@ Set `ANTHROPIC_API_KEY` in **Vercel → Project → Settings → Environment Var
   non‑public, and the retriever filters on `visibility` — so unapproved knowledge never
   reaches visitors. This is the seed of the document‑permission model the admin area builds on.
 - **API keys stay server‑side.** The browser only ever talks to the same‑origin endpoint;
-  the model provider and key never leave the function.
+  provider keys never leave the function. The model switcher sends only a provider **id**,
+  which the server validates against the configured providers before use.
 - **No CSP relaxation.** Same‑origin calls satisfy the existing `connect-src 'self'`.
 - **Model output is rendered safely** — Markdown is rendered without raw HTML, and links
   open with `rel="noopener noreferrer nofollow"`.

@@ -7,7 +7,8 @@ const TOKEN_KEY = "digital-mind:admin-token";
 
 type Overview = {
   memoryEnabled: boolean;
-  model: string;
+  providers: { id: string; label: string; model: string }[];
+  defaultProvider: string | null;
   retrievalMode: string;
   embeddings: string | null;
   canIndexUploads: boolean;
@@ -257,8 +258,16 @@ export default function AdminPanel() {
           </div>
           <ul className="dm-admin__list">
             <li className="dm-admin__row">
-              <span>Model</span>
-              <span className="dm-admin__muted">{overview.model}</span>
+              <span>Providers</span>
+              <span className="dm-admin__muted">
+                {overview.providers.length === 0
+                  ? "none configured"
+                  : overview.providers
+                      .map(
+                        (p) => `${p.label}${p.id === overview.defaultProvider ? " (default)" : ""}`
+                      )
+                      .join(", ")}
+              </span>
             </li>
             <li className="dm-admin__row">
               <span>Retrieval</span>

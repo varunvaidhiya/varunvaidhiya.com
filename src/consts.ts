@@ -101,9 +101,11 @@ export const ICON_MAP: Record<string, string> = {
 // Toggle `enabled` to hide the feature site-wide without removing any code.
 export const DIGITAL_MIND = {
   enabled: true,
-  // Same-origin endpoint (served by the Vercel Function in /api). Keeping it
+  // Same-origin endpoints (served by the Vercel Functions in /api). Keeping them
   // same-origin means the site's strict CSP `connect-src 'self'` already allows it.
   endpoint: "/api/digital-mind/chat",
+  // Lists the configured LLM providers (Kimi K2 / Gemini) for the model switcher.
+  providersEndpoint: "/api/digital-mind/providers",
   buttonLabel: "Ask Varun",
   title: "Varun's Digital Mind",
   subtitle: "AI trained on my work",
