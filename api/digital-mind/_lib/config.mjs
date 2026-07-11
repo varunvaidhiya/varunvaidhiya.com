@@ -17,7 +17,9 @@ export const PROVIDER_DEFS = {
     keyEnv: "MOONSHOT_API_KEY",
     modelEnv: "DIGITAL_MIND_KIMI_MODEL",
     baseUrlEnv: "DIGITAL_MIND_KIMI_BASE_URL",
-    defaultModel: "kimi-k2-0711-preview",
+    // Moonshot retires model ids fairly often (the k2 preview series was pulled
+    // in May 2026); override via DIGITAL_MIND_KIMI_MODEL if this 404s.
+    defaultModel: "kimi-k2.6",
     defaultBaseUrl: "https://api.moonshot.ai/v1",
   },
   gemini: {
@@ -25,7 +27,9 @@ export const PROVIDER_DEFS = {
     keyEnv: "GEMINI_API_KEY",
     modelEnv: "DIGITAL_MIND_GEMINI_MODEL",
     baseUrlEnv: "DIGITAL_MIND_GEMINI_BASE_URL",
-    defaultModel: "gemini-2.5-flash",
+    // "-latest" is an auto-updating alias, so it survives Google's frequent
+    // model deprecations (pin a dated id via DIGITAL_MIND_GEMINI_MODEL if needed).
+    defaultModel: "gemini-flash-latest",
     defaultBaseUrl: "https://generativelanguage.googleapis.com/v1beta/openai",
   },
 };
