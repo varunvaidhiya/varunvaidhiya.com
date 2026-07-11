@@ -119,8 +119,8 @@ give visitors the in‑chat model switcher. The browser only ever sends a provid
 | `MOONSHOT_API_KEY` | _(one key required)_ | Enables **Kimi K2**. Without any provider key the UI shows a friendly "not connected" message. |
 | `GEMINI_API_KEY` | _(one key required)_ | Enables **Gemini**. |
 | `DIGITAL_MIND_PROVIDER` | first configured | Default provider id (`kimi` or `gemini`) when the visitor hasn't picked one. Preference order is Kimi → Gemini. |
-| `DIGITAL_MIND_KIMI_MODEL` | `kimi-k2-0711-preview` | Kimi model id (override without a code change). |
-| `DIGITAL_MIND_GEMINI_MODEL` | `gemini-2.5-flash` | Gemini model id. |
+| `DIGITAL_MIND_KIMI_MODEL` | `kimi-k2.6` | Kimi model id. Moonshot retires ids often — override here if it 404s. |
+| `DIGITAL_MIND_GEMINI_MODEL` | `gemini-flash-latest` | Gemini model id. The `-latest` alias auto-updates; pin a dated id here if you prefer. |
 | `DIGITAL_MIND_KIMI_BASE_URL` | `https://api.moonshot.ai/v1` | Moonshot API base (e.g. use `…moonshot.cn/v1` for the China endpoint). |
 | `DIGITAL_MIND_GEMINI_BASE_URL` | `…/v1beta/openai` | Gemini OpenAI‑compatible API base. |
 | `DIGITAL_MIND_MAX_TOKENS` | `1024` | Max answer length. |
