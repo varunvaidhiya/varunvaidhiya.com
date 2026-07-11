@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-07-11T02:12:32.761Z",
+  "generatedAt": "2026-07-11T15:02:32.121Z",
   "docCount": 3,
-  "chunkCount": 15,
+  "chunkCount": 11,
   "bySource": {
     "blog": 6,
-    "page": 9
+    "page": 5
   },
   "chunks": [
     {
@@ -93,7 +93,7 @@
     },
     {
       "id": "page/about#0",
-      "text": "Hi, I'm Varun Vaidhiya — a Perception Engineer and Solution Architect specialising in 3D spatial intelligence and embodied AI. I unify 3D geometry with semantic scene understanding for robot navigation, locomotion, and manipulation. \n I've architected end-to-end perception stacks — multi-camera bird's-eye-view perception, RGB-D 3D SLAM with persistent 3D occupancy mapping, 6-DoF object pose estimation, and EKF multi-sensor fusion. I train and deploy multimodal Vision-Language-Action networks in PyTorch and optimise them for ultra-low-latency edge GPU inference via TensorRT and ONNX Runtime. \n I'm currently building OhhO Robotics , a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm targeting Solution Architect and Forward-Deployed Engineer roles in robotics and autonomous vehicles — companies building the intelligence layer for AI and physical AI.",
+      "text": "Hi, I'm Varun Vaidhiya — a Software Engineer and Solution Architect building the intelligence layer for AI and physical AI. My work spans robotics, autonomous vehicles, embedded systems, and full-stack software engineering. \n I've architected end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I've built IoT device management backends in C++, optimised deep learning pipelines on Jetson and RTX edge GPUs, and shipped full-stack applications in Java, Python, and TypeScript. \n I'm currently building OhhO Robotics , a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm targeting Solution Architect and Forward-Deployed Engineer roles in robotics and autonomous vehicles — companies building the intelligence layer for AI and physical AI.",
       "title": "About",
       "url": "/about",
       "source": "page",
@@ -105,11 +105,11 @@
     },
     {
       "id": "page/about#1",
-      "text": "Oct 2024 – Present\n\nFounded OhhO Robotics and built a full-stack robotics operating platform (25K+ lines, ROS 2 Jazzy) spanning perception, VLA inference, teleoperation, simulation, data pipelines, and fleet operations — productising a full embodied-AI stack from research prototype to deployable software.",
+      "text": "Oct 2024 – Present\n\nDec 2023 – Oct 2024\n\nMar 2023 – Jul 2023\n\nFeb 2021 – Sep 2022\nMSc Smart, Connected and Autonomous Vehicles — University of Warwick, WMG (2024)\n Autonomous Vehicle Perception, Deep Learning for Robotics, Sensor Fusion & Calibration, Real-time Embedded Systems, Functional Safety (ISO 26262), GPU Computing & Optimisation\nBEng Electrical and Electronics Engineering — RMD Engineering College (2020)",
       "title": "About",
       "url": "/about",
       "source": "page",
-      "heading": "OhhO Robotics — Founder & Perception / Robotics Software Engineer",
+      "heading": "OhhO Robotics — Founder & Robotics Software Engineer",
       "tags": [
         "about",
         "bio"
@@ -118,58 +118,6 @@
     },
     {
       "id": "page/about#2",
-      "text": "Built multi-camera bird's-eye-view perception (4 wide-angle feeds → unified top-down via per-camera homographies with RANSAC/checkerboard calibration, CPU-only at 30 Hz)\nEngineered persistent 3D spatial mapping fusing RGB-D 3D SLAM (RTAB-Map) and 3D occupancy mapping (OctoMap) with wheel-odometry/IMU EKF state estimation\nTrained and fine-tuned multimodal Vision-Language-Action networks (SmolVLA, OpenVLA) in PyTorch, served behind a REST API (pluggable backends, Prometheus metrics)\nOptimised perception and policy inference for edge hardware via TensorRT FP16/INT8 and ONNX Runtime (2–3x vision-encoder speed-up, under 5% output deviation, sub-200 ms end-to-end latency)\nBuilt an end-to-end demonstration-data pipeline (LeRobot v2.0 format) with distributed training and W&B experiment tracking\n\nDec 2023 – Oct 2024",
-      "title": "About",
-      "url": "/about",
-      "source": "page",
-      "heading": "OhhO Robotics — Founder & Perception / Robotics Software Engineer",
-      "tags": [
-        "about",
-        "bio"
-      ],
-      "visibility": "public"
-    },
-    {
-      "id": "page/about#3",
-      "text": "Fine-tuned SAM 2 on autonomous driving datasets (Cityscapes) using distributed training, systematic hyperparameter optimisation, and W&B experiment tracking\nBenchmarking vision foundation models on embedded platforms (Jetson Orin, RTX mobile GPU) — inference latency, memory footprint, and model performance\nOptimised deep learning inference pipelines using Nsight Systems/Compute; applied INT8/FP16 quantisation, TensorRT optimisation, and custom CUDA kernels (30% inference time reduction on RTX 4070 mobile)\nInvestigated model compression (knowledge distillation, quantisation-aware fine-tuning, pruning) for deploying large-scale transformers on resource-constrained edge hardware\n\nMar 2023 – Jul 2023",
-      "title": "About",
-      "url": "/about",
-      "source": "page",
-      "heading": "Five AI — MSc Dissertation Researcher, Autonomous Vehicle Perception",
-      "tags": [
-        "about",
-        "bio"
-      ],
-      "visibility": "public"
-    },
-    {
-      "id": "page/about#4",
-      "text": "Built and optimised C++ backend components for IoT device management sustaining hundreds of concurrent device connections across Windows and Linux servers\nMigrated the device-integration SDK from Java to C#, consolidating connection logic and UI into a single reusable SDK for IoT peripherals\nCollaborated with rugged-hardware providers (Zebra, Datalogic) on custom firmware and drivers in C/C++\nDesigned firmware- and driver-level benchmarks on ARM Cortex-M (STM32/NXP) to optimise low-level routines and interrupt handling for latency-sensitive workloads\n\nFeb 2021 – Sep 2022",
-      "title": "About",
-      "url": "/about",
-      "source": "page",
-      "heading": "42Gears Mobility Systems — Senior Software Engineer, IoT & Embedded Linux",
-      "tags": [
-        "about",
-        "bio"
-      ],
-      "visibility": "public"
-    },
-    {
-      "id": "page/about#5",
-      "text": "Contributed to full software lifecycle of scalable applications using Java, Spring Boot, and React\nImplemented CI/CD pipelines using Azure DevOps for automated builds, testing, and deployments\nUtilised cloud monitoring tools (Azure AppInsights, Grafana) for production troubleshooting and performance optimisation across distributed systems\nMSc Smart, Connected and Autonomous Vehicles — University of Warwick, WMG (2024)\n Autonomous Vehicle Perception, Deep Learning for Robotics, Sensor Fusion & Calibration, Real-time Embedded Systems, Functional Safety (ISO 26262), GPU Computing & Optimisation\nBEng Electrical and Electronics Engineering — RMD Engineering College (2020)",
-      "title": "About",
-      "url": "/about",
-      "source": "page",
-      "heading": "Tata Consultancy Services — Systems Engineer",
-      "tags": [
-        "about",
-        "bio"
-      ],
-      "visibility": "public"
-    },
-    {
-      "id": "page/about#6",
       "text": "3D Perception & Spatial Intelligence — Multi-camera Bird's-Eye-View (BEV), RGB-D 3D SLAM (RTAB-Map), 3D occupancy / voxel mapping (OctoMap), 2D SLAM, 6-DoF object pose estimation, point-cloud processing, multi-sensor fusion (EKF), camera calibration (homography, RANSAC, pinhole intrinsics)\nMachine Learning & Embodied AI — PyTorch, Vision-Language Models (CLIP, SAM 2, DINO), Vision-Language-Action Models (OpenVLA, SmolVLA, piZero, Octo), imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases\nEdge Deployment & Inference Optimisation — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, NVIDIA Jetson / RTX edge GPUs, ultra-low-latency inference\nRobotics & Simulation — ROS 2 (Jazzy), Nav2, TF2, real-time control, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation\nSolution Architecture & Application Development — System design, API design (FastAPI, Next.js), protocol integration (DDS, MAVLink, CAN, OPC UA, VDA 5050, EtherCAT), fleet management (OTA), Docker, CI/CD (GitHub Actions), Prometheus/Grafana\nProgramming & Systems Software — Python, C++ (C++17/20), TypeScript, Kotlin, Embedded Linux, ARM Cortex-A, CMake, Kubernetes",
       "title": "About",
       "url": "/about",
@@ -182,7 +130,7 @@
       "visibility": "public"
     },
     {
-      "id": "page/about#7",
+      "id": "page/about#3",
       "text": "Project Description Stack \n --------- ------------- ------- \n OhhO Robotics (OmniBotPro) Full-stack open-source robotics platform — the intelligence layer for AI and physical AI. 19 product consoles covering the complete robot lifecycle: design, training, simulation, VLA inference, agent reasoning, fleet management, and safety certification. Built on OhhO OS (Apache-2.0). Python / ROS 2 / TypeScript / Next.js \n runanywhere-sdks Production-ready toolkit to run AI locally Kotlin \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++ \n decentralized-voting-using-blockchain Decentralised voting with fingerprint authentication JavaScript",
       "title": "About",
       "url": "/about",
@@ -195,7 +143,7 @@
       "visibility": "public"
     },
     {
-      "id": "page/about#8",
+      "id": "page/about#4",
       "text": "Follow me on GitHub · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
       "title": "About",
       "url": "/about",
