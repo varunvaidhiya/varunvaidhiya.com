@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://varunvaidhiya.com/",
   author: "Varun Vaidhiya",
   profile: "https://varunvaidhiya.com/about",
-  desc: "Software Engineer & Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.",
+  desc: "Engineer building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.",
   title: "Varun Vaidhiya",
   ogImage: "varun-avatar.jpg",
   lightAndDarkMode: true,

@@ -1,27 +1,15 @@
 {
-  "generatedAt": "2026-07-11T15:02:32.121Z",
+  "generatedAt": "2026-07-11T15:27:04.983Z",
   "docCount": 3,
-  "chunkCount": 11,
+  "chunkCount": 10,
   "bySource": {
-    "blog": 6,
+    "blog": 5,
     "page": 5
   },
   "chunks": [
     {
       "id": "blog/hello-world#0",
-      "text": "Welcome to my personal website! I'm Varun Vaidhiya, a Software Engineer and Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.\n\nI'll be sharing thoughts on:\nFull-stack robotic software — perception, VLA inference, agent reasoning, fleet management, and safety certification\nAutonomous vehicles — sensor fusion, perception models, model-based safety design\nAI & physical AI — the intelligence layer between AI models and physical robots\nOpen source projects I'm building and shipping, including OhhO Robotics\n\nEverything I build lands on GitHub — feel free to fork, remix, or contribute.",
-      "title": "Hello World",
-      "url": "/posts/hello-world",
-      "source": "blog",
-      "heading": "Hello World",
-      "tags": [
-        "intro"
-      ],
-      "visibility": "public"
-    },
-    {
-      "id": "blog/hello-world#1",
-      "text": "Stay tuned for more posts. If you'd like to connect, find me on X/Twitter or LinkedIn.",
+      "text": "Welcome to my personal website! I'm Varun Vaidhiya, an engineer building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.\n\nI'll be sharing thoughts on:\nFull-stack robotic software — perception, VLA inference, agent reasoning, fleet management, and safety certification\nAutonomous vehicles — sensor fusion, perception models, model-based safety design\nAI & physical AI — the intelligence layer between AI models and physical robots\nOpen source projects I'm building and shipping, including OhhO Robotics\n\nEverything I build lands on GitHub — feel free to fork, remix, or contribute.\n\nStay tuned for more posts. If you'd like to connect, find me on X/Twitter or LinkedIn.",
       "title": "Hello World",
       "url": "/posts/hello-world",
       "source": "blog",
@@ -93,7 +81,7 @@
     },
     {
       "id": "page/about#0",
-      "text": "Hi, I'm Varun Vaidhiya — a Software Engineer and Solution Architect building the intelligence layer for AI and physical AI. My work spans robotics, autonomous vehicles, embedded systems, and full-stack software engineering. \n I've architected end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I've built IoT device management backends in C++, optimised deep learning pipelines on Jetson and RTX edge GPUs, and shipped full-stack applications in Java, Python, and TypeScript. \n I'm currently building OhhO Robotics , a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm targeting Solution Architect and Forward-Deployed Engineer roles in robotics and autonomous vehicles — companies building the intelligence layer for AI and physical AI.",
+      "text": "Hi, I'm Varun Vaidhiya — an engineer building the intelligence layer for AI and physical AI. My work spans robotics, autonomous vehicles, embedded systems, and full-stack software engineering. \n I've built end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I've worked on IoT device management backends in C++, deep learning pipelines on Jetson and RTX edge GPUs, and full-stack applications in Java, Python, and TypeScript. \n I'm currently building OhhO Robotics , a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm interested in working with companies building the intelligence layer for robotics, autonomous vehicles, and UAVs.",
       "title": "About",
       "url": "/about",
       "source": "page",

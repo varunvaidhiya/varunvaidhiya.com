@@ -11,7 +11,7 @@ description: "Welcome to my website — a space for AI, robotics, performance en
 
 # Hello World
 
-Welcome to my personal website! I'm **Varun Vaidhiya**, a Software Engineer and Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.
+Welcome to my personal website! I'm **Varun Vaidhiya**, an engineer building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.
 
 I'll be sharing thoughts on:
 
