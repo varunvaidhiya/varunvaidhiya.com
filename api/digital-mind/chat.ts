@@ -14,7 +14,7 @@
 // through one OpenAI-compatible client (see _lib/llm.mjs).
 
 import { getConfig } from "./_lib/config.mjs";
-import knowledge from "./_lib/knowledge-index.json";
+import knowledge from "./_lib/knowledge-index.json" with { type: "json" };
 import { resolveProviderId, streamChat } from "./_lib/llm.mjs";
 import { createMemory } from "./_lib/memory.mjs";
 import { buildFollowups, buildSources, buildSystemPrompt } from "./_lib/prompt.mjs";
