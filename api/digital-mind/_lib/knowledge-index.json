@@ -1,99 +1,210 @@
 {
-  "generatedAt": "2026-07-08T15:29:12.955Z",
+  "generatedAt": "2026-07-11T02:12:32.761Z",
   "docCount": 3,
-  "chunkCount": 9,
+  "chunkCount": 15,
   "bySource": {
-    "blog": 5,
-    "page": 4
+    "blog": 6,
+    "page": 9
   },
   "chunks": [
     {
       "id": "blog/hello-world#0",
-      "text": "Welcome to my personal website! I'm Varun Vaidhiya, a Software Engineer based in the UK working on AI, Robotics, and Performance Optimisation.\n\nI'll be sharing thoughts on:\nAI model benchmarking and performance optimisation on edge hardware\nRobotics — ROS, sensor fusion, autonomous systems\nLow-level programming — ARM architecture, embedded systems\nOpen source projects I'm building and shipping\n\nEverything I build lands on GitHub — feel free to fork, remix, or contribute.\n\nStay tuned for more posts. If you'd like to connect, find me on X/Twitter or LinkedIn.",
+      "text": "Welcome to my personal website! I'm Varun Vaidhiya, a Software Engineer and Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.\n\nI'll be sharing thoughts on:\nFull-stack robotic software — perception, VLA inference, agent reasoning, fleet management, and safety certification\nAutonomous vehicles — sensor fusion, perception models, model-based safety design\nAI & physical AI — the intelligence layer between AI models and physical robots\nOpen source projects I'm building and shipping, including OhhO Robotics\n\nEverything I build lands on GitHub — feel free to fork, remix, or contribute.",
       "title": "Hello World",
       "url": "/posts/hello-world",
       "source": "blog",
       "heading": "Hello World",
-      "tags": ["intro"],
+      "tags": [
+        "intro"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "blog/hello-world#1",
+      "text": "Stay tuned for more posts. If you'd like to connect, find me on X/Twitter or LinkedIn.",
+      "title": "Hello World",
+      "url": "/posts/hello-world",
+      "source": "blog",
+      "heading": "Hello World",
+      "tags": [
+        "intro"
+      ],
       "visibility": "public"
     },
     {
       "id": "blog/my-projects#0",
-      "text": "Here's a collection of projects I've been building. All code is open source on GitHub.\n\nProduction-ready toolkit to run AI locally\n\nA Kotlin SDK designed to make running AI models locally straightforward and production-grade. Built with a focus on ease of use and reliability for on-device AI inference.\n\nView on GitHub →\n\nAI inference on ARM hardware\n\nExploring and optimising AI model inference on ARM-based hardware. This project is about understanding how to get the best performance from AI models running on ARM chips — from setup through benchmarking.\n\nView on GitHub →\n\nROS-based mecanum wheel robot",
+      "text": "Here's a collection of projects I've been building. All code is open source on GitHub.\n\nThe intelligence layer for AI and physical AI\n\nA full-stack open-source robotics platform covering the complete robot lifecycle under one engine. 19 product consoles span design (3D robot builder), training (VLA/BC/RL fine-tuning), simulation (Gazebo/Isaac Sim), serving (REST inference API), agent reasoning (perceive → reason → verify → act → monitor → reflect), fleet management (OTA, monitoring), and safety certification (ISO 10218, ISO 13849, IEC 61508). Built on OhhO OS — a single open-source engine (Apache-2.0) that's robot-agnostic, brand-agnostic, and standards-based. The reference robot is a ~$500 mecanum mobile manipulator with a 6-camera array and a unified 9D learned policy (SmolVLA).",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
       "heading": "My Open Source Projects",
-      "tags": ["projects", "open-source", "ai", "robotics"],
+      "tags": [
+        "projects",
+        "open-source",
+        "ai",
+        "robotics"
+      ],
       "visibility": "public"
     },
     {
       "id": "blog/my-projects#1",
-      "text": "A robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.\n\nView on GitHub →\n\nSAM2 model applied to autonomous vehicles\n\nApplying Meta's Segment Anything Model 2 (SAM2) to autonomous vehicle perception tasks. Explores zero-shot segmentation for AV sensor data.\n\nView on GitHub →\n\nAutomatic Emergency Braking — Model-Based Design\n\nA model-based design implementation of an Automatic Emergency Braking (AEB) system, a safety-critical feature in modern vehicles.\n\nView on GitHub →\n\nPerformance analysis with Perfetto",
+      "text": "View on GitHub →\n\nProduction-ready toolkit to run AI locally\n\nA Kotlin SDK designed to make running AI models locally straightforward and production-grade. Built with a focus on ease of use and reliability for on-device AI inference.\n\nView on GitHub →\n\nAI inference on ARM hardware\n\nExploring and optimising AI model inference on ARM-based hardware. This project is about understanding how to get the best performance from AI models running on ARM chips — from setup through benchmarking.\n\nView on GitHub →\n\nROS-based mecanum wheel robot\n\nA robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
-      "heading": "Mecanum-Wheel-Robot",
-      "tags": ["projects", "open-source", "ai", "robotics"],
+      "heading": "OhhO Robotics (OmniBotPro)",
+      "tags": [
+        "projects",
+        "open-source",
+        "ai",
+        "robotics"
+      ],
       "visibility": "public"
     },
     {
       "id": "blog/my-projects#2",
-      "text": "Python scripts for capturing and analysing system traces using Google's Perfetto tracing tool. Useful for deep-diving into CPU scheduling, memory, and I/O behaviour.\n\nView on GitHub →\n\nOpen-source drivers for Kinect for Windows v2\n\nForked and contributed to the open-source driver for Microsoft Kinect v2, enabling depth camera access on Linux and macOS.\n\nView on GitHub →\n\nDecentralised voting with fingerprint authentication\n\nA blockchain-based voting system that uses MFS100 fingerprint scanner authentication to ensure secure, verifiable, and tamper-proof elections.\n\nView on GitHub →",
+      "text": "View on GitHub →\n\nSAM2 model applied to autonomous vehicles\n\nApplying Meta's Segment Anything Model 2 (SAM2) to autonomous vehicle perception tasks. Explores zero-shot segmentation for AV sensor data.\n\nView on GitHub →\n\nAutomatic Emergency Braking — Model-Based Design\n\nA model-based design implementation of an Automatic Emergency Braking (AEB) system, a safety-critical feature in modern vehicles.\n\nView on GitHub →\n\nPerformance analysis with Perfetto\n\nPython scripts for capturing and analysing system traces using Google's Perfetto tracing tool. Useful for deep-diving into CPU scheduling, memory, and I/O behaviour.\n\nView on GitHub →",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
-      "heading": "perfetto_analysis_repo",
-      "tags": ["projects", "open-source", "ai", "robotics"],
+      "heading": "Mecanum-Wheel-Robot",
+      "tags": [
+        "projects",
+        "open-source",
+        "ai",
+        "robotics"
+      ],
       "visibility": "public"
     },
     {
       "id": "blog/my-projects#3",
-      "text": "More coming soon. Follow me on GitHub to stay updated, and check out my YouTube channel for videos on AI, robotics, and performance engineering.",
+      "text": "Open-source drivers for Kinect for Windows v2\n\nForked and contributed to the open-source driver for Microsoft Kinect v2, enabling depth camera access on Linux and macOS.\n\nView on GitHub →\n\nDecentralised voting with fingerprint authentication\n\nA blockchain-based voting system that uses MFS100 fingerprint scanner authentication to ensure secure, verifiable, and tamper-proof elections.\n\nView on GitHub →\n\nMore coming soon. Follow me on GitHub to stay updated, and check out my YouTube channel for videos on AI, robotics, and performance engineering.",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
-      "heading": "decentralized-voting-using-blockchain",
-      "tags": ["projects", "open-source", "ai", "robotics"],
+      "heading": "libfreenect2",
+      "tags": [
+        "projects",
+        "open-source",
+        "ai",
+        "robotics"
+      ],
       "visibility": "public"
     },
     {
       "id": "page/about#0",
-      "text": "Hi, I'm Varun Vaidhiya — a Software Engineer based in the UK , working at the intersection of AI, Robotics, and systems-level performance. \n My focus is on optimising AI models through benchmarking , understanding low-level hardware behaviour , and delivering best-in-class solutions for performance-critical systems. I'm particularly interested in running AI efficiently on edge hardware and ARM architectures. \n I build what excites me and release it all as open source — from ROS-based robots and AI inference toolkits to blockchain applications and data science case studies.",
+      "text": "Hi, I'm Varun Vaidhiya — a Perception Engineer and Solution Architect specialising in 3D spatial intelligence and embodied AI. I unify 3D geometry with semantic scene understanding for robot navigation, locomotion, and manipulation. \n I've architected end-to-end perception stacks — multi-camera bird's-eye-view perception, RGB-D 3D SLAM with persistent 3D occupancy mapping, 6-DoF object pose estimation, and EKF multi-sensor fusion. I train and deploy multimodal Vision-Language-Action networks in PyTorch and optimise them for ultra-low-latency edge GPU inference via TensorRT and ONNX Runtime. \n I'm currently building OhhO Robotics , a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm targeting Solution Architect and Forward-Deployed Engineer roles in robotics and autonomous vehicles — companies building the intelligence layer for AI and physical AI.",
       "title": "About",
       "url": "/about",
       "source": "page",
-      "tags": ["about", "bio"],
+      "tags": [
+        "about",
+        "bio"
+      ],
       "visibility": "public"
     },
     {
       "id": "page/about#1",
-      "text": "AI & Performance Optimisation — Benchmarking AI models, profiling with Perfetto, and squeezing performance out of constrained hardware\nRobotics — ROS-based systems, autonomous vehicles, sensor fusion (Kinect v2, LiDAR)\nLow-level Programming — ARM architecture, embedded systems, hardware-software co-design\nAI on Edge / Arm — Making AI inference efficient on ARM and mobile devices\nML & Data Science — EDA, predictive modelling, classification, SQL analytics",
+      "text": "Oct 2024 – Present\n\nFounded OhhO Robotics and built a full-stack robotics operating platform (25K+ lines, ROS 2 Jazzy) spanning perception, VLA inference, teleoperation, simulation, data pipelines, and fleet operations — productising a full embodied-AI stack from research prototype to deployable software.",
       "title": "About",
       "url": "/about",
       "source": "page",
-      "heading": "What I Work On",
-      "tags": ["about", "bio"],
+      "heading": "OhhO Robotics — Founder & Perception / Robotics Software Engineer",
+      "tags": [
+        "about",
+        "bio"
+      ],
       "visibility": "public"
     },
     {
       "id": "page/about#2",
-      "text": "Project Description Stack \n --------- ------------- ------- \n runanywhere-sdks Production-ready toolkit to run AI locally Kotlin \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++ \n decentralized-voting-using-blockchain Decentralised voting with fingerprint authentication JavaScript",
+      "text": "Built multi-camera bird's-eye-view perception (4 wide-angle feeds → unified top-down via per-camera homographies with RANSAC/checkerboard calibration, CPU-only at 30 Hz)\nEngineered persistent 3D spatial mapping fusing RGB-D 3D SLAM (RTAB-Map) and 3D occupancy mapping (OctoMap) with wheel-odometry/IMU EKF state estimation\nTrained and fine-tuned multimodal Vision-Language-Action networks (SmolVLA, OpenVLA) in PyTorch, served behind a REST API (pluggable backends, Prometheus metrics)\nOptimised perception and policy inference for edge hardware via TensorRT FP16/INT8 and ONNX Runtime (2–3x vision-encoder speed-up, under 5% output deviation, sub-200 ms end-to-end latency)\nBuilt an end-to-end demonstration-data pipeline (LeRobot v2.0 format) with distributed training and W&B experiment tracking\n\nDec 2023 – Oct 2024",
       "title": "About",
       "url": "/about",
       "source": "page",
-      "heading": "Open Source Projects",
-      "tags": ["about", "bio"],
+      "heading": "OhhO Robotics — Founder & Perception / Robotics Software Engineer",
+      "tags": [
+        "about",
+        "bio"
+      ],
       "visibility": "public"
     },
     {
       "id": "page/about#3",
+      "text": "Fine-tuned SAM 2 on autonomous driving datasets (Cityscapes) using distributed training, systematic hyperparameter optimisation, and W&B experiment tracking\nBenchmarking vision foundation models on embedded platforms (Jetson Orin, RTX mobile GPU) — inference latency, memory footprint, and model performance\nOptimised deep learning inference pipelines using Nsight Systems/Compute; applied INT8/FP16 quantisation, TensorRT optimisation, and custom CUDA kernels (30% inference time reduction on RTX 4070 mobile)\nInvestigated model compression (knowledge distillation, quantisation-aware fine-tuning, pruning) for deploying large-scale transformers on resource-constrained edge hardware\n\nMar 2023 – Jul 2023",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "Five AI — MSc Dissertation Researcher, Autonomous Vehicle Perception",
+      "tags": [
+        "about",
+        "bio"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#4",
+      "text": "Built and optimised C++ backend components for IoT device management sustaining hundreds of concurrent device connections across Windows and Linux servers\nMigrated the device-integration SDK from Java to C#, consolidating connection logic and UI into a single reusable SDK for IoT peripherals\nCollaborated with rugged-hardware providers (Zebra, Datalogic) on custom firmware and drivers in C/C++\nDesigned firmware- and driver-level benchmarks on ARM Cortex-M (STM32/NXP) to optimise low-level routines and interrupt handling for latency-sensitive workloads\n\nFeb 2021 – Sep 2022",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "42Gears Mobility Systems — Senior Software Engineer, IoT & Embedded Linux",
+      "tags": [
+        "about",
+        "bio"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#5",
+      "text": "Contributed to full software lifecycle of scalable applications using Java, Spring Boot, and React\nImplemented CI/CD pipelines using Azure DevOps for automated builds, testing, and deployments\nUtilised cloud monitoring tools (Azure AppInsights, Grafana) for production troubleshooting and performance optimisation across distributed systems\nMSc Smart, Connected and Autonomous Vehicles — University of Warwick, WMG (2024)\n Autonomous Vehicle Perception, Deep Learning for Robotics, Sensor Fusion & Calibration, Real-time Embedded Systems, Functional Safety (ISO 26262), GPU Computing & Optimisation\nBEng Electrical and Electronics Engineering — RMD Engineering College (2020)",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "Tata Consultancy Services — Systems Engineer",
+      "tags": [
+        "about",
+        "bio"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#6",
+      "text": "3D Perception & Spatial Intelligence — Multi-camera Bird's-Eye-View (BEV), RGB-D 3D SLAM (RTAB-Map), 3D occupancy / voxel mapping (OctoMap), 2D SLAM, 6-DoF object pose estimation, point-cloud processing, multi-sensor fusion (EKF), camera calibration (homography, RANSAC, pinhole intrinsics)\nMachine Learning & Embodied AI — PyTorch, Vision-Language Models (CLIP, SAM 2, DINO), Vision-Language-Action Models (OpenVLA, SmolVLA, piZero, Octo), imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases\nEdge Deployment & Inference Optimisation — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, NVIDIA Jetson / RTX edge GPUs, ultra-low-latency inference\nRobotics & Simulation — ROS 2 (Jazzy), Nav2, TF2, real-time control, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation\nSolution Architecture & Application Development — System design, API design (FastAPI, Next.js), protocol integration (DDS, MAVLink, CAN, OPC UA, VDA 5050, EtherCAT), fleet management (OTA), Docker, CI/CD (GitHub Actions), Prometheus/Grafana\nProgramming & Systems Software — Python, C++ (C++17/20), TypeScript, Kotlin, Embedded Linux, ARM Cortex-A, CMake, Kubernetes",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "What I Work On",
+      "tags": [
+        "about",
+        "bio"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#7",
+      "text": "Project Description Stack \n --------- ------------- ------- \n OhhO Robotics (OmniBotPro) Full-stack open-source robotics platform — the intelligence layer for AI and physical AI. 19 product consoles covering the complete robot lifecycle: design, training, simulation, VLA inference, agent reasoning, fleet management, and safety certification. Built on OhhO OS (Apache-2.0). Python / ROS 2 / TypeScript / Next.js \n runanywhere-sdks Production-ready toolkit to run AI locally Kotlin \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++ \n decentralized-voting-using-blockchain Decentralised voting with fingerprint authentication JavaScript",
+      "title": "About",
+      "url": "/about",
+      "source": "page",
+      "heading": "Open Source Projects",
+      "tags": [
+        "about",
+        "bio"
+      ],
+      "visibility": "public"
+    },
+    {
+      "id": "page/about#8",
       "text": "Follow me on GitHub · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
       "title": "About",
       "url": "/about",
       "source": "page",
       "heading": "Stay Connected",
-      "tags": ["about", "bio"],
+      "tags": [
+        "about",
+        "bio"
+      ],
       "visibility": "public"
     }
   ]

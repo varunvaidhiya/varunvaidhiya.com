@@ -19,6 +19,16 @@ Here's a collection of projects I've been building. All code is open source on [
 
 ---
 
+## OhhO Robotics (OmniBotPro)
+
+**The intelligence layer for AI and physical AI**
+
+A full-stack open-source robotics platform covering the complete robot lifecycle under one engine. 19 product consoles span design (3D robot builder), training (VLA/BC/RL fine-tuning), simulation (Gazebo/Isaac Sim), serving (REST inference API), agent reasoning (perceive → reason → verify → act → monitor → reflect), fleet management (OTA, monitoring), and safety certification (ISO 10218, ISO 13849, IEC 61508). Built on OhhO OS — a single open-source engine (Apache-2.0) that's robot-agnostic, brand-agnostic, and standards-based. The reference robot is a ~$500 mecanum mobile manipulator with a 6-camera array and a unified 9D learned policy (SmolVLA).
+
+[View on GitHub →](https://github.com/varunvaidhiya/OmniBotPro)
+
+---
+
 ## runanywhere-sdks
 
 **Production-ready toolkit to run AI locally**

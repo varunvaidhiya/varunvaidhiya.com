@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
-description: "Software Engineer based in the UK, specialising in AI, Robotics, and Performance Optimisation."
+description: "Software Engineer & Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI."
 ---
 
 import NewsletterForm from '../components/NewsletterForm.astro';
@@ -11,19 +11,62 @@ import NewsletterForm from '../components/NewsletterForm.astro';
     <img src="/varun-avatar.jpg" alt="Varun Vaidhiya" class="w-full h-auto rounded-lg" />
   </div>
   <div class="flex-1 min-w-0">
-    <p>Hi, I'm <strong>Varun Vaidhiya</strong> — a Software Engineer based in the <strong>UK</strong>, working at the intersection of AI, Robotics, and systems-level performance.</p>
-    <p>My focus is on <strong>optimising AI models through benchmarking</strong>, understanding <strong>low-level hardware behaviour</strong>, and delivering best-in-class solutions for performance-critical systems. I'm particularly interested in running AI efficiently on edge hardware and ARM architectures.</p>
-    <p>I build what excites me and release it all as open source — from ROS-based robots and AI inference toolkits to blockchain applications and data science case studies.</p>
+    <p>Hi, I'm <strong>Varun Vaidhiya</strong> — a Perception Engineer and Solution Architect specialising in 3D spatial intelligence and embodied AI. I unify 3D geometry with semantic scene understanding for robot navigation, locomotion, and manipulation.</p>
+    <p>I've architected end-to-end perception stacks — multi-camera bird's-eye-view perception, RGB-D 3D SLAM with persistent 3D occupancy mapping, 6-DoF object pose estimation, and EKF multi-sensor fusion. I train and deploy multimodal Vision-Language-Action networks in PyTorch and optimise them for ultra-low-latency edge GPU inference via TensorRT and ONNX Runtime.</p>
+    <p>I'm currently building <strong>OhhO Robotics</strong>, a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm targeting Solution Architect and Forward-Deployed Engineer roles in robotics and autonomous vehicles — companies building the intelligence layer for AI and physical AI.</p>
   </div>
 </div>
 
+## Experience
+
+### OhhO Robotics — Founder & Perception / Robotics Software Engineer
+*Oct 2024 – Present*
+
+Founded OhhO Robotics and built a full-stack robotics operating platform (25K+ lines, ROS 2 Jazzy) spanning perception, VLA inference, teleoperation, simulation, data pipelines, and fleet operations — productising a full embodied-AI stack from research prototype to deployable software.
+
+- Built multi-camera bird's-eye-view perception (4 wide-angle feeds → unified top-down via per-camera homographies with RANSAC/checkerboard calibration, CPU-only at 30 Hz)
+- Engineered persistent 3D spatial mapping fusing RGB-D 3D SLAM (RTAB-Map) and 3D occupancy mapping (OctoMap) with wheel-odometry/IMU EKF state estimation
+- Trained and fine-tuned multimodal Vision-Language-Action networks (SmolVLA, OpenVLA) in PyTorch, served behind a REST API (pluggable backends, Prometheus metrics)
+- Optimised perception and policy inference for edge hardware via TensorRT FP16/INT8 and ONNX Runtime (2–3x vision-encoder speed-up, under 5% output deviation, sub-200 ms end-to-end latency)
+- Built an end-to-end demonstration-data pipeline (LeRobot v2.0 format) with distributed training and W&B experiment tracking
+
+### Five AI — MSc Dissertation Researcher, Autonomous Vehicle Perception
+*Dec 2023 – Oct 2024*
+
+- Fine-tuned SAM 2 on autonomous driving datasets (Cityscapes) using distributed training, systematic hyperparameter optimisation, and W&B experiment tracking
+- Benchmarking vision foundation models on embedded platforms (Jetson Orin, RTX mobile GPU) — inference latency, memory footprint, and model performance
+- Optimised deep learning inference pipelines using Nsight Systems/Compute; applied INT8/FP16 quantisation, TensorRT optimisation, and custom CUDA kernels (30% inference time reduction on RTX 4070 mobile)
+- Investigated model compression (knowledge distillation, quantisation-aware fine-tuning, pruning) for deploying large-scale transformers on resource-constrained edge hardware
+
+### 42Gears Mobility Systems — Senior Software Engineer, IoT & Embedded Linux
+*Mar 2023 – Jul 2023*
+
+- Built and optimised C++ backend components for IoT device management sustaining hundreds of concurrent device connections across Windows and Linux servers
+- Migrated the device-integration SDK from Java to C#, consolidating connection logic and UI into a single reusable SDK for IoT peripherals
+- Collaborated with rugged-hardware providers (Zebra, Datalogic) on custom firmware and drivers in C/C++
+- Designed firmware- and driver-level benchmarks on ARM Cortex-M (STM32/NXP) to optimise low-level routines and interrupt handling for latency-sensitive workloads
+
+### Tata Consultancy Services — Systems Engineer
+*Feb 2021 – Sep 2022*
+
+- Contributed to full software lifecycle of scalable applications using Java, Spring Boot, and React
+- Implemented CI/CD pipelines using Azure DevOps for automated builds, testing, and deployments
+- Utilised cloud monitoring tools (Azure AppInsights, Grafana) for production troubleshooting and performance optimisation across distributed systems
+
+## Education
+
+- **MSc Smart, Connected and Autonomous Vehicles** — University of Warwick, WMG (2024)
+  *Autonomous Vehicle Perception, Deep Learning for Robotics, Sensor Fusion & Calibration, Real-time Embedded Systems, Functional Safety (ISO 26262), GPU Computing & Optimisation*
+- **BEng Electrical and Electronics Engineering** — RMD Engineering College (2020)
+
 ## What I Work On
 
-- **AI & Performance Optimisation** — Benchmarking AI models, profiling with Perfetto, and squeezing performance out of constrained hardware
-- **Robotics** — ROS-based systems, autonomous vehicles, sensor fusion (Kinect v2, LiDAR)
-- **Low-level Programming** — ARM architecture, embedded systems, hardware-software co-design
-- **AI on Edge / Arm** — Making AI inference efficient on ARM and mobile devices
-- **ML & Data Science** — EDA, predictive modelling, classification, SQL analytics
+- **3D Perception & Spatial Intelligence** — Multi-camera Bird's-Eye-View (BEV), RGB-D 3D SLAM (RTAB-Map), 3D occupancy / voxel mapping (OctoMap), 2D SLAM, 6-DoF object pose estimation, point-cloud processing, multi-sensor fusion (EKF), camera calibration (homography, RANSAC, pinhole intrinsics)
+- **Machine Learning & Embodied AI** — PyTorch, Vision-Language Models (CLIP, SAM 2, DINO), Vision-Language-Action Models (OpenVLA, SmolVLA, piZero, Octo), imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases
+- **Edge Deployment & Inference Optimisation** — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, NVIDIA Jetson / RTX edge GPUs, ultra-low-latency inference
+- **Robotics & Simulation** — ROS 2 (Jazzy), Nav2, TF2, real-time control, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation
+- **Solution Architecture & Application Development** — System design, API design (FastAPI, Next.js), protocol integration (DDS, MAVLink, CAN, OPC UA, VDA 5050, EtherCAT), fleet management (OTA), Docker, CI/CD (GitHub Actions), Prometheus/Grafana
+- **Programming & Systems Software** — Python, C++ (C++17/20), TypeScript, Kotlin, Embedded Linux, ARM Cortex-A, CMake, Kubernetes
 
 ## GitHub Activity
 
@@ -41,6 +84,7 @@ import NewsletterForm from '../components/NewsletterForm.astro';
 
 | Project | Description | Stack |
 |---------|-------------|-------|
+| [OhhO Robotics (OmniBotPro)](https://github.com/varunvaidhiya/OmniBotPro) | **Full-stack open-source robotics platform** — the intelligence layer for AI and physical AI. 19 product consoles covering the complete robot lifecycle: design, training, simulation, VLA inference, agent reasoning, fleet management, and safety certification. Built on OhhO OS (Apache-2.0). | Python / ROS 2 / TypeScript / Next.js |
 | [runanywhere-sdks](https://github.com/varunvaidhiya/runanywhere-sdks) | Production-ready toolkit to run AI locally | Kotlin |
 | [Mecanum-Wheel-Robot](https://github.com/varunvaidhiya/Mecanum-Wheel-Robot) | ROS-based mecanum wheel robot | Python / ROS |
 | [AI-on-Arm](https://github.com/varunvaidhiya/AI-on-Arm) | AI inference on ARM hardware | Various |

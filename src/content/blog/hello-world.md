@@ -11,14 +11,14 @@ description: "Welcome to my website — a space for AI, robotics, performance en
 
 # Hello World
 
-Welcome to my personal website! I'm **Varun Vaidhiya**, a Software Engineer based in the UK working on AI, Robotics, and Performance Optimisation.
+Welcome to my personal website! I'm **Varun Vaidhiya**, a Software Engineer and Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.
 
 I'll be sharing thoughts on:
 
-- **AI model benchmarking** and performance optimisation on edge hardware
-- **Robotics** — ROS, sensor fusion, autonomous systems
-- **Low-level programming** — ARM architecture, embedded systems
-- **Open source projects** I'm building and shipping
+- **Full-stack robotic software** — perception, VLA inference, agent reasoning, fleet management, and safety certification
+- **Autonomous vehicles** — sensor fusion, perception models, model-based safety design
+- **AI & physical AI** — the intelligence layer between AI models and physical robots
+- **Open source projects** I'm building and shipping, including OhhO Robotics
 
 Everything I build lands on [GitHub](https://github.com/varunvaidhiya) — feel free to fork, remix, or contribute.
 

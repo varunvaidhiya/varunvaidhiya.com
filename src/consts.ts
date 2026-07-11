@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://varunvaidhiya.com/",
   author: "Varun Vaidhiya",
   profile: "https://varunvaidhiya.com/about",
-  desc: "Software Engineer specialising in AI, Robotics, and Performance Optimisation. Based in the UK.",
+  desc: "Software Engineer & Solution Architect building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI.",
   title: "Varun Vaidhiya",
   ogImage: "varun-avatar.jpg",
   lightAndDarkMode: true,
@@ -114,9 +114,9 @@ export const DIGITAL_MIND = {
   placeholder: "Ask about my projects, robotics, AI…",
   disclaimer: "AI answers grounded in Varun's notes and posts. May be imperfect.",
   examples: [
-    "What robotics projects have you worked on?",
-    "Tell me about your AI-on-Arm work.",
-    "What are you most proud of building?",
-    "How do you approach performance optimisation?",
+    "Tell me about OhhO Robotics.",
+    "What's your experience with autonomous vehicles?",
+    "How do you architect robotic software systems?",
+    "What robotics standards do you work with?",
   ],
 };
