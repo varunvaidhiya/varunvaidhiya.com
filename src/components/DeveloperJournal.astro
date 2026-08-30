@@ -1,0 +1,81 @@
+---
+import IconGitHub from "@/assets/icons/IconGitHub.svg";
+import { fetchRecentCommits } from "@/utils/fetchGitHubCommits";
+import { formatFeedDate } from "@/utils/fetchGitHub";
+
+const USERNAME = "varunvaidhiya";
+const commits = await fetchRecentCommits(USERNAME);
+const hasCommits = commits.length > 0;
+---
+
+<div class="developer-journal mt-8 mb-4 p-6 rounded-xl border-2 border-accent bg-accent/5 dark:bg-accent/10 relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-full h-1 bg-accent"></div>
+  
+  <div class="flex items-center gap-3 mb-6">
+    <IconGitHub width={28} height={28} class="text-accent fill-current" />
+    <h2 class="text-2xl font-bold m-0 tracking-wide">Developer Journal</h2>
+    <span class="text-xs font-semibold px-2 py-1 bg-accent/20 text-accent rounded-full ml-auto">
+      Last 30 Days
+    </span>
+  </div>
+
+  {
+    hasCommits ? (
+      <div class="journal-feed space-y-4 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+        {commits.map((commit) => (
+          <div class="journal-entry bg-white dark:bg-skin-card p-4 rounded-lg shadow-sm border border-skin-line transition-all hover:border-accent">
+            <div class="flex justify-between items-start gap-4 mb-2">
+              <a 
+                href={commit.url} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="font-semibold text-lg text-skin-accent decoration-dashed hover:underline line-clamp-2"
+              >
+                {commit.message}
+              </a>
+              <time class="text-sm text-skin-base/70 whitespace-nowrap" datetime={commit.date}>
+                {formatFeedDate(commit.date)}
+              </time>
+            </div>
+            <div class="flex items-center gap-2 text-sm text-skin-base/80">
+              <span class="opacity-75">📦</span>
+              <a 
+                href={commit.repoUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="hover:text-skin-accent transition-colors"
+              >
+                {commit.repo}
+              </a>
+              <span class="mx-1 opacity-50">•</span>
+              <span class="font-mono text-xs opacity-70">
+                {commit.sha.substring(0, 7)}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-8 text-skin-base/70 italic">
+        <p>No recent commits found or authentication required.</p>
+        <p class="text-sm mt-2 opacity-80">(If missing private commits, ensure GITHUB_TOKEN is configured in Vercel)</p>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--color-accent), 0.3);
+    border-radius: 10px;
+  }
+  .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(var(--color-accent), 0.6);
+  }
+</style>

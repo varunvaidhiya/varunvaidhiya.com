@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import IconRss from "@/assets/icons/IconRss.svg";
 import Card from "@/components/Card.astro";
+import DeveloperJournal from "@/components/DeveloperJournal.astro";
 import Footer from "@/components/Footer.astro";
 import GitHubFeed from "@/components/GitHubFeed.astro";
 import Header from "@/components/Header.astro";
@@ -26,7 +27,7 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 ---
 
 <Layout
-  description="Varun Vaidhiya: Engineer building the intelligence layer for AI and physical AI — full-stack robotic software, autonomous vehicles, and edge AI."
+  description="Varun Vaidhiya: Full-Stack Robotics & AI Engineer building intelligent systems. Specializing in Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI."
 >
   <StructuredData type="WebSite" data={{}} />
   <StructuredData type="Person" data={{}} />
@@ -64,8 +65,8 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
             </a>
           </div>
           <p>
-            I'm an engineer building the intelligence layer for AI and physical AI.<br />
-            Robotics, autonomous vehicles, embedded systems, and full-stack software engineering.
+            I'm a Full-Stack Robotics & AI Engineer building intelligent systems.<br />
+            Specializing in Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI.
           </p>
           <a
             href="https://ohho-robotics.com"
@@ -87,6 +88,10 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
     </section>
 
     <Hr />
+
+    <section id="developer-journal" class="pt-8 pb-2">
+      <DeveloperJournal />
+    </section>
 
     <!-- Three-column social feed timeline -->
     <section id="social-feeds" class="feeds-section pt-8 pb-4">
