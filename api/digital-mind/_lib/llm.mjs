@@ -85,6 +85,9 @@ export async function* streamChat({ config, providerId, system, messages, maxTok
       messages: payloadMessages,
       stream: true,
       stream_options: { include_usage: true },
+      // Provider-specific request extras from config (e.g. Kimi's `thinking`
+      // switch — see PROVIDER_DEFS in config.mjs). Absent for most providers.
+      ...(p.bodyExtra ?? {}),
     }),
   });
 

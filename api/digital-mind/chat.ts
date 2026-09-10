@@ -139,6 +139,15 @@ export async function POST(req: Request): Promise<Response> {
             message:
               "I'd rather not answer that one — try asking about my projects or engineering work.",
           });
+        } else if (!answer) {
+          // The provider returned 200 but no answer text (e.g. a thinking-mode
+          // model spent the whole token budget on reasoning). Never leave the
+          // visitor staring at an empty bubble.
+          send({
+            type: "error",
+            message:
+              "The model came back with an empty reply — please ask again, or switch models above.",
+          });
         }
 
         send({ type: "followups", followups: buildFollowups(contextChunks) });

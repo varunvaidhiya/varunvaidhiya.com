@@ -21,6 +21,12 @@ export const PROVIDER_DEFS = {
     // in May 2026); override via DIGITAL_MIND_KIMI_MODEL if this 404s.
     defaultModel: "kimi-k2.6",
     defaultBaseUrl: "https://api.moonshot.ai/v1",
+    // kimi-k2.6 enables "thinking" by default: the model then streams its whole
+    // reasoning as delta.reasoning_content BEFORE any answer text — and that
+    // reasoning alone can exhaust the (small) max_tokens budget, so a client
+    // that only reads delta.content sees a 200 response with an empty answer.
+    // This is a fast chat widget, so thinking is disabled at the source.
+    bodyExtra: { thinking: { type: "disabled" } },
   },
   gemini: {
     label: "Gemini",
@@ -44,7 +50,7 @@ const PROVIDER_ORDER = ["kimi", "gemini"];
  * @property {string} label
  * @property {string} model
  *
- * @typedef {ProviderInfo & { apiKey?: string, baseUrl: string, configured: boolean }} ProviderConfig
+ * @typedef {ProviderInfo & { apiKey?: string, baseUrl: string, configured: boolean, bodyExtra?: Record<string, unknown> }} ProviderConfig
  *
  * @typedef {Object} DigitalMindConfig
  * @property {number} maxTokens
@@ -91,7 +97,7 @@ export function getConfig(env = process.env) {
     const model = env[def.modelEnv] ?? def.defaultModel;
     const baseUrl = (env[def.baseUrlEnv] ?? def.defaultBaseUrl).replace(/\/$/, "");
     const configured = Boolean(apiKey);
-    providerConfigs[id] = { id, label: def.label, model, apiKey, baseUrl, configured };
+    providerConfigs[id] = { id, label: def.label, model, apiKey, baseUrl, configured, bodyExtra: def.bodyExtra };
     if (configured) providers.push({ id, label: def.label, model });
   }
   const requested = env.DIGITAL_MIND_PROVIDER;

@@ -12,6 +12,7 @@ const config = {
       apiKey: "moon-key",
       baseUrl: "https://api.moonshot.ai/v1",
       configured: true,
+      bodyExtra: { thinking: { type: "disabled" } },
     },
     gemini: {
       id: "gemini",
@@ -77,6 +78,30 @@ test("streamChat shapes an OpenAI-compatible request for the chosen provider", a
   // system prompt is prepended as the first message
   assert.deepEqual(cap.body.messages[0], { role: "system", content: "You are Varun." });
   assert.deepEqual(cap.body.messages[1], { role: "user", content: "hello" });
+});
+
+test("streamChat merges provider bodyExtra into the request (Kimi thinking switch)", async () => {
+  let cap;
+  const fetchImpl = async (url, init) => {
+    cap = { url, body: JSON.parse(init.body) };
+    return { ok: true, status: 200, body: sseStream(["[DONE]"]) };
+  };
+  await collect(
+    streamChat({ config, providerId: "kimi", system: "s", messages: [{ role: "user", content: "q" }], maxTokens: 100, fetchImpl }),
+  );
+  assert.deepEqual(cap.body.thinking, { type: "disabled" });
+});
+
+test("streamChat omits bodyExtra keys for providers without one", async () => {
+  let cap;
+  const fetchImpl = async (url, init) => {
+    cap = { body: JSON.parse(init.body) };
+    return { ok: true, status: 200, body: sseStream(["[DONE]"]) };
+  };
+  await collect(
+    streamChat({ config, providerId: "gemini", system: "s", messages: [{ role: "user", content: "q" }], maxTokens: 100, fetchImpl }),
+  );
+  assert.equal("thinking" in cap.body, false);
 });
 
 test("streamChat yields text deltas in order and normalizes usage", async () => {
