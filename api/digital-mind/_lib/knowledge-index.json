@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-11T15:27:04.983Z",
+  "generatedAt": "2026-09-10T08:04:54.030Z",
   "docCount": 3,
   "chunkCount": 10,
   "bySource": {
@@ -81,7 +81,7 @@
     },
     {
       "id": "page/about#0",
-      "text": "Hi, I'm Varun Vaidhiya — an engineer building the intelligence layer for AI and physical AI. My work spans robotics, autonomous vehicles, embedded systems, and full-stack software engineering. \n I've built end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I've worked on IoT device management backends in C++, deep learning pipelines on Jetson and RTX edge GPUs, and full-stack applications in Java, Python, and TypeScript. \n I'm currently building OhhO Robotics , a full-stack open-source robotics platform covering the complete robot lifecycle under one engine. I'm interested in working with companies building the intelligence layer for robotics, autonomous vehicles, and UAVs.",
+      "text": "Hi, I'm Varun Vaidhiya — a Full-Stack Robotics & AI Engineer building intelligent systems. My work focuses on Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI. \n I've built end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I specialize in C++ for embedded Linux and IoT device management, as well as building deep learning pipelines on Jetson and RTX edge GPUs. \n I'm currently building OhhO Robotics , an open-source robotics platform covering the complete robot lifecycle under one engine. I'm interested in working with companies building the intelligence layer for robotics, autonomous vehicles, and UAVs.",
       "title": "About",
       "url": "/about",
       "source": "page",
@@ -106,7 +106,7 @@
     },
     {
       "id": "page/about#2",
-      "text": "3D Perception & Spatial Intelligence — Multi-camera Bird's-Eye-View (BEV), RGB-D 3D SLAM (RTAB-Map), 3D occupancy / voxel mapping (OctoMap), 2D SLAM, 6-DoF object pose estimation, point-cloud processing, multi-sensor fusion (EKF), camera calibration (homography, RANSAC, pinhole intrinsics)\nMachine Learning & Embodied AI — PyTorch, Vision-Language Models (CLIP, SAM 2, DINO), Vision-Language-Action Models (OpenVLA, SmolVLA, piZero, Octo), imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases\nEdge Deployment & Inference Optimisation — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, NVIDIA Jetson / RTX edge GPUs, ultra-low-latency inference\nRobotics & Simulation — ROS 2 (Jazzy), Nav2, TF2, real-time control, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation\nSolution Architecture & Application Development — System design, API design (FastAPI, Next.js), protocol integration (DDS, MAVLink, CAN, OPC UA, VDA 5050, EtherCAT), fleet management (OTA), Docker, CI/CD (GitHub Actions), Prometheus/Grafana\nProgramming & Systems Software — Python, C++ (C++17/20), TypeScript, Kotlin, Embedded Linux, ARM Cortex-A, CMake, Kubernetes",
+      "text": "3D Perception & Spatial Intelligence — Multi-camera Bird's-Eye-View (BEV), RGB-D 3D SLAM (RTAB-Map), 3D occupancy / voxel mapping (OctoMap), 2D SLAM, 6-DoF object pose estimation, point-cloud processing, multi-sensor fusion (EKF), camera calibration (homography, RANSAC, pinhole intrinsics)\nMachine Learning & Embodied AI — PyTorch, Vision-Language Models (CLIP, SAM 2, DINO), Vision-Language-Action Models (OpenVLA, SmolVLA, piZero, Octo), imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases\nEdge Deployment & Inference Optimisation — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, NVIDIA Jetson / RTX edge GPUs, ultra-low-latency inference\nRobotics & Simulation — ROS 2 (Jazzy), Nav2, TF2, real-time control, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation\nSystems & Infrastructure — Embedded Linux, ARM Cortex-A, System design, IoT protocol integration (DDS, MAVLink, CAN, OPC UA), C++ (C++17/20), Python, CMake. (Supporting Stack: Kubernetes, Docker, TypeScript, Next.js)",
       "title": "About",
       "url": "/about",
       "source": "page",
@@ -119,7 +119,7 @@
     },
     {
       "id": "page/about#3",
-      "text": "Project Description Stack \n --------- ------------- ------- \n OhhO Robotics (OmniBotPro) Full-stack open-source robotics platform — the intelligence layer for AI and physical AI. 19 product consoles covering the complete robot lifecycle: design, training, simulation, VLA inference, agent reasoning, fleet management, and safety certification. Built on OhhO OS (Apache-2.0). Python / ROS 2 / TypeScript / Next.js \n runanywhere-sdks Production-ready toolkit to run AI locally Kotlin \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++ \n decentralized-voting-using-blockchain Decentralised voting with fingerprint authentication JavaScript",
+      "text": "Project Description Stack \n --------- ------------- ------- \n OhhO Robotics (OmniBotPro) Full-stack open-source robotics platform — the intelligence layer for AI and physical AI. 19 product consoles covering the complete robot lifecycle: design, training, simulation, VLA inference, agent reasoning, fleet management, and safety certification. Built on OhhO OS (Apache-2.0). Python / ROS 2 / TypeScript / Next.js \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++",
       "title": "About",
       "url": "/about",
       "source": "page",

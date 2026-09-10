@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { DIGITAL_MIND } from "../../consts";
+import DigitalMindVoice from "./DigitalMindVoice";
 import "./digital-mind.css";
 
 type Source = { title: string; url: string; snippet: string };
@@ -56,6 +57,7 @@ export default function DigitalMind() {
   const [busy, setBusy] = useState(false);
   const [providers, setProviders] = useState<Provider[]>([]);
   const [provider, setProvider] = useState("");
+  const [voiceMode, setVoiceMode] = useState(false);
 
   const bodyRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -187,9 +189,11 @@ export default function DigitalMind() {
     }
   }
 
-  async function send(text: string) {
+  // Streams an answer into the transcript. Resolves to the final answer text
+  // ("" on failure) so Voice Mode can speak the reply aloud.
+  async function send(text: string): Promise<string> {
     const q = text.trim();
-    if (!q || busy) return;
+    if (!q || busy) return "";
 
     setInput("");
     const userMsg: Message = { id: uid(), role: "user", content: q };
@@ -200,6 +204,7 @@ export default function DigitalMind() {
 
     const ac = new AbortController();
     abortRef.current = ac;
+    let answerText = "";
 
     try {
       const res = await fetch(DIGITAL_MIND.endpoint, {
@@ -230,7 +235,9 @@ export default function DigitalMind() {
           const payload = line.slice(5).trim();
           if (!payload) continue;
           try {
-            handleEvent(JSON.parse(payload) as StreamEvent);
+            const evt = JSON.parse(payload) as StreamEvent;
+            if (evt.type === "token") answerText += evt.text ?? "";
+            handleEvent(evt);
           } catch {
             /* skip malformed frame */
           }
@@ -249,6 +256,7 @@ export default function DigitalMind() {
       setBusy(false);
       abortRef.current = null;
     }
+    return answerText;
   }
 
   function onSubmit(e: FormEvent) {
@@ -326,6 +334,16 @@ export default function DigitalMind() {
               )}
               <button
                 type="button"
+                className={`dm-iconbtn${voiceMode ? " dm-iconbtn--active" : ""}`}
+                aria-label={voiceMode ? "Leave voice mode" : "Enter voice mode"}
+                aria-pressed={voiceMode}
+                title={voiceMode ? "Leave voice mode" : "Voice mode — talk to the Digital Mind"}
+                onClick={() => setVoiceMode((v) => !v)}
+              >
+                <VoiceIcon />
+              </button>
+              <button
+                type="button"
                 className="dm-iconbtn"
                 aria-label="Close"
                 title="Close"
@@ -353,52 +371,58 @@ export default function DigitalMind() {
               </div>
             )}
 
-            <div className="dm-body" ref={bodyRef}>
-              {messages.length === 0 ? (
-                <div className="dm-empty">
-                  <p className="dm-empty__lead">{DIGITAL_MIND.intro}</p>
-                  <div className="dm-examples">
-                    {DIGITAL_MIND.examples.map((ex) => (
-                      <button
-                        key={ex}
-                        type="button"
-                        className="dm-example"
-                        onClick={() => send(ex)}
-                      >
-                        {ex}
-                      </button>
-                    ))}
-                  </div>
+            {voiceMode ? (
+              <DigitalMindVoice busy={busy} onAsk={send} onExit={() => setVoiceMode(false)} />
+            ) : (
+              <>
+                <div className="dm-body" ref={bodyRef}>
+                  {messages.length === 0 ? (
+                    <div className="dm-empty">
+                      <p className="dm-empty__lead">{DIGITAL_MIND.intro}</p>
+                      <div className="dm-examples">
+                        {DIGITAL_MIND.examples.map((ex) => (
+                          <button
+                            key={ex}
+                            type="button"
+                            className="dm-example"
+                            onClick={() => send(ex)}
+                          >
+                            {ex}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    messages.map((m) => (
+                      <MessageBubble key={m.id} message={m} onFollowup={send} busy={busy} />
+                    ))
+                  )}
                 </div>
-              ) : (
-                messages.map((m) => (
-                  <MessageBubble key={m.id} message={m} onFollowup={send} busy={busy} />
-                ))
-              )}
-            </div>
 
-            <form className="dm-form" onSubmit={onSubmit}>
-              <textarea
-                ref={inputRef}
-                className="dm-input"
-                rows={1}
-                placeholder={DIGITAL_MIND.placeholder}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={onKeyDown}
-                disabled={busy}
-                aria-label="Ask a question"
-              />
-              <button
-                type="submit"
-                className="dm-send"
-                disabled={busy || input.trim().length === 0}
-                aria-label="Send"
-              >
-                <SendIcon />
-              </button>
-            </form>
-            <p className="dm-footnote">{DIGITAL_MIND.disclaimer}</p>
+                <form className="dm-form" onSubmit={onSubmit}>
+                  <textarea
+                    ref={inputRef}
+                    className="dm-input"
+                    rows={1}
+                    placeholder={DIGITAL_MIND.placeholder}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    disabled={busy}
+                    aria-label="Ask a question"
+                  />
+                  <button
+                    type="submit"
+                    className="dm-send"
+                    disabled={busy || input.trim().length === 0}
+                    aria-label="Send"
+                  >
+                    <SendIcon />
+                  </button>
+                </form>
+                <p className="dm-footnote">{DIGITAL_MIND.disclaimer}</p>
+              </>
+            )}
           </div>
         </div>
       )}
@@ -546,6 +570,28 @@ function SendIcon() {
       aria-hidden="true"
     >
       <path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z" />
+    </svg>
+  );
+}
+
+function VoiceIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M3 10v4" />
+      <path d="M7 7v10" />
+      <path d="M12 4v16" />
+      <path d="M17 7v10" />
+      <path d="M21 10v4" />
     </svg>
   );
 }

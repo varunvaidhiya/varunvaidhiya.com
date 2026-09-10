@@ -524,6 +524,352 @@
   text-align: center;
 }
 
+/* ── Voice mode ────────────────────────────────────────────────── */
+
+.dm-voice {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.dm-voice__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem 0.6rem;
+}
+
+/* The avatar: Varun's photo, ringed by state-driven animations. If an
+   AI-generated idle loop video exists (/dm-avatar-loop.mp4) it fades in over
+   the photo for a true "living avatar" look. */
+.dm-voice__avatar {
+  position: relative;
+  width: 10.5rem;
+  height: 10.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.dm-voice__img,
+.dm-voice__video {
+  grid-area: 1 / 1;
+  width: 8.8rem;
+  height: 8.8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+}
+
+.dm-voice__video {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+.dm-voice__video--ready {
+  opacity: 1;
+}
+
+.dm-voice__glow {
+  position: absolute;
+  inset: 14%;
+  border-radius: 50%;
+  box-shadow: 0 0 60px 16px var(--accent);
+  opacity: 0.15;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.dm-voice__avatar--listening .dm-voice__glow {
+  opacity: 0.32;
+}
+
+.dm-voice__avatar--thinking .dm-voice__glow {
+  opacity: 0.28;
+}
+
+.dm-voice__avatar--speaking .dm-voice__glow {
+  opacity: 0.45;
+}
+
+.dm-voice__ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dm-voice__avatar--listening .dm-voice__ring--1 {
+  animation: dm-voice-ripple 2.1s ease-out infinite;
+}
+.dm-voice__avatar--listening .dm-voice__ring--2 {
+  animation: dm-voice-ripple 2.1s ease-out 1.05s infinite;
+}
+.dm-voice__avatar--speaking .dm-voice__ring--1 {
+  animation: dm-voice-ripple 1.15s ease-out infinite;
+}
+.dm-voice__avatar--speaking .dm-voice__ring--2 {
+  animation: dm-voice-ripple 1.15s ease-out 0.57s infinite;
+}
+
+/* Spinning arc shown while the answer is being generated. */
+.dm-voice__spin {
+  position: absolute;
+  inset: 1.5%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--accent), transparent 55%);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dm-voice__avatar--thinking .dm-voice__spin {
+  opacity: 1;
+  animation: dm-voice-spin 0.9s linear infinite;
+}
+
+/* Subtle "talking" motion while the reply is spoken. */
+.dm-voice__avatar--speaking .dm-voice__img,
+.dm-voice__avatar--speaking .dm-voice__video--ready {
+  animation: dm-voice-talk 0.55s ease-in-out infinite;
+}
+
+/* Gentle breathing when idle. */
+.dm-voice__avatar--idle .dm-voice__img {
+  animation: dm-voice-breathe 4.5s ease-in-out infinite;
+}
+
+.dm-voice__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 1.25rem;
+}
+
+.dm-voice__bars span {
+  width: 3px;
+  height: 25%;
+  border-radius: 2px;
+  background: var(--accent);
+  opacity: 0.3;
+}
+
+.dm-voice__bars--listening span {
+  animation: dm-voice-bar 0.95s ease-in-out infinite;
+  opacity: 0.85;
+}
+
+.dm-voice__bars--speaking span {
+  animation: dm-voice-bar 0.5s ease-in-out infinite;
+  opacity: 0.9;
+}
+
+.dm-voice__status {
+  font-size: 0.76rem;
+  opacity: 0.72;
+  text-align: center;
+  min-height: 1.2em;
+  padding: 0 1rem;
+}
+
+.dm-voice__transcript {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem 0.8rem;
+  scrollbar-width: thin;
+}
+
+.dm-voice__line {
+  font-size: 0.83rem;
+  line-height: 1.55;
+}
+
+.dm-voice__line--user {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.dm-voice__line--reply {
+  border-left: 2px solid var(--accent);
+  padding-left: 0.6rem;
+}
+
+.dm-voice__hint {
+  margin: auto;
+  max-width: 24rem;
+  text-align: center;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  opacity: 0.6;
+}
+
+.dm-voice__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  border-top: 1px solid var(--border);
+}
+
+.dm-voice__mic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+.dm-voice__mic:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dm-voice__mic--on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--background);
+}
+
+.dm-voice__mic:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dm-voice__typeform {
+  flex: 1;
+  display: flex;
+  min-width: 0;
+}
+
+.dm-voice__typeinput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.dm-voice__typeinput:focus-visible {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.dm-voice__exit {
+  flex-shrink: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  color: var(--foreground);
+  font-family: inherit;
+  font-size: 0.7rem;
+  opacity: 0.72;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.dm-voice__exit:hover {
+  opacity: 1;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.dm-iconbtn--active {
+  opacity: 1;
+  color: var(--accent);
+}
+
+@media (max-height: 620px) {
+  .dm-voice__stage {
+    padding-top: 0.9rem;
+  }
+  .dm-voice__avatar {
+    width: 8rem;
+    height: 8rem;
+  }
+  .dm-voice__img,
+  .dm-voice__video {
+    width: 6.8rem;
+    height: 6.8rem;
+  }
+}
+
+@keyframes dm-voice-ripple {
+  0% {
+    transform: scale(0.92);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+@keyframes dm-voice-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dm-voice-talk {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.035);
+  }
+  60% {
+    transform: scale(0.995);
+  }
+}
+
+@keyframes dm-voice-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes dm-voice-bar {
+  0%,
+  100% {
+    height: 25%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
 @keyframes dm-fade {
   from {
     opacity: 0;
@@ -559,7 +905,13 @@
   .dm-fab,
   .dm-overlay,
   .dm-panel,
-  .dm-typing span {
+  .dm-typing span,
+  .dm-voice__ring,
+  .dm-voice__spin,
+  .dm-voice__glow,
+  .dm-voice__img,
+  .dm-voice__video,
+  .dm-voice__bars span {
     animation: none;
     transition: none;
   }

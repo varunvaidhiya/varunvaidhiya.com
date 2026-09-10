@@ -119,7 +119,7 @@ give visitors the in‑chat model switcher. The browser only ever sends a provid
 | `MOONSHOT_API_KEY` | _(one key required)_ | Enables **Kimi K2**. Without any provider key the UI shows a friendly "not connected" message. |
 | `GEMINI_API_KEY` | _(one key required)_ | Enables **Gemini**. |
 | `DIGITAL_MIND_PROVIDER` | first configured | Default provider id (`kimi` or `gemini`) when the visitor hasn't picked one. Preference order is Kimi → Gemini. |
-| `DIGITAL_MIND_KIMI_MODEL` | `kimi-k2.6` | Kimi model id. Moonshot retires ids often — override here if it 404s. |
+| `DIGITAL_MIND_KIMI_MODEL` | `kimi-k2.6` | Kimi model id. Moonshot retires ids often — override here if it 404s. Thinking mode is disabled at the source (see note below). |
 | `DIGITAL_MIND_GEMINI_MODEL` | `gemini-flash-latest` | Gemini model id. The `-latest` alias auto-updates; pin a dated id here if you prefer. |
 | `DIGITAL_MIND_KIMI_BASE_URL` | `https://api.moonshot.ai/v1` | Moonshot API base (e.g. use `…moonshot.cn/v1` for the China endpoint). |
 | `DIGITAL_MIND_GEMINI_BASE_URL` | `…/v1beta/openai` | Gemini OpenAI‑compatible API base. |
@@ -130,6 +130,13 @@ give visitors the in‑chat model switcher. The browser only ever sends a provid
 Both providers are reached through a single **OpenAI‑compatible** streaming client
 (`_lib/llm.mjs`), so adding another OpenAI‑compatible provider is just one more entry in the
 registry (`_lib/config.mjs` → `PROVIDER_DEFS`).
+
+> **Kimi thinking mode (important).** `kimi-k2.6` enables *thinking* by default: the model
+> streams its reasoning as `delta.reasoning_content` **before** any answer text — and the
+> reasoning alone can exhaust the whole `max_tokens` budget, so the visitor saw a 200
+> response with an **empty answer**. `PROVIDER_DEFS.kimi.bodyExtra` therefore sends
+> `thinking: { type: "disabled" }` with every request (merged in `_lib/llm.mjs`), and
+> `chat.ts` turns any empty answer into a visible error instead of a silent blank bubble.
 
 **Milestone 2 — hybrid retrieval (optional, off by default):**
 
@@ -306,6 +313,38 @@ npm test                     # unit tests for chunking + retrieval + fusion
 The chat endpoint is a Vercel Function, so it runs on Vercel (or `vercel dev`), not under
 `astro preview`. The UI degrades gracefully when the endpoint is unavailable.
 
+## Voice mode (avatar)
+
+A waveform button in the chat header switches the panel into **voice mode** — a
+hands‑free conversation with an animated avatar of Varun's photo:
+
+- **Speech in** — the browser's Web Speech API (`SpeechRecognition`) transcribes the
+  visitor's question; the same `/api/digital-mind/chat` stream answers it, and the turns
+  appear in the normal transcript when switching back to text chat.
+- **Speech out** — the answer is stripped of Markdown, split into sentence‑sized chunks,
+  and spoken with `speechSynthesis` (a periodic pause/resume works around the Chromium
+  long‑utterance stall). Tapping the mic mid‑reply interrupts it (barge‑in).
+- **The avatar** — `varun-avatar.jpg` in a ring layout with state‑driven CSS animation:
+  ripple rings while *listening*, a spinning arc while *thinking*, faster ripples plus a
+  subtle "talking" motion while *speaking*, and gentle breathing when idle.
+  `prefers-reduced-motion` disables all of it.
+- **Living‑avatar upgrade path** — if `public/dm-avatar-loop.mp4` exists, voice mode
+  fades it in over the photo. This is the NavTalk‑style trick: run the photo through an
+  image‑to‑video model (e.g. Kling) with a "stay still, blink once" prompt, cut ±1s
+  around the blink, reverse‑concatenate for a seamless 4s loop, and drop the file in
+  `public/`. No code change needed. True real‑time lip‑sync (à la NavTalk/HeyGen/D‑ID)
+  would slot in behind the same view as a WebRTC stream and needs a paid avatar service
+  key — deliberately not built in, to keep the site key‑free and CSP‑strict.
+
+Everything runs client‑side with browser APIs — no extra keys, no third‑party calls, and
+no CSP changes (the only network traffic remains the same‑origin chat endpoint). Voice
+input needs Chromium‑based browsers; elsewhere voice mode still speaks typed‑question
+replies aloud.
+
+| Path | Purpose |
+| ---- | ------- |
+| `src/components/ui/DigitalMindVoice.tsx` | The voice‑mode view (recognition, synthesis, avatar state machine). |
+
 ## Roadmap
 
 Milestone 1 was intentionally the thin, UX‑first slice; each later milestone fills in behind
@@ -326,4 +365,7 @@ the same UI and contracts:
 5. **Admin area** ✅ — a token‑gated `/admin` dashboard for usage monitoring, conversation
    review, document upload/delete into the live index, and persona/prompt management. Next:
    ingestion logs and per‑document permissions.
-6. **Future integrations** — voice interface, vision models, and knowledge graphs.
+6. **Voice interface** ✅ — hands‑free voice mode with an animated photo avatar
+   (browser speech recognition + synthesis; optional AI idle‑loop video overlay). Next:
+   vision models, knowledge graphs, and true lip‑synced video avatars (needs a
+   digital‑human service key).
