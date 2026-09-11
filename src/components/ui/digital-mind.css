@@ -553,7 +553,7 @@
   place-items: center;
 }
 
-.dm-voice__img,
+.dm-voice__canvas,
 .dm-voice__video {
   grid-area: 1 / 1;
   width: 8.8rem;
@@ -637,14 +637,14 @@
   animation: dm-voice-spin 0.9s linear infinite;
 }
 
-/* Subtle "talking" motion while the reply is spoken. */
-.dm-voice__avatar--speaking .dm-voice__img,
-.dm-voice__avatar--speaking .dm-voice__video--ready {
+/* Subtle "talking" motion while the reply is spoken (on top of the
+   canvas lip-sync driven by speech word boundaries). */
+.dm-voice__avatar--speaking .dm-voice__canvas {
   animation: dm-voice-talk 0.55s ease-in-out infinite;
 }
 
 /* Gentle breathing when idle. */
-.dm-voice__avatar--idle .dm-voice__img {
+.dm-voice__avatar--idle .dm-voice__canvas {
   animation: dm-voice-breathe 4.5s ease-in-out infinite;
 }
 
@@ -813,7 +813,7 @@
     width: 8rem;
     height: 8rem;
   }
-  .dm-voice__img,
+  .dm-voice__canvas,
   .dm-voice__video {
     width: 6.8rem;
     height: 6.8rem;
@@ -909,7 +909,7 @@
   .dm-voice__ring,
   .dm-voice__spin,
   .dm-voice__glow,
-  .dm-voice__img,
+  .dm-voice__canvas,
   .dm-voice__video,
   .dm-voice__bars span {
     animation: none;

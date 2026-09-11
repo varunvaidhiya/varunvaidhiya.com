@@ -20,6 +20,41 @@ const AVATAR_IMG = "/varun-avatar.jpg";
 const AVATAR_LOOP = "/dm-avatar-loop.mp4";
 const BAR_DELAYS = [0, 0.12, 0.24, 0.36, 0.48];
 
+// Mouth-sync calibration for varun-avatar.jpg (fractions of image height).
+// MOUTH_Y is the lips line; everything below it drops down (jaw) while the lip
+// strip above it stretches — the classic talking-photo warp. Tune these two if
+// the photo changes.
+const MOUTH_Y = 0.44;
+const MOUTH_STRIP = 0.035;
+const MOUTH_MAX_DELTA = 0.07;
+
+/** Draw the photo with the jaw dropped by `open` (0..1) — canvas "lip sync". */
+function drawTalkingFace(canvas: HTMLCanvasElement, img: HTMLImageElement, open: number) {
+  const w = img.naturalWidth;
+  const h = img.naturalHeight;
+  if (!w || !h) return;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+  const delta = Math.max(0, Math.min(1, open)) * MOUTH_MAX_DELTA * h;
+  const mouthY = MOUTH_Y * h;
+  const strip = MOUTH_STRIP * h;
+  if (canvas.width !== w || canvas.height !== h) {
+    canvas.width = w;
+    canvas.height = h;
+  }
+  ctx.clearRect(0, 0, w, h);
+  // 1. Everything above the lips — fixed.
+  ctx.drawImage(img, 0, 0, w, mouthY, 0, 0, w, mouthY);
+  // 2. The lip strip — stretched downward by the open amount.
+  ctx.drawImage(img, 0, mouthY, w, strip, 0, mouthY, w, strip + delta);
+  // 3. Everything below (jaw/chin/body) — displaced down with the jaw
+  //    (the bottom edge is clipped naturally by the frame).
+  const rest = h - (mouthY + strip);
+  if (rest > 0) {
+    ctx.drawImage(img, 0, mouthY + strip, w, rest, 0, mouthY + strip + delta, w, rest);
+  }
+}
+
 /** Strip Markdown so the spoken reply sounds natural. */
 function stripMarkdown(md: string): string {
   return md
@@ -86,6 +121,10 @@ export default function DigitalMindVoice({
   const speakTokenRef = useRef(0);
   const askTokenRef = useRef(0);
   const resumeTimerRef = useRef<number | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouthTargetRef = useRef(0);
+  const mouthFallbackRef = useRef<number | null>(null);
+  const boundarySeenRef = useRef(false);
 
   const recognitionSupported = typeof window !== "undefined" && getSpeechRecognition() !== null;
   const synthSupported = typeof window !== "undefined" && "speechSynthesis" in window;
@@ -120,11 +159,45 @@ export default function DigitalMindVoice({
   function cancelSpeech() {
     speakTokenRef.current += 1;
     clearResumeTimer();
+    clearMouthFallback();
+    mouthTargetRef.current = 0; // close the mouth
     try {
       window.speechSynthesis?.cancel();
     } catch {
       /* ignore */
     }
+  }
+
+  // ── Mouth-sync (canvas lip sync driven by speech timing) ───────────
+
+  function clearMouthFallback() {
+    if (mouthFallbackRef.current !== null) {
+      window.clearInterval(mouthFallbackRef.current);
+      mouthFallbackRef.current = null;
+    }
+  }
+
+  /** Word boundary → snap the mouth open, decay to nearly closed. */
+  function onSpeechBoundary() {
+    boundarySeenRef.current = true;
+    mouthTargetRef.current = 0.55 + Math.random() * 0.45;
+    window.setTimeout(
+      () => {
+        mouthTargetRef.current = 0.08 + Math.random() * 0.18;
+      },
+      90 + Math.random() * 110
+    );
+  }
+
+  /** Fallback articulation for engines that never fire boundary events. */
+  function startMouthFallback() {
+    clearMouthFallback();
+    boundarySeenRef.current = false;
+    mouthFallbackRef.current = window.setInterval(() => {
+      if (!boundarySeenRef.current) {
+        mouthTargetRef.current = 0.2 + Math.random() * 0.7;
+      }
+    }, 130);
   }
 
   function speak(text: string) {
@@ -141,6 +214,7 @@ export default function DigitalMindVoice({
       return;
     }
     setPhase("speaking");
+    startMouthFallback();
     // Work around a Chromium bug where long speech silently stalls (~15s):
     // a periodic pause/resume keeps the queue alive.
     resumeTimerRef.current = window.setInterval(() => {
@@ -165,6 +239,7 @@ export default function DigitalMindVoice({
       const voice = pickVoice();
       if (voice) u.voice = voice;
       u.rate = 1;
+      u.onboundary = onSpeechBoundary; // drives the canvas lip sync
       u.onend = next;
       u.onerror = next;
       synth.speak(u);
@@ -174,6 +249,8 @@ export default function DigitalMindVoice({
 
   function finishSpeaking() {
     clearResumeTimer();
+    clearMouthFallback();
+    mouthTargetRef.current = 0; // close the mouth
     setPhase("idle");
     scheduleRelisten(450);
   }
@@ -331,6 +408,32 @@ export default function DigitalMindVoice({
     void ask(q);
   }
 
+  // ── Canvas mouth loop — redraws the photo with the jaw dropped by the
+  //    current smoothed open amount (rAF; cheap for a small canvas) ──────
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = AVATAR_IMG;
+    let raf = 0;
+    let open = 0;
+    const draw = () => {
+      open += (mouthTargetRef.current - open) * 0.35; // smoothing
+      if (canvasRef.current && img.complete && img.naturalWidth > 0) {
+        drawTalkingFace(canvasRef.current, img, open);
+      }
+      raf = window.requestAnimationFrame(draw);
+    };
+    const start = () => {
+      if (!raf) raf = window.requestAnimationFrame(draw);
+    };
+    if (img.complete && img.naturalWidth > 0) start();
+    else img.addEventListener("load", start, { once: true });
+    return () => {
+      img.removeEventListener("load", start);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, []);
+
   // ── Lifecycle ─────────────────────────────────────────────────────
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: mount-only — starts the voice session and registers its cleanup
@@ -396,8 +499,13 @@ export default function DigitalMindVoice({
           <span className="dm-voice__ring dm-voice__ring--1" aria-hidden="true" />
           <span className="dm-voice__ring dm-voice__ring--2" aria-hidden="true" />
           <span className="dm-voice__spin" aria-hidden="true" />
-          <img className="dm-voice__img" src={AVATAR_IMG} alt="Varun's digital avatar" />
-          {loopSrc && (
+          <canvas
+            ref={canvasRef}
+            className="dm-voice__canvas"
+            role="img"
+            aria-label="Varun's digital avatar"
+          />
+          {loopSrc && phase !== "speaking" && (
             <video
               className="dm-voice__video dm-voice__video--ready"
               src={loopSrc}

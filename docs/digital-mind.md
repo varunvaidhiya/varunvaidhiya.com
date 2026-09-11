@@ -324,17 +324,23 @@ hands‑free conversation with an animated avatar of Varun's photo:
 - **Speech out** — the answer is stripped of Markdown, split into sentence‑sized chunks,
   and spoken with `speechSynthesis` (a periodic pause/resume works around the Chromium
   long‑utterance stall). Tapping the mic mid‑reply interrupts it (barge‑in).
-- **The avatar** — `varun-avatar.jpg` in a ring layout with state‑driven CSS animation:
-  ripple rings while *listening*, a spinning arc while *thinking*, faster ripples plus a
-  subtle "talking" motion while *speaking*, and gentle breathing when idle.
-  `prefers-reduced-motion` disables all of it.
+- **The avatar (live, mouth‑synced)** — `varun-avatar.jpg` is drawn on a canvas and,
+  while the reply is spoken, the **lips and jaw move in sync with the speech**: the
+  speech engine's word‑boundary events drive a jaw‑drop/lip‑stretch warp of the photo
+  (tunable via `MOUTH_Y` / `MOUTH_STRIP` in `DigitalMindVoice.tsx`; engines without
+  boundary events get a timed fallback articulation). Around it, state‑driven CSS
+  animations signal the phase: ripple rings while *listening*, a spinning arc while
+  *thinking*, faster ripples plus a subtle bob while *speaking*, gentle breathing when
+  idle. `prefers-reduced-motion` disables the CSS layer.
 - **Living‑avatar upgrade path** — if `public/dm-avatar-loop.mp4` exists, voice mode
-  fades it in over the photo. This is the NavTalk‑style trick: run the photo through an
-  image‑to‑video model (e.g. Kling) with a "stay still, blink once" prompt, cut ±1s
-  around the blink, reverse‑concatenate for a seamless 4s loop, and drop the file in
-  `public/`. No code change needed. True real‑time lip‑sync (à la NavTalk/HeyGen/D‑ID)
-  would slot in behind the same view as a WebRTC stream and needs a paid avatar service
-  key — deliberately not built in, to keep the site key‑free and CSP‑strict.
+  fades it in over the canvas photo whenever the avatar is *not* speaking; during
+  speech the real‑time canvas lip‑sync takes over. This mirrors the NavTalk trick: run
+  the photo through an image‑to‑video model (e.g. Kling) with a "stay still, blink
+  once" prompt, cut ±1s around the blink, reverse‑concatenate for a seamless 4s loop,
+  and drop the file in `public/`. No code change needed. True photoreal lip‑sync video
+  (à la NavTalk/HeyGen/D‑ID) would slot in behind the same view as a WebRTC stream and
+  needs a paid avatar service key — deliberately not built in, to keep the site
+  key‑free and CSP‑strict.
 
 Everything runs client‑side with browser APIs — no extra keys, no third‑party calls, and
 no CSP changes (the only network traffic remains the same‑origin chat endpoint). Voice
@@ -343,7 +349,7 @@ replies aloud.
 
 | Path | Purpose |
 | ---- | ------- |
-| `src/components/ui/DigitalMindVoice.tsx` | The voice‑mode view (recognition, synthesis, avatar state machine). |
+| `src/components/ui/DigitalMindVoice.tsx` | The voice‑mode view (recognition, synthesis, canvas lip‑sync, avatar state machine). |
 
 ## Roadmap
 
