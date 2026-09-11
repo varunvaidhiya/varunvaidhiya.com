@@ -553,7 +553,7 @@
   place-items: center;
 }
 
-.dm-voice__canvas,
+.dm-voice__img,
 .dm-voice__video {
   grid-area: 1 / 1;
   width: 8.8rem;
@@ -611,13 +611,19 @@
   animation: dm-voice-ripple 2.1s ease-out infinite;
 }
 .dm-voice__avatar--listening .dm-voice__ring--2 {
-  animation: dm-voice-ripple 2.1s ease-out 1.05s infinite;
+  animation: dm-voice-ripple 2.1s ease-out 0.7s infinite;
+}
+.dm-voice__avatar--listening .dm-voice__ring--3 {
+  animation: dm-voice-ripple 2.1s ease-out 1.4s infinite;
 }
 .dm-voice__avatar--speaking .dm-voice__ring--1 {
   animation: dm-voice-ripple 1.15s ease-out infinite;
 }
 .dm-voice__avatar--speaking .dm-voice__ring--2 {
-  animation: dm-voice-ripple 1.15s ease-out 0.57s infinite;
+  animation: dm-voice-ripple 1.15s ease-out 0.38s infinite;
+}
+.dm-voice__avatar--speaking .dm-voice__ring--3 {
+  animation: dm-voice-ripple 1.15s ease-out 0.76s infinite;
 }
 
 /* Spinning arc shown while the answer is being generated. */
@@ -637,14 +643,10 @@
   animation: dm-voice-spin 0.9s linear infinite;
 }
 
-/* Subtle "talking" motion while the reply is spoken (on top of the
-   canvas lip-sync driven by speech word boundaries). */
-.dm-voice__avatar--speaking .dm-voice__canvas {
-  animation: dm-voice-talk 0.55s ease-in-out infinite;
-}
+/* While speaking, the waves + bars animate and the photo stays untouched. */
 
 /* Gentle breathing when idle. */
-.dm-voice__avatar--idle .dm-voice__canvas {
+.dm-voice__avatar--idle .dm-voice__img {
   animation: dm-voice-breathe 4.5s ease-in-out infinite;
 }
 
@@ -813,7 +815,7 @@
     width: 8rem;
     height: 8rem;
   }
-  .dm-voice__canvas,
+  .dm-voice__img,
   .dm-voice__video {
     width: 6.8rem;
     height: 6.8rem;
@@ -834,19 +836,6 @@
 @keyframes dm-voice-spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-@keyframes dm-voice-talk {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  30% {
-    transform: scale(1.035);
-  }
-  60% {
-    transform: scale(0.995);
   }
 }
 
@@ -909,7 +898,7 @@
   .dm-voice__ring,
   .dm-voice__spin,
   .dm-voice__glow,
-  .dm-voice__canvas,
+  .dm-voice__img,
   .dm-voice__video,
   .dm-voice__bars span {
     animation: none;
