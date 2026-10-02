@@ -71,6 +71,10 @@ export const NAV_LINKS: SocialLink[] = [
 // Social media links
 export const SOCIAL_LINKS: SocialLink[] = [
   {
+    href: "https://www.linkedin.com/in/varunvaidhiya",
+    label: "LinkedIn",
+  },
+  {
     href: "https://github.com/varunvaidhiya",
     label: "GitHub",
   },
@@ -92,6 +96,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
 export const ICON_MAP: Record<string, string> = {
   GitHub: "github",
   Twitter: "twitter",
+  LinkedIn: "linkedin",
   BlueSky: "bsky",
   RSS: "rss",
   Email: "mail",

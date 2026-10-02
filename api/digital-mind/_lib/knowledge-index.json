@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-10T08:04:54.030Z",
+  "generatedAt": "2026-10-02T12:23:37.238Z",
   "docCount": 3,
   "chunkCount": 10,
   "bySource": {
@@ -132,7 +132,7 @@
     },
     {
       "id": "page/about#4",
-      "text": "Follow me on GitHub · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
+      "text": "Follow me on GitHub · Connect on LinkedIn · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
       "title": "About",
       "url": "/about",
       "source": "page",

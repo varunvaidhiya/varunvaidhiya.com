@@ -2,6 +2,13 @@ import { SITE } from "./consts";
 
 export const SOCIALS = [
   {
+    name: "LinkedIn",
+    href: "https://www.linkedin.com/in/varunvaidhiya",
+    linkTitle: `${SITE.title} on LinkedIn`,
+    icon: "linkedin",
+    active: true,
+  },
+  {
     name: "Github",
     href: "https://github.com/varunvaidhiya",
     linkTitle: ` ${SITE.title} on Github`,
