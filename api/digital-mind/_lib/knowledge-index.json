@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T12:23:37.238Z",
+  "generatedAt": "2026-10-07T16:02:29.145Z",
   "docCount": 3,
   "chunkCount": 10,
   "bySource": {
@@ -21,7 +21,7 @@
     },
     {
       "id": "blog/my-projects#0",
-      "text": "Here's a collection of projects I've been building. All code is open source on GitHub.\n\nThe intelligence layer for AI and physical AI\n\nA full-stack open-source robotics platform covering the complete robot lifecycle under one engine. 19 product consoles span design (3D robot builder), training (VLA/BC/RL fine-tuning), simulation (Gazebo/Isaac Sim), serving (REST inference API), agent reasoning (perceive → reason → verify → act → monitor → reflect), fleet management (OTA, monitoring), and safety certification (ISO 10218, ISO 13849, IEC 61508). Built on OhhO OS — a single open-source engine (Apache-2.0) that's robot-agnostic, brand-agnostic, and standards-based. The reference robot is a ~$500 mecanum mobile manipulator with a 6-camera array and a unified 9D learned policy (SmolVLA).",
+      "text": "Here's a collection of projects I've been building. All code is open source on GitHub.\n\nOpen-source mecanum mobile manipulator\n\nOpen-source mecanum mobile manipulator (Yahboom base, SO-101 arm, Raspberry Pi 5, Meta Quest 3 teleop). Built on OhhO OS (Apache-2.0) — the package is ohho-os on PyPI (1.1.2, source: ohho-sdk).\n\nWhat works today: The engine can talk to that base, run a simulator with no hardware attached, and record arm and base motion for later training. Supported today, with public code: ROS 2 topics, ROSBridge, and Web Serial. Built with ROS 2 Jazzy, Nav2, Gazebo, LeRobot, PyTorch, FastAPI, Unity / OpenXR, and Next.js.",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
@@ -36,11 +36,11 @@
     },
     {
       "id": "blog/my-projects#1",
-      "text": "View on GitHub →\n\nProduction-ready toolkit to run AI locally\n\nA Kotlin SDK designed to make running AI models locally straightforward and production-grade. Built with a focus on ease of use and reliability for on-device AI inference.\n\nView on GitHub →\n\nAI inference on ARM hardware\n\nExploring and optimising AI model inference on ARM-based hardware. This project is about understanding how to get the best performance from AI models running on ARM chips — from setup through benchmarking.\n\nView on GitHub →\n\nROS-based mecanum wheel robot\n\nA robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.",
+      "text": "Roadmap: One robot, one engine — the rest is roadmap. The website consoles are interactive demos with simulated data (prototype consoles: Build, Frame, Connect, Serve, View, Data, Train, Autonomy, Mind, Pilot). Fleet, twin, compliance and security consoles are roadmap (Bench, Bridge, Market, Fleet, Twin, Care, Comply, Shield, Proof). OhhO Comply is a roadmap checklist, not a certification tool (simulated checklist only; OhhO does not generate a technical file or a conformity certificate, and it does not claim ISO, CE, UL, or SOC 2). Certified fleets, one bill and a cheapest-price claim are roadmap, not what ships today.\n\nView on GitHub →\n\nROS-based mecanum wheel robot\n\nA robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
-      "heading": "OhhO Robotics (OmniBotPro)",
+      "heading": "OmniBot",
       "tags": [
         "projects",
         "open-source",
@@ -66,7 +66,7 @@
     },
     {
       "id": "blog/my-projects#3",
-      "text": "Open-source drivers for Kinect for Windows v2\n\nForked and contributed to the open-source driver for Microsoft Kinect v2, enabling depth camera access on Linux and macOS.\n\nView on GitHub →\n\nDecentralised voting with fingerprint authentication\n\nA blockchain-based voting system that uses MFS100 fingerprint scanner authentication to ensure secure, verifiable, and tamper-proof elections.\n\nView on GitHub →\n\nMore coming soon. Follow me on GitHub to stay updated, and check out my YouTube channel for videos on AI, robotics, and performance engineering.",
+      "text": "Open-source drivers for Kinect for Windows v2\n\nFork with Raspberry Pi / ARM NEON and USB transfer fixes.\n\nView on GitHub →\n\nDecentralised voting with fingerprint authentication\n\nA blockchain-based voting system that uses MFS100 fingerprint scanner authentication to ensure secure, verifiable, and tamper-proof elections.\n\nView on GitHub →\n\nMore coming soon. Follow me on GitHub to stay updated, and check out my YouTube channel for videos on AI, robotics, and performance engineering.",
       "title": "My Open Source Projects",
       "url": "/posts/my-projects",
       "source": "blog",
@@ -81,7 +81,7 @@
     },
     {
       "id": "page/about#0",
-      "text": "Hi, I'm Varun Vaidhiya — a Full-Stack Robotics & AI Engineer building intelligent systems. My work focuses on Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI. \n I've built end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I specialize in C++ for embedded Linux and IoT device management, as well as building deep learning pipelines on Jetson and RTX edge GPUs. \n I'm currently building OhhO Robotics , an open-source robotics platform covering the complete robot lifecycle under one engine. I'm interested in working with companies building the intelligence layer for robotics, autonomous vehicles, and UAVs.",
+      "text": "Hi, I'm Varun Vaidhiya — a Full-Stack Robotics & AI Engineer building intelligent systems. My work focuses on Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI. \n I've built end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I specialize in C++ for embedded Linux and IoT device management, as well as building deep learning pipelines on Jetson and RTX edge GPUs. \n I'm currently building OhhO Robotics — one robot, one open engine (the rest is roadmap). Working today: the engine can talk to OmniBot's mecanum base, run a simulator with no hardware attached, and record arm and base motion for training. I'm interested in working with companies building the intelligence layer for robotics, autonomous vehicles, and UAVs.",
       "title": "About",
       "url": "/about",
       "source": "page",
@@ -119,7 +119,7 @@
     },
     {
       "id": "page/about#3",
-      "text": "Project Description Stack \n --------- ------------- ------- \n OhhO Robotics (OmniBotPro) Full-stack open-source robotics platform — the intelligence layer for AI and physical AI. 19 product consoles covering the complete robot lifecycle: design, training, simulation, VLA inference, agent reasoning, fleet management, and safety certification. Built on OhhO OS (Apache-2.0). Python / ROS 2 / TypeScript / Next.js \n Mecanum-Wheel-Robot ROS-based mecanum wheel robot Python / ROS \n AI-on-Arm AI inference on ARM hardware Various \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Open-source drivers for Kinect for Windows v2 C++",
+      "text": "Project Description Stack \n --------- ------------- ------- \n OmniBot Open-source mecanum mobile manipulator (Yahboom base, SO-101 arm, Raspberry Pi 5, Meta Quest 3 teleop). Working today: the Apache-2.0 ohho-os engine (PyPI 1.1.2) talks to the base, runs a simulator with no hardware attached, and records arm and base motion for training. Roadmap: the wider OhhO console platform — the website consoles are prototypes with simulated data, and fleet, twin, compliance and security consoles are roadmap. Python / ROS 2 / TypeScript / Next.js \n ohho-sdk The ohho-os Python package on PyPI; CI on Linux/macOS/Windows Python \n OhhO-VR Meta Quest 3 teleop client over ROSBridge Unity / C# \n SAM2forAV SAM2 model applied to autonomous vehicles Jupyter / Python \n AEB-Model-Based-Design Automatic Emergency Braking model-based design Simulink \n perfettoanalysisrepo Performance analysis scripts using Perfetto Python \n libfreenect2 Fork with Raspberry Pi / ARM NEON and USB transfer fixes C++",
       "title": "About",
       "url": "/about",
       "source": "page",
@@ -132,7 +132,7 @@
     },
     {
       "id": "page/about#4",
-      "text": "Follow me on GitHub · Connect on LinkedIn · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
+      "text": "Follow me on GitHub · Find me on PyPI · Connect on LinkedIn · Follow on X/Twitter · Subscribe on Substack · Watch on YouTube\n\n \n\n \n &copy; Varun Vaidhiya",
       "title": "About",
       "url": "/about",
       "source": "page",
