@@ -16,6 +16,13 @@ export const SOCIALS = [
     active: true,
   },
   {
+    name: "PyPI",
+    href: "https://pypi.org/user/varunvaidhiya/",
+    linkTitle: `${SITE.title} on PyPI`,
+    icon: "pypi",
+    active: true,
+  },
+  {
     name: "YouTube",
     href: "https://www.youtube.com/@varun.vaidhiya",
     linkTitle: `${SITE.title} on YouTube`,
