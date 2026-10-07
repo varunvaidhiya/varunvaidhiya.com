@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://varunvaidhiya.com/",
   author: "Varun Vaidhiya",
   profile: "https://varunvaidhiya.com/about",
-  desc: "Full-Stack Robotics & AI Engineer building intelligent systems. Specializing in Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI.",
+  desc: "UK-based robotics software engineer: ROS 2, embedded Linux, robot safety and imitation-learning pipelines. Building OmniBot, an open-source mobile manipulator.",
   title: "Varun Vaidhiya",
   ogImage: "varun-avatar.jpg",
   lightAndDarkMode: true,
@@ -50,7 +50,7 @@ export const SITE: Site = {
   },
   dynamicOgImage: true,
   lang: "en",
-  timezone: "Asia/Kolkata",
+  timezone: "Europe/London",
 };
 
 export const SITE_TITLE = SITE.title;

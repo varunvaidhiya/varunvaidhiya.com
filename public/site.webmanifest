@@ -1,7 +1,7 @@
 {
   "name": "Varun Vaidhiya",
   "short_name": "Varun Vaidhiya",
-  "description": "Personal website and blog of Varun Vaidhiya.",
+  "description": "Varun Vaidhiya: UK robotics software engineer (ROS 2, embedded Linux, imitation learning)",
   "icons": [
     {
       "src": "/favicon.ico",
@@ -11,6 +11,6 @@
   ],
   "start_url": "/",
   "display": "browser",
-  "theme_color": "#ffffff",
+  "theme_color": "#fdfdfd",
   "background_color": "#ffffff"
 }
