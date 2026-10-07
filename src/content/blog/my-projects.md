@@ -20,11 +20,15 @@ Here's a collection of projects I've been building. All code is open source on [
 
 ---
 
-## OhhO Robotics (OmniBotPro)
+## OmniBot
 
-**The intelligence layer for AI and physical AI**
+**Open-source mecanum mobile manipulator**
 
-A full-stack open-source robotics platform covering the complete robot lifecycle under one engine. 19 product consoles span design (3D robot builder), training (VLA/BC/RL fine-tuning), simulation (Gazebo/Isaac Sim), serving (REST inference API), agent reasoning (perceive → reason → verify → act → monitor → reflect), fleet management (OTA, monitoring), and safety certification (ISO 10218, ISO 13849, IEC 61508). Built on OhhO OS — a single open-source engine (Apache-2.0) that's robot-agnostic, brand-agnostic, and standards-based. The reference robot is a ~$500 mecanum mobile manipulator with a 6-camera array and a unified 9D learned policy (SmolVLA).
+Open-source mecanum mobile manipulator (Yahboom base, SO-101 arm, Raspberry Pi 5, Meta Quest 3 teleop). Built on OhhO OS (Apache-2.0) — the package is `ohho-os` on PyPI (1.1.2, source: `ohho-sdk`).
+
+**What works today:** The engine can talk to that base, run a simulator with no hardware attached, and record arm and base motion for later training. Supported today, with public code: ROS 2 topics, ROSBridge, and Web Serial. Built with ROS 2 Jazzy, Nav2, Gazebo, LeRobot, PyTorch, FastAPI, Unity / OpenXR, and Next.js.
+
+**Roadmap:** One robot, one engine — the rest is roadmap. The website consoles are interactive demos with simulated data (prototype consoles: Build, Frame, Connect, Serve, View, Data, Train, Autonomy, Mind, Pilot). Fleet, twin, compliance and security consoles are roadmap (Bench, Bridge, Market, Fleet, Twin, Care, Comply, Shield, Proof). OhhO Comply is a roadmap checklist, not a certification tool (simulated checklist only; OhhO does not generate a technical file or a conformity certificate, and it does not claim ISO, CE, UL, or SOC 2). Certified fleets, one bill and a cheapest-price claim are roadmap, not what ships today.
 
 [View on GitHub →](https://github.com/ohho-robotics/OmniBot)
 
