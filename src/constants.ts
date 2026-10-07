@@ -11,7 +11,14 @@ export const SOCIALS = [
   {
     name: "Github",
     href: "https://github.com/varunvaidhiya",
-    linkTitle: ` ${SITE.title} on Github`,
+    linkTitle: `${SITE.title} on GitHub`,
+    icon: "github",
+    active: true,
+  },
+  {
+    name: "OhhO Robotics",
+    href: "https://github.com/ohho-robotics",
+    linkTitle: "OhhO Robotics on GitHub",
     icon: "github",
     active: true,
   },
@@ -37,7 +44,7 @@ export const SOCIALS = [
     active: true,
   },
   {
-    name: "Twitter",
+    name: "X",
     href: "https://x.com/VarunVaidhiya",
     linkTitle: `${SITE.title} on X/Twitter`,
     icon: "twitter",
