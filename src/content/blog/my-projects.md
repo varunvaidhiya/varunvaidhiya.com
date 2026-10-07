@@ -2,6 +2,7 @@
 title: "My Open Source Projects"
 author: "Varun Vaidhiya"
 pubDatetime: 2026-02-10T12:00:00Z
+modDatetime: 2026-10-07T10:00:00Z
 slug: "my-projects"
 featured: true
 draft: false
@@ -25,7 +26,7 @@ Here's a collection of projects I've been building. All code is open source on [
 
 A full-stack open-source robotics platform covering the complete robot lifecycle under one engine. 19 product consoles span design (3D robot builder), training (VLA/BC/RL fine-tuning), simulation (Gazebo/Isaac Sim), serving (REST inference API), agent reasoning (perceive → reason → verify → act → monitor → reflect), fleet management (OTA, monitoring), and safety certification (ISO 10218, ISO 13849, IEC 61508). Built on OhhO OS — a single open-source engine (Apache-2.0) that's robot-agnostic, brand-agnostic, and standards-based. The reference robot is a ~$500 mecanum mobile manipulator with a 6-camera array and a unified 9D learned policy (SmolVLA).
 
-[View on GitHub →](https://github.com/varunvaidhiya/OmniBotPro)
+[View on GitHub →](https://github.com/ohho-robotics/OmniBot)
 
 ---
 
@@ -55,7 +56,7 @@ Exploring and optimising AI model inference on ARM-based hardware. This project 
 
 A robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.
 
-[View on GitHub →](https://github.com/varunvaidhiya/Mecanum-Wheel-Robot)
+[View on GitHub →](https://github.com/ohho-robotics/OmniBot)
 
 ---
 
@@ -93,7 +94,7 @@ Python scripts for capturing and analysing system traces using Google's Perfetto
 
 **Open-source drivers for Kinect for Windows v2**
 
-Forked and contributed to the open-source driver for Microsoft Kinect v2, enabling depth camera access on Linux and macOS.
+Fork with Raspberry Pi / ARM NEON and USB transfer fixes.
 
 [View on GitHub →](https://github.com/varunvaidhiya/libfreenect2)
 
