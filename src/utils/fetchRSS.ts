@@ -13,6 +13,18 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, "").trim();
 }
 
+function decodeEntities(s: string): string {
+  return s
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(+n))
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&nbsp;/g, " ");
+}
+
 function extractTag(xml: string, tag: string): string {
   const cdataRe = new RegExp(`<${tag}[^>]*>\\s*<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>\\s*</${tag}>`, "i");
   const cdataMatch = xml.match(cdataRe);
@@ -48,7 +60,8 @@ function parseEntries(xml: string): FeedItem[] {
   for (let match = entryRe.exec(xml); match !== null; match = entryRe.exec(xml)) {
     const chunk = match[2];
 
-    const title = extractTag(chunk, "title") || extractTag(chunk, "media:title");
+    const rawTitle = extractTag(chunk, "title") || extractTag(chunk, "media:title");
+    const title = decodeEntities(rawTitle);
 
     let link = extractTag(chunk, "link");
     if (!link || link.startsWith("<")) {
@@ -70,7 +83,7 @@ function parseEntries(xml: string): FeedItem[] {
       extractTag(chunk, "content") ||
       extractTag(chunk, "summary") ||
       extractTag(chunk, "media:description");
-    const description = stripHtml(rawDesc).slice(0, 220);
+    const description = decodeEntities(stripHtml(rawDesc)).slice(0, 220);
 
     // Images: media tags first, then enclosure, then inline <img> in description
     const mediaThumbnail =
@@ -106,7 +119,7 @@ export async function fetchRSSFeed(url: string): Promise<FeedItem[]> {
   try {
     const res = await fetch(url, {
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; VarunVaidhiya.me feed reader/1.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; VarunVaidhiya.com feed reader/1.0)",
       },
       signal: AbortSignal.timeout(8000),
     });

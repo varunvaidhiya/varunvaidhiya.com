@@ -18,7 +18,7 @@ export async function fetchRecentCommits(username: string): Promise<GitHubCommit
   const token = import.meta.env.GITHUB_TOKEN;
   
   const headers: HeadersInit = {
-    "User-Agent": "VarunVaidhiya.me/1.0",
+    "User-Agent": "VarunVaidhiya.com/1.0",
     Accept: "application/vnd.github+json",
   };
   
@@ -43,14 +43,19 @@ export async function fetchRecentCommits(username: string): Promise<GitHubCommit
     const data = await res.json();
     const items = data.items || [];
     
-    return items.map((item: any) => ({
-      sha: item.sha,
-      message: item.commit.message.split('\n')[0], // Get just the title/first line
-      repo: item.repository.full_name,
-      repoUrl: item.repository.html_url,
-      url: item.html_url,
-      date: item.commit.author.date,
-    }));
+    return items
+      .map((item: any) => ({
+        sha: item.sha,
+        message: item.commit.message.split('\n')[0], // Get just the title/first line
+        repo: item.repository.full_name,
+        repoUrl: item.repository.html_url,
+        url: item.html_url,
+        date: item.commit.author.date,
+      }))
+      .filter(
+        (c: GitHubCommit) =>
+          !/^Merge (pull request|branch|remote-tracking branch)/.test(c.message)
+      );
   } catch (error) {
     console.error("Error fetching commits:", error);
     return [];

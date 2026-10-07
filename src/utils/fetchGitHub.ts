@@ -97,7 +97,7 @@ export async function fetchGitHubActivity(username: string): Promise<GitHubEvent
   try {
     const res = await fetch(`https://api.github.com/users/${username}/events/public?per_page=50`, {
       headers: {
-        "User-Agent": "VarunVaidhiya.me/1.0",
+        "User-Agent": "VarunVaidhiya.com/1.0",
         Accept: "application/vnd.github+json",
       },
       signal: AbortSignal.timeout(8000),

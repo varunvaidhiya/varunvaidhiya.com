@@ -23,11 +23,11 @@ export async function fetchHFModels(username: string): Promise<HFModel[]> {
   try {
     const [modelsRes, spacesRes] = await Promise.all([
       fetch(`${BASE}/api/models?author=${username}&sort=lastModified&limit=8`, {
-        headers: { "User-Agent": "VarunVaidhiya.me/1.0" },
+        headers: { "User-Agent": "VarunVaidhiya.com/1.0" },
         signal: AbortSignal.timeout(8000),
       }),
       fetch(`${BASE}/api/spaces?author=${username}&sort=lastModified&limit=4`, {
-        headers: { "User-Agent": "VarunVaidhiya.me/1.0" },
+        headers: { "User-Agent": "VarunVaidhiya.com/1.0" },
         signal: AbortSignal.timeout(8000),
       }),
     ]);
@@ -84,7 +84,7 @@ export async function fetchHFModels(username: string): Promise<HFModel[]> {
 export async function fetchHFProfile(username: string): Promise<HFProfile | null> {
   try {
     const res = await fetch(`${BASE}/api/users/${username}`, {
-      headers: { "User-Agent": "VarunVaidhiya.me/1.0" },
+      headers: { "User-Agent": "VarunVaidhiya.com/1.0" },
       signal: AbortSignal.timeout(6000),
     });
     if (!res.ok) return null;

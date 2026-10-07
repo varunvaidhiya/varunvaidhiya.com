@@ -16,49 +16,47 @@ const [models, profile] = await Promise.all([fetchHFModels(USERNAME), fetchHFPro
 const hasModels = models.length > 0;
 ---
 
-<div class="feed-column">
-  <div class="feed-header">
-    <IconHuggingFace width={20} height={20} class="feed-icon" />
-    <h2 class="feed-title">Hugging Face</h2>
-    <a
-      href={HF_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="feed-view-all"
-    >
-      View all →
-    </a>
-  </div>
-
-  {/* Profile stats strip */}
-  {
-    profile && (
-      <div class="hf-profile-strip">
-        {profile.avatarUrl && (
-          <img
-            src={profile.avatarUrl}
-            alt={profile.fullname}
-            width={32}
-            height={32}
-            class="hf-avatar"
-            loading="lazy"
-          />
-        )}
-        <div class="hf-stats">
-          <span class="hf-stat">
-            <strong>{profile.numModels}</strong> models
-          </span>
-          <span class="hf-stat-sep">·</span>
-          <span class="hf-stat">
-            <strong>{profile.numLikes}</strong> likes
-          </span>
-        </div>
+{
+  hasModels && (
+    <div class="feed-column">
+      <div class="feed-header">
+        <IconHuggingFace width={20} height={20} class="feed-icon" />
+        <h2 class="feed-title">Hugging Face</h2>
+        <a
+          href={HF_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="feed-view-all"
+        >
+          View all →
+        </a>
       </div>
-    )
-  }
 
-  {
-    hasModels ? (
+      {/* Profile stats strip */}
+      {profile && (
+        <div class="hf-profile-strip">
+          {profile.avatarUrl && (
+            <img
+              src={profile.avatarUrl}
+              alt={profile.fullname}
+              width={32}
+              height={32}
+              class="hf-avatar"
+              loading="lazy"
+            />
+          )}
+          <div class="hf-stats">
+            <span class="hf-stat">
+              <strong>{profile.numModels}</strong> models
+            </span>
+            <span class="hf-stat-sep">·</span>
+            <span class="hf-stat">
+              <strong>{profile.numLikes}</strong> likes
+            </span>
+          </div>
+        </div>
+      )}
+
       <ul class="feed-list hf-list">
         {models.map((model) => (
           <li class="hf-item">
@@ -96,30 +94,15 @@ const hasModels = models.length > 0;
           </li>
         ))}
       </ul>
-    ) : (
-      <div class="feed-empty">
-        <p>
-          See my models on{" "}
-          <a
-            href={HF_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-accent underline decoration-dashed"
-          >
-            Hugging Face
-          </a>
-          .
-        </p>
-      </div>
-    )
-  }
 
-  <a
-    href={HF_URL}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="feed-bottom-link"
-  >
-    View Hugging Face profile →
-  </a>
-</div>
+      <a
+        href={HF_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="feed-bottom-link"
+      >
+        View Hugging Face profile →
+      </a>
+    </div>
+  )
+}
