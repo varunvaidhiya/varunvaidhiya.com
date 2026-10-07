@@ -12,7 +12,7 @@ Since you are using Astro, **Vercel** is the recommended hosting provider. It of
 1.  **Sign Up / Login**: Go to [vercel.com](https://vercel.com) and sign up using your **GitHub** account.
 2.  **Add New Project**:
     -   Click "Add New..." -> "Project".
-    -   You should see your repository `varunvaidhiya.me` in the list.
+    -   You should see your repository `varunvaidhiya.com` in the list.
     -   Click **Import** next to it.
 3.  **Configure Project**:
     -   Vercel will automatically detect that you are using **Astro**.

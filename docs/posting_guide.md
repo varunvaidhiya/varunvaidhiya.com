@@ -1,5 +1,5 @@
 
-# Posting Guide for VarunVaidhiya.me
+# Posting Guide for VarunVaidhiya.com
 
 This guide explains how to add new blog posts to your website.
 
