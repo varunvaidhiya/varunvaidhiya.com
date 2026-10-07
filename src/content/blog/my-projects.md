@@ -30,26 +30,6 @@ A full-stack open-source robotics platform covering the complete robot lifecycle
 
 ---
 
-## runanywhere-sdks
-
-**Production-ready toolkit to run AI locally**
-
-A Kotlin SDK designed to make running AI models locally straightforward and production-grade. Built with a focus on ease of use and reliability for on-device AI inference.
-
-[View on GitHub →](https://github.com/varunvaidhiya/runanywhere-sdks)
-
----
-
-## AI-on-Arm
-
-**AI inference on ARM hardware**
-
-Exploring and optimising AI model inference on ARM-based hardware. This project is about understanding how to get the best performance from AI models running on ARM chips — from setup through benchmarking.
-
-[View on GitHub →](https://github.com/varunvaidhiya/AI-on-Arm)
-
----
-
 ## Mecanum-Wheel-Robot
 
 **ROS-based mecanum wheel robot**
