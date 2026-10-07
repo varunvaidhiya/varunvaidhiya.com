@@ -34,9 +34,8 @@ export default defineConfig({
         // Always exclude archives if not showing them
         if (!SITE.showArchives && page.endsWith("/archives")) return false;
 
-        // Optionally exclude tag pages to reduce sitemap bloat
-        // Uncomment the following line to exclude all tag pages:
-        // if (page.includes("/tags/")) return false;
+        // Exclude /admin, /page/N, and /posts/YYYY/... duplicate routes
+        if (/\/(admin|page\/\d+)\/?$/.test(page) || /\/posts\/\d{4}\//.test(page)) return false;
 
         return true;
       },
@@ -103,8 +102,8 @@ export default defineConfig({
       manifest: {
         name: "Varun Vaidhiya",
         short_name: "varunvaidhiya",
-        description: "Personal website and blog of Varun Vaidhiya.",
-        theme_color: "#006cac",
+        description: "Varun Vaidhiya: UK robotics software engineer (ROS 2, embedded Linux, imitation learning)",
+        theme_color: "#fdfdfd",
         background_color: "#fdfdfd",
         display: "standalone",
         orientation: "portrait",
