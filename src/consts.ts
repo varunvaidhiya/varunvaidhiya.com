@@ -34,7 +34,7 @@ export const SITE: Site = {
   website: "https://varunvaidhiya.com/",
   author: "Varun Vaidhiya",
   profile: "https://varunvaidhiya.com/about",
-  desc: "UK-based robotics software engineer: ROS 2, embedded Linux, robot safety and imitation-learning pipelines. Building OmniBot, an open-source mobile manipulator.",
+  desc: "Robotics software engineer: ROS 2, embedded Linux, robot safety and imitation-learning pipelines. Building OmniBot, an open-source mobile manipulator.",
   title: "Varun Vaidhiya",
   ogImage: "varun-avatar.jpg",
   lightAndDarkMode: true,

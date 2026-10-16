@@ -2,7 +2,7 @@
 title: "Hello World"
 author: "Varun Vaidhiya"
 pubDatetime: 2026-02-05T12:00:00Z
-featured: true
+featured: false
 draft: false
 tags:
   - intro
