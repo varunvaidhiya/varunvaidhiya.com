@@ -65,8 +65,8 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
             </a>
           </div>
           <p>
-            I'm a Full-Stack Robotics & AI Engineer building intelligent systems.<br />
-            Specializing in Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI.
+            I'm a Robot Learning & AI Inference Engineer.<br />
+            I build the software platform behind robot learning (teleop data collection, data pipelines, training and policy serving) and optimise AI models for GPU and edge-GPU inference.
           </p>
           <p class="mt-2">
             Open to roles in the UK across robotics, embedded systems, physical AI, AI engineering and ML/AI performance optimisation — <a
@@ -128,6 +128,25 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
               {featuredPosts.map((data) => (
                 <Card variant="h3" {...data} showImage={false} />
               ))}
+            </ul>
+            <h3 class="mt-6 text-xl font-semibold">Featured repos</h3>
+            <ul>
+              <li class="my-4">
+                <a
+                  href="https://github.com/varunvaidhiya/SAM2forAV"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-accent font-medium underline decoration-dashed underline-offset-4"
+                  >SAM2forAV</a> — SAM 2 fine-tuned on Cityscapes, compressed with post-training quantisation and structured pruning, and benchmarked against SegFormer on an RTX 4070 Mobile GPU.
+              </li>
+              <li class="my-4">
+                <a
+                  href="https://github.com/varunvaidhiya/libfreenect2"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-accent font-medium underline decoration-dashed underline-offset-4"
+                  >libfreenect2 (fork)</a> — Kinect v2 driver fork with CUDA 13.0 compatibility fixes and Raspberry Pi 5 / ARM64 USB transfer support.
+              </li>
             </ul>
           </section>
           {recentPosts.length > 0 && <Hr />}

@@ -1,7 +1,7 @@
 ---
 layout: ../layouts/AboutLayout.astro
 title: "About"
-description: "Full-Stack Robotics & AI Engineer building intelligent systems. Specializing in Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI."
+description: "Robot Learning & AI Inference Engineer. I build the software platform behind robot learning and optimise AI models for GPU and edge-GPU inference."
 ---
 
 import NewsletterForm from '../components/NewsletterForm.astro';
@@ -11,9 +11,9 @@ import NewsletterForm from '../components/NewsletterForm.astro';
     <img src="/varun-avatar.jpg" alt="Varun Vaidhiya" class="w-full h-auto rounded-lg" />
   </div>
   <div class="flex-1 min-w-0">
-    <p>Hi, I'm <strong>Varun Vaidhiya</strong> — a Full-Stack Robotics & AI Engineer building intelligent systems. My work focuses on Vision-Language-Action models, ROS 2, and high-performance edge GPU inference for autonomous vehicles and physical AI.</p>
-    <p>I've built end-to-end robotic software — from 3D perception and SLAM to Vision-Language-Action model training and edge GPU inference optimisation. I specialize in C++ for embedded Linux and IoT device management, as well as building deep learning pipelines on Jetson and RTX edge GPUs.</p>
-    <p>I'm currently building <strong>OhhO Robotics</strong> — one robot, one open engine (the rest is roadmap). Working today: the engine can talk to OmniBot's mecanum base, run a simulator with no hardware attached, and record arm and base motion for training. I'm interested in working with companies building the intelligence layer for robotics, autonomous vehicles, and UAVs.</p>
+    <p>Hi, I'm <strong>Varun Vaidhiya</strong> — a robot learning and AI inference engineer. I build the software platform that robot learning depends on (teleop data collection, episodic data pipelines, training and policy-serving infrastructure) and I optimise AI models for GPU and edge-GPU inference.</p>
+    <p>I've built robot-learning software end to end, from teleoperation recording and dataset quality tooling to policy training, simulation and on-robot inference. On the compute side I focus on making models fast: a TensorRT FP16 vision encoder for visuomotor policies, ONNX deployment, quantisation and pruning, and benchmarking on RTX GPUs.</p>
+    <p>I'm currently building <strong>OhhO Robotics</strong> — one robot, one open engine (the rest is roadmap). Working today: the engine can talk to OmniBot's mecanum base, run a simulator with no hardware attached, and record arm and base motion for training. I'm interested in working with companies building robot learning platforms and efficient AI inference for physical AI.</p>
   </div>
 </div>
 
@@ -40,9 +40,9 @@ import NewsletterForm from '../components/NewsletterForm.astro';
 ## What I Work On
 
 - **3D Perception & Spatial Intelligence** — Multi-camera Bird's-Eye-View (BEV), RGB-D 3D SLAM (RTAB-Map), 3D occupancy / voxel mapping (OctoMap), 2D SLAM, 6-DoF object pose estimation, point-cloud processing, multi-sensor fusion (EKF), camera calibration (homography, RANSAC, pinhole intrinsics)
-- **Machine Learning & Embodied AI** — PyTorch, Vision-Language Models (CLIP, SAM 2, DINO), Vision-Language-Action Models (OpenVLA, SmolVLA, piZero, Octo), imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases
-- **Edge Deployment & Inference Optimisation** — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, NVIDIA Jetson / RTX edge GPUs, ultra-low-latency inference
-- **Robotics & Simulation** — ROS 2 (Jazzy), Nav2, TF2, real-time control, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation
+- **Machine Learning & Embodied AI** — PyTorch, LeRobot, imitation learning (behaviour cloning), reinforcement learning (PPO, Isaac Lab), distributed training (DDP/FSDP), Weights & Biases, vision models (CLIP, SAM 2, DINO); interest in VLA policies (SmolVLA, OpenVLA)
+- **Edge Deployment & Inference Optimisation** — TensorRT (FP16/INT8), ONNX Runtime, CUDA, INT8 calibration & quantisation, model compression/pruning, Nsight profiling, RTX GPUs, ultra-low-latency inference
+- **Robotics & Simulation** — ROS 2 (Jazzy), Nav2, TF2, Gazebo, NVIDIA Isaac Sim / Isaac Lab, sim-to-real transfer, teleoperation
 - **Systems & Infrastructure** — Embedded Linux, ARM Cortex-A, System design, IoT protocol integration (DDS, MAVLink, CAN, OPC UA), C++ (C++17/20), Python, CMake. *(Supporting Stack: Kubernetes, Docker, TypeScript, Next.js)*
 
 ## GitHub Activity
