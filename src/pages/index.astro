@@ -23,7 +23,6 @@ const posts = await getCollection("blog");
 const sortedPosts = getSortedPosts(posts);
 const posts2025AndLater = sortedPosts.filter(({ data }) => data.pubDatetime.getFullYear() >= 2025);
 const featuredPosts = posts2025AndLater.filter(({ data }) => data.featured);
-const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 ---
 
 <Layout
@@ -121,49 +120,31 @@ const recentPosts = posts2025AndLater.filter(({ data }) => !data.featured);
 
     {
       featuredPosts.length > 0 && (
-        <>
-          <section id="featured" class="pt-12 pb-6">
-            <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-            <ul>
-              {featuredPosts.map((data) => (
-                <Card variant="h3" {...data} showImage={false} />
-              ))}
-            </ul>
-            <h3 class="mt-6 text-xl font-semibold">Featured repos</h3>
-            <ul>
-              <li class="my-4">
-                <a
-                  href="https://github.com/varunvaidhiya/SAM2forAV"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-accent font-medium underline decoration-dashed underline-offset-4"
-                  >SAM2forAV</a> — SAM 2 fine-tuned on Cityscapes, compressed with post-training quantisation and structured pruning, and benchmarked against SegFormer on an RTX 4070 Mobile GPU.
-              </li>
-              <li class="my-4">
-                <a
-                  href="https://github.com/varunvaidhiya/libfreenect2"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-accent font-medium underline decoration-dashed underline-offset-4"
-                  >libfreenect2 (fork)</a> — Kinect v2 driver fork with CUDA 13.0 compatibility fixes and Raspberry Pi 5 / ARM64 USB transfer support.
-              </li>
-            </ul>
-          </section>
-          {recentPosts.length > 0 && <Hr />}
-        </>
-      )
-    }
-
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
+        <section id="featured" class="pt-12 pb-6">
+          <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
           <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && (
-                  <Card variant="h3" {...data} showImage={false} />
-                ),
-            )}
+            {featuredPosts.map((data) => (
+              <Card variant="h3" {...data} showImage={false} />
+            ))}
+          </ul>
+          <h3 class="mt-6 text-xl font-semibold">Featured repos</h3>
+          <ul>
+            <li class="my-4">
+              <a
+                href="https://github.com/varunvaidhiya/SAM2forAV"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent font-medium underline decoration-dashed underline-offset-4"
+                >SAM2forAV</a> — SAM 2 fine-tuned on Cityscapes, compressed with post-training quantisation and structured pruning, and benchmarked against SegFormer on an RTX 4070 Mobile GPU.
+            </li>
+            <li class="my-4">
+              <a
+                href="https://github.com/varunvaidhiya/libfreenect2"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-accent font-medium underline decoration-dashed underline-offset-4"
+                >libfreenect2 (fork)</a> — Kinect v2 driver fork with CUDA 13.0 compatibility fixes and Raspberry Pi 5 / ARM64 USB transfer support.
+            </li>
           </ul>
         </section>
       )
