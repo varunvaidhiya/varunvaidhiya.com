@@ -1,7 +1,7 @@
 ---
 import IconGitHub from "@/assets/icons/IconGitHub.svg";
-import { fetchRecentCommits } from "@/utils/fetchGitHubCommits";
 import { formatFeedDate } from "@/utils/fetchGitHub";
+import { fetchRecentCommits } from "@/utils/fetchGitHubCommits";
 
 const USERNAME = "varunvaidhiya";
 const commits = await fetchRecentCommits(USERNAME);
