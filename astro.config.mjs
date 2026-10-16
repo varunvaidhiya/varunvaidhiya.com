@@ -102,7 +102,7 @@ export default defineConfig({
       manifest: {
         name: "Varun Vaidhiya",
         short_name: "varunvaidhiya",
-        description: "Varun Vaidhiya: UK robotics software engineer (ROS 2, embedded Linux, imitation learning)",
+        description: "Varun Vaidhiya: Robotics software engineer (ROS 2, embedded Linux, imitation learning)",
         theme_color: "#fdfdfd",
         background_color: "#fdfdfd",
         display: "standalone",
