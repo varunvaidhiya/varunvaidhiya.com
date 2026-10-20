@@ -52,7 +52,7 @@ export const SOCIALS = [
   },
   {
     name: "Mail",
-    href: "mailto:varun.vaidhiya@gmail.com",
+    href: "mailto:varun@ohho-robotics.com",
     linkTitle: `Send an email to ${SITE.title}`,
     icon: "mail",
     active: true,
