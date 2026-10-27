@@ -24,13 +24,13 @@ Here's a collection of projects I've been building. All code is open source on [
 
 **Open-source mecanum mobile manipulator**
 
-Open-source mecanum mobile manipulator (Yahboom base, SO-101 arm, Raspberry Pi 5, Meta Quest 3 teleop). Built on OhhO OS (Apache-2.0) — the package is `ohho-os` on PyPI (1.1.2, source: `ohho-sdk`).
+Open-source mecanum mobile manipulator (Yahboom base, SO-101 arm, Raspberry Pi 5, Meta Quest 3 teleop). Built on OhhO OS (Apache-2.0) — the package is `ohho-os` on PyPI (1.1.2, source: `ohho-os`).
 
 **What works today:** The engine can talk to that base, run a simulator with no hardware attached, and record arm and base motion for later training. Supported today, with public code: ROS 2 topics, ROSBridge, and Web Serial. Built with ROS 2 Jazzy, Nav2, Gazebo, LeRobot, PyTorch, FastAPI, Unity / OpenXR, and Next.js.
 
 **Roadmap:** One robot, one engine — the rest is roadmap. The website consoles are interactive demos with simulated data (prototype consoles: Build, Frame, Connect, Serve, View, Data, Train, Autonomy, Mind, Pilot). Fleet, twin, compliance and security consoles are roadmap (Bench, Bridge, Market, Fleet, Twin, Care, Comply, Shield, Proof). OhhO Comply is a roadmap checklist, not a certification tool (simulated checklist only; OhhO does not generate a technical file or a conformity certificate, and it does not claim ISO, CE, UL, or SOC 2). Certified fleets, one bill and a cheapest-price claim are roadmap, not what ships today.
 
-[View on GitHub →](https://github.com/ohho-robotics/OmniBot)
+[View on GitHub →](https://github.com/ohho-robotics/ohho-omnibot)
 
 ---
 
@@ -40,7 +40,7 @@ Open-source mecanum mobile manipulator (Yahboom base, SO-101 arm, Raspberry Pi 5
 
 A robotics project using ROS (Robot Operating System) to control a mecanum wheel robot. Covers locomotion, motion planning, and sensor integration.
 
-[View on GitHub →](https://github.com/ohho-robotics/OmniBot)
+[View on GitHub →](https://github.com/ohho-robotics/ohho-omnibot)
 
 ---
 
