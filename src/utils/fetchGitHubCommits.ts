@@ -7,6 +7,8 @@ export interface GitHubCommit {
   date: string;
 }
 
+const MAX_ENTRIES = 30;
+
 export async function fetchRecentCommits(username: string): Promise<GitHubCommit[]> {
   // Calculate the date 30 days ago
   const thirtyDaysAgo = new Date();
@@ -26,8 +28,8 @@ export async function fetchRecentCommits(username: string): Promise<GitHubCommit
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const query = encodeURIComponent(`author:${username} committer-date:>${dateStr}`);
-  const url = `https://api.github.com/search/commits?q=${query}&sort=committer-date&order=desc&per_page=30`;
+  const query = encodeURIComponent(`author:${username} merge:false committer-date:>${dateStr}`);
+  const url = `https://api.github.com/search/commits?q=${query}&sort=committer-date&order=desc&per_page=100`;
 
   try {
     const res = await fetch(url, {
@@ -44,6 +46,11 @@ export async function fetchRecentCommits(username: string): Promise<GitHubCommit
     const items = data.items || [];
     
     return items
+      .filter(
+        (item: any) =>
+          !(item.parents?.length > 1) &&
+          !/^Merge /.test(item.commit.message.split('\n')[0])
+      )
       .map((item: any) => ({
         sha: item.sha,
         message: item.commit.message.split('\n')[0], // Get just the title/first line
@@ -52,10 +59,7 @@ export async function fetchRecentCommits(username: string): Promise<GitHubCommit
         url: item.html_url,
         date: item.commit.author.date,
       }))
-      .filter(
-        (c: GitHubCommit) =>
-          !/^Merge (pull request|branch|remote-tracking branch)/.test(c.message)
-      );
+      .slice(0, MAX_ENTRIES);
   } catch (error) {
     console.error("Error fetching commits:", error);
     return [];
